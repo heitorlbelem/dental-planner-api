@@ -19,9 +19,9 @@ on:
       - '.**'
       - '**.md'
       - 'docs/**.md'
-
 jobs:
-  back_linter:
+  rubocop-linter:
+    name: Rubocop
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Code
@@ -35,6 +35,5 @@ jobs:
         with:
           bundler: "Gemfile.lock"
           bundler-cache: true
-
       - name: Run Rubocop
         run: bundle exec rubocop
