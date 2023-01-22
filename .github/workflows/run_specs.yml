@@ -5,7 +5,18 @@ env:
   POSTGRES_DB: dental_planner_api_test
 
 name: Rails Specs
-on: [push,pull_request]
+on:
+  pull_request:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - 'docs/**.md'
+      - '!CHANGELOG*'
+  push:
+    branches:
+      - 'main'
 jobs:
   rspec-test:
     name: RSpec
