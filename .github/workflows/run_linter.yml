@@ -24,14 +24,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
-        env:
-          BUNDLE_PATH: vendor/bundle
         with:
-          bundler: "Gemfile.lock"
+          ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
       - name: Run Rubocop
         run: bundle exec rubocop
