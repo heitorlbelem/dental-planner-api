@@ -1,0 +1,44 @@
+env:
+  RUBY_VERSION: 3.0.3
+
+name: Linter
+
+env:
+  RAILS_ENV: test
+  RACK_ENV: test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - 'docs/**.md'
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - 'docs/**.md'
+
+jobs:
+  back_linter:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_PATH: vendor/bundle
+        with:
+          bundler: "Gemfile.lock"
+          bundler-cache: true
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
