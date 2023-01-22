@@ -1,0 +1,106 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.0.3
+  NewCops: enable
+  Exclude:
+    - db/**/*
+    - bin/*
+    - node_modules/**/*
+    - .simplecov
+    - tmp/**/*
+    - vendor/**/*
+    - cypress/**/*
+    - spec/support/webmock.rb
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/LineLength:
+  Max: 90
+  IgnoredPatterns:
+    - '^\s*describe\s.+\sdo$'
+    - '^\s*it\s.+\sdo$'
+    - '^\s*context\s.+\sdo$'
+    - 'expect'
+
+Lint/AmbiguousBlockAssociation:
+  IgnoredMethods:
+    - not_change
+
+Lint/MissingSuper:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/AsciiComments:
+  Exclude:
+    - features/**/*
+
+Style/BlockDelimiters:
+  IgnoredMethods: []
+
+Naming/AsciiIdentifiers:
+  Exclude:
+    - features/**/*
+
+Naming/PredicateName:
+  AllowedMethods:
+
+Naming/VariableNumber:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+  IgnoredMethods:
+    - describe
+    - context
+    - it
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - spec/**/*
+
+Metrics/ClassLength:
+  Max: 150
+  Exclude:
+
+Metrics/ModuleLength:
+  Exclude:
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 10
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
