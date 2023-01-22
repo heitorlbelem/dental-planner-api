@@ -32,14 +32,14 @@ Layout/FirstHashElementIndentation:
 
 Layout/LineLength:
   Max: 90
-  IgnoredPatterns:
+  AllowedPatterns:
     - '^\s*describe\s.+\sdo$'
     - '^\s*it\s.+\sdo$'
     - '^\s*context\s.+\sdo$'
     - 'expect'
 
 Lint/AmbiguousBlockAssociation:
-  IgnoredMethods:
+  AllowedMethods:
     - not_change
 
 Lint/MissingSuper:
@@ -56,7 +56,7 @@ Style/AsciiComments:
     - features/**/*
 
 Style/BlockDelimiters:
-  IgnoredMethods: []
+  AllowedMethods: []
 
 Naming/AsciiIdentifiers:
   Exclude:
@@ -70,7 +70,7 @@ Naming/VariableNumber:
 
 Metrics/BlockLength:
   Enabled: false
-  IgnoredMethods:
+  AllowedMethods:
     - describe
     - context
     - it
