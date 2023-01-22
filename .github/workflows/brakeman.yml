@@ -1,0 +1,38 @@
+name: Brakeman Scanner
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - 'docs/**.md'
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - 'docs/**.md'
+
+jobs:
+  brakeman_scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_PATH: vendor/bundle
+        with:
+          bundler: "Gemfile.lock"
+          bundler-cache: true
+
+      - name: Run Brakeman
+        run: |
+          gem install brakeman
+          brakeman
