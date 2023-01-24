@@ -1,0 +1,20 @@
+version: "3"
+services:
+  app:
+    container_name: dental-planner-api
+    build: .
+    command: bundle exec rails s -b 0.0.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: dental-planner-db
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
