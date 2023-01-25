@@ -3,6 +3,8 @@
 require 'cpf_cnpj'
 
 class Patient < ApplicationRecord
+  has_one :address
+
   validates :name, :phone, :email, :cpf, presence: true
   validates :email, :cpf, uniqueness: true
 
