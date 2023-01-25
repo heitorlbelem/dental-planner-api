@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Patients' do
   let(:headers) { { accept: 'application/json' } }
 
-  describe 'GET /patients' do
+  describe 'GET /api/patients' do
     let(:do_request) { get api_patients_path }
 
     before { create_list(:patient, 4) }
@@ -23,7 +23,7 @@ RSpec.describe 'Patients' do
     end
   end
 
-  describe 'POST /patients' do
+  describe 'POST /api/patients' do
     let(:do_request) do
       post api_patients_path,
         params: payload,
@@ -88,7 +88,7 @@ RSpec.describe 'Patients' do
     end
   end
 
-  describe 'GET /patients/:id' do
+  describe 'GET /api/patients/:id' do
     before { create_list(:patient, 4) }
 
     let(:do_request) { get api_patient_path(id) }
@@ -127,7 +127,7 @@ RSpec.describe 'Patients' do
     end
   end
 
-  describe 'PUT /patient/:id' do
+  describe 'PUT /api/patients/:id' do
     let(:do_request) do
       put api_patient_path(id),
         params: payload,
@@ -209,7 +209,7 @@ RSpec.describe 'Patients' do
     end
   end
 
-  describe 'DELETE /patient/:id' do
+  describe 'DELETE /api/patients/:id' do
     before { create_list(:patient, 4) }
 
     let(:do_request) { delete api_patient_path(id) }
