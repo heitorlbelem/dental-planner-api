@@ -16,9 +16,25 @@ class Api::PatientsController < ApplicationController
     render :errors, status: :unprocessable_entity
   end
 
+  def update
+    @patient = Patient.find(params[:id])
+
+    if @patient.update(update_params)
+      render :show, status: :ok
+    else
+      render :errors, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def create_params
+    params.require(:patient).permit(%i[
+      name email phone birthdate cpf
+    ])
+  end
+
+  def update_params
     params.require(:patient).permit(%i[
       name email phone birthdate cpf
     ])

@@ -116,4 +116,72 @@ RSpec.describe 'Patients' do
       end
     end
   end
+
+  describe 'PUT /patient/:id' do
+    let(:do_request) do
+      put api_patient_path(patient.id, format: :json),
+        params: payload,
+        headers: headers
+    end
+
+    context 'with valid params' do
+      let(:valid_name) { 'Teste da Silva' }
+      let(:patient) { create(:patient) }
+      let(:payload) do
+        {
+          patient: {
+            name: valid_name
+          }
+        }
+      end
+
+      before { patient }
+
+      it 'returns http status code OK' do
+        do_request
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns the updated object' do
+        do_request
+
+        expect(json[:patient][:name]).to eq(valid_name)
+      end
+
+      it 'updates the selected patient' do
+        expect { do_request }.to change { patient.reload.name }.to valid_name
+      end
+    end
+
+    context 'with invalid params' do
+      let(:patient) { create(:patient) }
+      let(:invalid_name) { '' }
+      let(:payload) do
+        {
+          patient: {
+            name: invalid_name
+          }
+        }
+      end
+
+      before { patient }
+
+      it 'returns http status code unprocessable entity' do
+        do_request
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns an object containing the model errors' do
+        do_request
+
+        expect(json[:errors][:name].first).to eq("can't be blank")
+      end
+
+      it "does not update the patient's name" do
+        expect { do_request }.not_to(change { patient.reload.name })
+      end
+    end
+  end
 end
