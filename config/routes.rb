@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  namespace :api do
-    resources :patients
+  defaults format: :json do
+    namespace :api do
+      resources :patients
+    end
   end
 end

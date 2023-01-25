@@ -6,7 +6,7 @@ RSpec.describe 'Patients' do
   let(:headers) { { accept: 'application/json' } }
 
   describe 'GET /patients' do
-    let(:do_request) { get api_patients_path(format: :json) }
+    let(:do_request) { get api_patients_path }
 
     before { create_list(:patient, 4) }
 
@@ -25,7 +25,7 @@ RSpec.describe 'Patients' do
 
   describe 'POST /patients' do
     let(:do_request) do
-      post api_patients_path(format: :json),
+      post api_patients_path,
         params: payload,
         headers: headers
     end
@@ -91,7 +91,7 @@ RSpec.describe 'Patients' do
   describe 'GET /patients/:id' do
     before { create_list(:patient, 4) }
 
-    let(:do_request) { get api_patient_path(id, format: :json) }
+    let(:do_request) { get api_patient_path(id) }
     let(:patient) { Patient.first }
     let(:id) { patient.id }
     let(:expected_patient) do
@@ -129,7 +129,7 @@ RSpec.describe 'Patients' do
 
   describe 'PUT /patient/:id' do
     let(:do_request) do
-      put api_patient_path(id, format: :json),
+      put api_patient_path(id),
         params: payload,
         headers: headers
     end
@@ -212,7 +212,7 @@ RSpec.describe 'Patients' do
   describe 'DELETE /patient/:id' do
     before { create_list(:patient, 4) }
 
-    let(:do_request) { delete api_patient_path(id, format: :json) }
+    let(:do_request) { delete api_patient_path(id) }
     let(:patient) { Patient.last }
 
     context 'with valid id' do
