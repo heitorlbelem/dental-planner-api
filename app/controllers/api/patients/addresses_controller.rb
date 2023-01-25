@@ -2,10 +2,9 @@
 
 class Api::Patients::AddressesController < ApplicationController
   before_action :set_patient
+  before_action :set_address, except: :create
 
-  def show
-    @address = @patient.address
-  end
+  def show; end
 
   def create
     @address = @patient.build_address(address_params)
@@ -15,8 +14,6 @@ class Api::Patients::AddressesController < ApplicationController
   end
 
   def update
-    @address = @patient.address
-
     if @address.update(address_params)
       render :show, status: :ok
     else
@@ -28,6 +25,10 @@ class Api::Patients::AddressesController < ApplicationController
 
   def set_patient
     @patient = Patient.find(params[:patient_id])
+  end
+
+  def set_address
+    @address = @patient.address
   end
 
   def address_params
