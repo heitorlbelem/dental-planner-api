@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Patients' do
+  let(:headers) { { accept: 'application/json' } }
+
   describe 'GET /patients' do
     let(:do_request) { get api_patients_path(format: :json) }
 
@@ -47,6 +49,71 @@ RSpec.describe 'Patients' do
       do_request
 
       expect(json[:patient]).to eq(expected_patient)
+    end
+  end
+
+  describe 'POST /patients' do
+    let(:do_request) do
+      post api_patients_path(format: :json),
+        params: payload,
+        headers: headers
+    end
+
+    context 'with correct params' do
+      let(:expected_patient) { build(:patient) }
+      let(:payload) do
+        {
+          patient: {
+            name: expected_patient.name,
+            cpf: expected_patient.cpf,
+            email: expected_patient.email,
+            phone: expected_patient.phone,
+            birthdate: expected_patient.birthdate
+          }
+        }
+      end
+
+      it 'returns http status code created' do
+        do_request
+
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'creates a new patient' do
+        expect { do_request }.to change(Patient, :count).by(1)
+      end
+    end
+
+    context 'with invalid params' do
+      let(:expected_patient) { build(:patient, cpf: '00000000000', email: '') }
+      let(:payload) do
+        {
+          patient: {
+            name: expected_patient.name,
+            cpf: expected_patient.cpf,
+            email: expected_patient.email,
+            phone: expected_patient.phone,
+            birthdate: expected_patient.birthdate
+          }
+        }
+      end
+
+      it 'returns http status code created' do
+        do_request
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns an json object containing the model errors', :aggregate_failures do
+        do_request
+
+        expect(json[:errors][:cpf].first).to eq("isn't valid")
+        expect(json[:errors][:email].first).to eq("can't be blank")
+      end
+
+      it 'does not create a new patient' do
+        expect { do_request }.not_to change(Patient, :count)
+      end
     end
   end
 end
