@@ -8,6 +8,5 @@ FactoryBot.define do
     phone { Faker::PhoneNumber.cell_phone }
     email { Faker::Internet.email(name: name) }
     cpf { Faker::IDNumber.brazilian_citizen_number(formatted: true) }
-    address { Faker::Address.full_address }
   end
 end
