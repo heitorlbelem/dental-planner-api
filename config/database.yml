@@ -7,9 +7,12 @@ default: &default
 
 development:
   <<: *default
-  url: postgres://postgres:postgres@localhost:5432/dental-planner-api_development
-
+  url: <%= ENV['DATABASE_URL']  %>_development
 
 test:
   <<: *default
-  url: postgres://postgres:postgres@localhost:5432/dental-planner-api_test
+  url: <%= ENV['DATABASE_URL'] %>_test
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>

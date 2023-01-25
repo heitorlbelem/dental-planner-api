@@ -1,8 +1,6 @@
 env:
   RUBY_VERSION: 3.0.3
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: dental-planner-api_test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/dental_planner
 
 name: Rails Specs
 on:
@@ -29,7 +27,7 @@ jobs:
       postgres:
         image: postgres:latest
         ports:
-        - 5432:5432
+          - 5432:5432
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}

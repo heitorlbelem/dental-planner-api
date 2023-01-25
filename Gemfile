@@ -10,6 +10,7 @@ gem 'rubocop'
 gem 'rubocop-rails'
 gem 'rubocop-rspec'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
