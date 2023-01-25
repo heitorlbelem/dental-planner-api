@@ -8,14 +8,14 @@ class Api::PatientsController < ApplicationController
   end
 
   def create
-    @patient = Patient.new(create_params)
+    @patient = Patient.new(patient_params)
     return head :created if @patient.save
 
     render :errors, status: :unprocessable_entity
   end
 
   def update
-    if @patient.update(update_params)
+    if @patient.update(patient_params)
       render :show, status: :ok
     else
       render :errors, status: :unprocessable_entity
@@ -34,13 +34,7 @@ class Api::PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
   end
 
-  def create_params
-    params.require(:patient).permit(%i[
-      name email phone birthdate cpf
-    ])
-  end
-
-  def update_params
+  def patient_params
     params.require(:patient).permit(%i[
       name email phone birthdate cpf
     ])
