@@ -10,4 +10,8 @@ RSpec.describe Address do
     it { is_expected.to validate_presence_of(:state) }
     it { is_expected.to validate_presence_of(:city) }
   end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:patient) }
+  end
 end

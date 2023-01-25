@@ -22,4 +22,8 @@ RSpec.describe Patient do
       expect(patient).to be_valid
     end
   end
+
+  describe 'associations' do
+    it { is_expected.to have_one(:address) }
+  end
 end
