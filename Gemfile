@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 ruby '3.0.3'
 gem 'bootsnap', require: false
+gem 'cpf_cnpj'
 gem 'dotenv-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
