@@ -2,7 +2,7 @@ env:
   RUBY_VERSION: 3.0.3
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: dental_planner_api_test
+  POSTGRES_DB: dental-planner-api_test
 
 name: Rails Specs
 on:
