@@ -3,16 +3,13 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: postgres
-  username: postgres
-  password: password
   pool: 5
 
 development:
   <<: *default
-  database: dental-planner-api_development
+  url: postgres://postgres:postgres@localhost:5432/dental-planner-api_development
 
 
 test:
   <<: *default
-  database: dental-planner-api_test
+  url: postgres://postgres:postgres@localhost:5432/dental-planner-api_test
