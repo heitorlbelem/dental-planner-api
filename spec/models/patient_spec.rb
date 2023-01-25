@@ -12,14 +12,16 @@ RSpec.describe Patient do
     it { is_expected.to validate_uniqueness_of(:cpf) }
     it { is_expected.to validate_uniqueness_of(:email) }
 
-    it 'is not valid with invalid brazilian citizen ID' do
-      patient = build(:patient, cpf: '00000000000')
-      expect(patient).not_to be_valid
-    end
+    context 'when validates CPF' do
+      it 'is not valid with invalid brazilian citizen ID' do
+        patient = build(:patient, cpf: '00000000000')
+        expect(patient).not_to be_valid
+      end
 
-    it 'is valid with valid attributes' do
-      patient = build(:patient)
-      expect(patient).to be_valid
+      it 'is valid with valid attributes' do
+        patient = build(:patient, cpf: '545.461.862-40')
+        expect(patient).to be_valid
+      end
     end
   end
 
