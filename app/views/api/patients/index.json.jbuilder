@@ -2,6 +2,6 @@
 
 json.patients do
   json.array! @patients do |patient|
-    json.extract! patient, :name, :phone, :cpf, :email, :birthdate
+    json.partial! 'patient', locals: { patient: patient }
   end
 end

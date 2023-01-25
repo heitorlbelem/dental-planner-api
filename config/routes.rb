@@ -2,6 +2,6 @@
 
 Rails.application.routes.draw do
   namespace :api do
-    resources :patients, only: :index
+    resources :patients, only: %i[index show]
   end
 end
