@@ -3,30 +3,6 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
-development:
-  <<: *default
-  database: dental_planner_api_development
-
-test:
-  <<: *default
-  database: dental_planner_api_test
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  host: 127.0.0.1
-
-production:
-  <<: *default
-  database: dental_planner_api_production
-  username: dental_planner_api
-  password: <%= ENV["DENTAL_PLANNER_API_DATABASE_PASSWORD"] %>
-
-  #########
-
-default: &default
-  adapter: postgresql
-  encoding: unicode
   host: postgres
   username: postgres
   password: password
