@@ -87,8 +87,95 @@ RSpec.describe 'Patients::Addresses' do
   end
 
   describe 'GET /api/patients/:patient_id/addresses/:id' do
+    let(:do_request) { get api_patient_address_path(patient.id, address.id) }
+    let(:address) { create(:address, patient_id: patient.id) }
+    let(:expected_address) do
+      {
+        zip_code: address.zip_code,
+        full_name: address.full_name,
+        district: address.district,
+        state: address.state,
+        city: address.city,
+        complement: address.complement
+      }
+    end
+
+    before { address }
+
+    it 'returns http status OK' do
+      do_request
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns the patient address with expected attributes' do
+      do_request
+
+      expect(json[:address]).to eq(expected_address)
+    end
   end
 
   describe 'PUT /api/patients/:patient_id/addresses/:id' do
+    let(:do_request) do
+      put api_patient_address_path(patient.id, address.id),
+        params: payload,
+        headers: headers
+    end
+    let(:address) { create(:address, patient_id: patient.id) }
+    let(:zip_code) { 'zip code' }
+
+    before { address }
+
+    context 'with valid attributes' do
+      let(:payload) do
+        {
+          address: {
+            zip_code: zip_code
+          }
+        }
+      end
+
+      it 'returns http status OK' do
+        do_request
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns the updated object' do
+        do_request
+
+        expect(json[:address][:zip_code]).to eq(zip_code)
+      end
+
+      it 'updates the selected patient' do
+        expect { do_request }.to change { patient.address.reload.zip_code }.to zip_code
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:payload) do
+        {
+          address: {
+            zip_code: ''
+          }
+        }
+      end
+
+      it 'returns http status unprocessable entity' do
+        do_request
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns an object containing the model errors' do
+        do_request
+
+        expect(json[:errors][:zip_code].first).to eq("can't be blank")
+      end
+
+      it "does not update the patient's name" do
+        expect { do_request }.not_to(change { patient.address.reload.zip_code })
+      end
+    end
   end
 end
