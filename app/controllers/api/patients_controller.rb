@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class Api::PatientsController < ApplicationController
+  before_action :set_patient, only: %i[show update destroy]
+
   def index
     @patients = Patient.all
-  end
-
-  def show
-    @patient = Patient.find(params[:id])
   end
 
   def create
@@ -17,8 +15,6 @@ class Api::PatientsController < ApplicationController
   end
 
   def update
-    @patient = Patient.find(params[:id])
-
     if @patient.update(update_params)
       render :show, status: :ok
     else
@@ -27,13 +23,16 @@ class Api::PatientsController < ApplicationController
   end
 
   def destroy
-    @patient = Patient.find(params[:id])
     return head :no_content if @patient.destroy
 
     render :errors, status: :unprocessable_entity
   end
 
   private
+
+  def set_patient
+    @patient = Patient.find(params[:id])
+  end
 
   def create_params
     params.require(:patient).permit(%i[
