@@ -23,35 +23,6 @@ RSpec.describe 'Patients' do
     end
   end
 
-  describe 'GET /patients/:id' do
-    before { create_list(:patient, 4) }
-
-    let(:do_request) { get api_patient_path(id, format: :json) }
-    let(:patient) { Patient.first }
-    let(:id) { patient.id }
-    let(:expected_patient) do
-      {
-        name: patient.name,
-        birthdate: patient.birthdate,
-        cpf: patient.cpf,
-        phone: patient.phone,
-        email: patient.email
-      }
-    end
-
-    it 'returns http status OK' do
-      do_request
-
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'returns a the searched patient with expected attributes' do
-      do_request
-
-      expect(json[:patient]).to eq(expected_patient)
-    end
-  end
-
   describe 'POST /patients' do
     let(:do_request) do
       post api_patients_path(format: :json),
@@ -117,25 +88,65 @@ RSpec.describe 'Patients' do
     end
   end
 
+  describe 'GET /patients/:id' do
+    before { create_list(:patient, 4) }
+
+    let(:do_request) { get api_patient_path(id, format: :json) }
+    let(:patient) { Patient.first }
+    let(:id) { patient.id }
+    let(:expected_patient) do
+      {
+        name: patient.name,
+        birthdate: patient.birthdate,
+        cpf: patient.cpf,
+        phone: patient.phone,
+        email: patient.email
+      }
+    end
+
+    context 'with valid id' do
+      it 'returns http status OK' do
+        do_request
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns a the searched patient with expected attributes' do
+        do_request
+
+        expect(json[:patient]).to eq(expected_patient)
+      end
+    end
+
+    context 'with invalid id' do
+      let(:id) { 0 }
+
+      it 'returns http status not found' do
+        expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe 'PUT /patient/:id' do
     let(:do_request) do
-      put api_patient_path(patient.id, format: :json),
+      put api_patient_path(id, format: :json),
         params: payload,
         headers: headers
     end
+    let(:patient) { create(:patient) }
+    let(:id) { patient.id }
+
+    before { patient }
 
     context 'with valid params' do
-      let(:valid_name) { 'Teste da Silva' }
-      let(:patient) { create(:patient) }
+      let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
           patient: {
-            name: valid_name
+            name: name
           }
         }
       end
-
-      before { patient }
 
       it 'returns http status code OK' do
         do_request
@@ -146,26 +157,23 @@ RSpec.describe 'Patients' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:patient][:name]).to eq(valid_name)
+        expect(json[:patient][:name]).to eq(name)
       end
 
       it 'updates the selected patient' do
-        expect { do_request }.to change { patient.reload.name }.to valid_name
+        expect { do_request }.to change { patient.reload.name }.to name
       end
     end
 
     context 'with invalid params' do
-      let(:patient) { create(:patient) }
-      let(:invalid_name) { '' }
+      let(:name) { '' }
       let(:payload) do
         {
           patient: {
-            name: invalid_name
+            name: name
           }
         }
       end
-
-      before { patient }
 
       it 'returns http status code unprocessable entity' do
         do_request
@@ -181,6 +189,51 @@ RSpec.describe 'Patients' do
 
       it "does not update the patient's name" do
         expect { do_request }.not_to(change { patient.reload.name })
+      end
+    end
+
+    context 'with invalid id' do
+      let(:id) { 0 }
+      let(:name) { 'Teste da Silva' }
+      let(:payload) do
+        {
+          patient: {
+            name: name
+          }
+        }
+      end
+
+      it 'returns http status not found' do
+        expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'DELETE /patient/:id' do
+    before { create_list(:patient, 4) }
+
+    let(:do_request) { delete api_patient_path(id, format: :json) }
+    let(:patient) { Patient.last }
+
+    context 'with valid id' do
+      let(:id) { patient.id }
+
+      it 'returns http status no content' do
+        do_request
+
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'deletes the patient' do
+        expect { do_request }.to change(Patient, :count).by(-1)
+      end
+    end
+
+    context 'with invalid id' do
+      let(:id) { 0 }
+
+      it 'returns http status not found' do
+        expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

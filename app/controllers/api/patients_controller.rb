@@ -26,6 +26,13 @@ class Api::PatientsController < ApplicationController
     end
   end
 
+  def destroy
+    @patient = Patient.find(params[:id])
+    return head :no_content if @patient.destroy
+
+    render :errors, status: :unprocessable_entity
+  end
+
   private
 
   def create_params
