@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   defaults format: :json do
     namespace :api do
       resources :patients do
-        resources :addresses, only: %i[create show update], module: :patients
+        scope module: :patients do
+          resource :address
+        end
       end
     end
   end

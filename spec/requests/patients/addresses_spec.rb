@@ -10,7 +10,7 @@ RSpec.describe 'Patients::Addresses' do
 
   describe 'POST /api/patients/:patient_id/addresses' do
     let(:do_request) do
-      post api_patient_addresses_path(patient.id),
+      post api_patient_address_path(patient.id),
         params: payload,
         headers: headers
     end
