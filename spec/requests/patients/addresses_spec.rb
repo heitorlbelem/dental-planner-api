@@ -147,7 +147,7 @@ RSpec.describe 'Patients::Addresses' do
         expect(json[:address][:zip_code]).to eq(zip_code)
       end
 
-      it 'updates the selected patient' do
+      it "updates the selected patient's address" do
         expect { do_request }.to change { patient.address.reload.zip_code }.to zip_code
       end
     end
