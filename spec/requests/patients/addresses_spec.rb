@@ -16,7 +16,8 @@ RSpec.describe 'Patients::Addresses' do
     end
 
     context 'with correct params' do
-      let(:expected_address) { build(:address) }
+      let(:expected_address) { build(:address, zip_code: zip_code) }
+      let(:zip_code) { 'zip_code' }
       let(:payload) do
         {
           address: {
@@ -36,14 +37,26 @@ RSpec.describe 'Patients::Addresses' do
         expect(response).to have_http_status(:created)
       end
 
-      it 'creates a new address' do
-        expect { do_request }.to change(Address, :count).by(1)
-      end
-
       it "creates the patient's address" do
         do_request
 
         expect(patient.reload.address).to be_present
+      end
+
+      context 'when the patient already has an address' do
+        before { create(:address, patient: patient) }
+
+        it 'deletes the existing address before creating a new one' do
+          expect { do_request }.not_to change(Address, :count)
+        end
+
+        it 'replaces the existing address', :aggregate_failures do
+          old_zip_code = patient.address.zip_code
+          do_request
+
+          expect(patient.reload.address.zip_code).not_to eq(old_zip_code)
+          expect(patient.reload.address.zip_code).to eq(zip_code)
+        end
       end
     end
 
@@ -62,7 +75,7 @@ RSpec.describe 'Patients::Addresses' do
         }
       end
 
-      it 'returns http status code created' do
+      it 'returns http status code unprocessable_entity' do
         do_request
 
         expect(response).to have_http_status(:unprocessable_entity)
@@ -82,6 +95,17 @@ RSpec.describe 'Patients::Addresses' do
         do_request
 
         expect(patient.reload.address).to be_nil
+      end
+
+      context 'when the patient already has an address' do
+        before { create(:address, patient: patient) }
+
+        it 'does not replace the existing address', :aggregate_failures do
+          old_zip_code = patient.address.zip_code
+          do_request
+
+          expect(patient.reload.address.zip_code).to eq(old_zip_code)
+        end
       end
     end
   end

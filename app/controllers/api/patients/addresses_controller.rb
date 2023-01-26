@@ -7,8 +7,8 @@ class Api::Patients::AddressesController < ApplicationController
   def show; end
 
   def create
-    @address = @patient.build_address(address_params)
-    return head :created if @address.save
+    @address, success = @patient.replace_address(address_params)
+    return head :created if success
 
     render :errors, status: :unprocessable_entity
   end
