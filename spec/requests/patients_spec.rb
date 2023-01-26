@@ -227,6 +227,14 @@ RSpec.describe 'Patients' do
       it 'deletes the patient' do
         expect { do_request }.to change(Patient, :count).by(-1)
       end
+
+      it 'returns error when does not destroy the resource' do
+        allow(Patient).to receive(:find).and_return(patient)
+        allow(patient).to receive(:destroy).and_return(false)
+        do_request
+
+        expect(json[:errors]).not_to be_nil
+      end
     end
 
     context 'with invalid id' do
