@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_155747) do
     t.string "zip_code"
     t.string "full_name"
     t.string "complement"
-    t.string "district"
+    t.string "neighborhood"
     t.string "state"
     t.string "city"
     t.datetime "created_at", null: false

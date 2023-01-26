@@ -3,5 +3,5 @@
 class Address < ApplicationRecord
   belongs_to :patient
 
-  validates :zip_code, :full_name, :district, :state, :city, presence: true
+  validates :zip_code, :full_name, :neighborhood, :state, :city, presence: true
 end
