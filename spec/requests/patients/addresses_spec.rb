@@ -8,7 +8,7 @@ RSpec.describe 'Patients::Addresses' do
 
   before { patient }
 
-  describe 'POST /api/patients/:patient_id/addresses' do
+  describe 'POST /api/patients/:patient_id/address' do
     let(:do_request) do
       post api_patient_address_path(patient.id),
         params: payload,
@@ -86,8 +86,8 @@ RSpec.describe 'Patients::Addresses' do
     end
   end
 
-  describe 'GET /api/patients/:patient_id/addresses/:id' do
-    let(:do_request) { get api_patient_address_path(patient.id, address.id) }
+  describe 'GET /api/patients/:patient_id/address' do
+    let(:do_request) { get api_patient_address_path(patient.id) }
     let(:address) { create(:address, patient_id: patient.id) }
     let(:expected_address) do
       {
@@ -115,9 +115,9 @@ RSpec.describe 'Patients::Addresses' do
     end
   end
 
-  describe 'PUT /api/patients/:patient_id/addresses/:id' do
+  describe 'PUT /api/patients/:patient_id/address' do
     let(:do_request) do
-      put api_patient_address_path(patient.id, address.id),
+      put api_patient_address_path(patient.id),
         params: payload,
         headers: headers
     end
