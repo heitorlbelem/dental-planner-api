@@ -3,7 +3,7 @@
 require 'cpf_cnpj'
 
 class Patient < ApplicationRecord
-  has_one :address, dependent: :nullify
+  has_one :address, dependent: :destroy
 
   validates :name, :phone, :email, :cpf, presence: true
   validates :email, :cpf, uniqueness: true
