@@ -13,14 +13,6 @@ class Api::Patients::AddressesController < ApplicationController
     render :errors, status: :unprocessable_entity
   end
 
-  def update
-    if @address.update(address_params)
-      render :show, status: :ok
-    else
-      render :errors, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def set_patient

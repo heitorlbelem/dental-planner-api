@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :api do
       resources :patients do
         scope module: :patients do
-          resource :address
+          resource :address, only: %i[create show]
         end
       end
     end
