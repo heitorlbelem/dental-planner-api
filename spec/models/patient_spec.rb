@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe Patient do
   describe 'validations' do
+    subject { build(:patient) }
+
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:phone) }
     it { is_expected.to validate_presence_of(:cpf) }
-    it { is_expected.to validate_presence_of(:email) }
 
-    it { is_expected.to validate_uniqueness_of(:cpf) }
-    it { is_expected.to validate_uniqueness_of(:email) }
+    it { is_expected.to validate_uniqueness_of(:cpf).case_insensitive }
 
     context 'when validates CPF' do
       it 'is not valid with invalid brazilian citizen ID' do

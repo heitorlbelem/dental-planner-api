@@ -22,7 +22,8 @@ RSpec.describe 'Patients::Addresses' do
         {
           address: {
             zip_code: expected_address.zip_code,
-            full_name: expected_address.full_name,
+            street: expected_address.street,
+            number: expected_address.number,
             complment: expected_address.complement,
             neighborhood: expected_address.neighborhood,
             state: expected_address.state,
@@ -66,7 +67,8 @@ RSpec.describe 'Patients::Addresses' do
         {
           address: {
             zip_code: invalid_address.zip_code,
-            full_name: invalid_address.full_name,
+            street: invalid_address.street,
+            number: invalid_address.number,
             complment: invalid_address.complement,
             neighborhood: invalid_address.neighborhood,
             state: invalid_address.state,
@@ -116,11 +118,14 @@ RSpec.describe 'Patients::Addresses' do
     let(:expected_address) do
       {
         zip_code: address.zip_code,
-        full_name: address.full_name,
+        street: address.street,
+        number: address.number,
         neighborhood: address.neighborhood,
         state: address.state,
         city: address.city,
-        complement: address.complement
+        complement: address.complement,
+        created_at: address.created_at.iso8601(3),
+        updated_at: address.updated_at.iso8601(3)
       }
     end
 

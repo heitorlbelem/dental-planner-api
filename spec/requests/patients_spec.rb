@@ -100,7 +100,9 @@ RSpec.describe 'Patients' do
         birthdate: patient.birthdate,
         cpf: patient.cpf,
         phone: patient.phone,
-        email: patient.email
+        email: patient.email,
+        created_at: patient.created_at.iso8601(3),
+        updated_at: patient.updated_at.iso8601(3)
       }
     end
 

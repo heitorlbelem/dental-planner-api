@@ -25,7 +25,7 @@ class Api::Patients::AddressesController < ApplicationController
 
   def address_params
     params.require(:address).permit(%i[
-      zip_code full_name complement neighborhood state city
+      zip_code street number complement neighborhood state city
     ])
   end
 end
