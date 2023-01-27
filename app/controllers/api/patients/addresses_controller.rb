@@ -10,7 +10,7 @@ class Api::Patients::AddressesController < ApplicationController
     @address, success = @patient.replace_address(address_params)
     return head :created if success
 
-    render :errors, status: :unprocessable_entity
+    render_errors @address.errors, status: :unprocessable_entity
   end
 
   private

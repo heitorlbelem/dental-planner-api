@@ -78,8 +78,8 @@ RSpec.describe 'Patients' do
       it 'returns an json object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors][:cpf].first).to eq("isn't valid")
-        expect(json[:errors][:email].first).to eq("can't be blank")
+        expect(json[:errors].first[:message]).to eq("Email can't be blank")
+        expect(json[:errors].second[:message]).to eq("Cpf isn't valid")
       end
 
       it 'does not create a new patient' do
@@ -184,7 +184,7 @@ RSpec.describe 'Patients' do
       it 'returns an object containing the model errors' do
         do_request
 
-        expect(json[:errors][:name].first).to eq("can't be blank")
+        expect(json[:errors].first[:message]).to eq("Name can't be blank")
       end
 
       it "does not update the patient's name" do

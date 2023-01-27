@@ -11,21 +11,21 @@ class Api::PatientsController < ApplicationController
     @patient = Patient.new(patient_params)
     return head :created if @patient.save
 
-    render :errors, status: :unprocessable_entity
+    render_errors @patient.errors, status: :unprocessable_entity
   end
 
   def update
     if @patient.update(patient_params)
       render :show, status: :ok
     else
-      render :errors, status: :unprocessable_entity
+      render_errors @patient.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     return head :no_content if @patient.destroy
 
-    render :errors, status: :unprocessable_entity
+    render_errors @patient.errors, status: :unprocessable_entity
   end
 
   private
