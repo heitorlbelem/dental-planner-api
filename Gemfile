@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
+gem 'devise'
 gem 'dotenv-rails'
 gem 'jbuilder'
 gem 'pg', '~> 1.1'
