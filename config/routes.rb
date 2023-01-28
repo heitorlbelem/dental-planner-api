@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # TO-DO: Analyze this helper and see what to do
+  # devise_for :users
   defaults format: :json do
     namespace :api do
       resources :patients do
