@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '112c491e3508a906235027d753d98b63458d1e3945bb3d9eae15c185b16b26a1d573d40991fdfa0c40b5e1d4eec17a408d29708717254e3ad6b1a03221e9e368'
+  # config.secret_key = 'sample'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -75,8 +75,8 @@ Devise.setup do |config|
   # It can be set to an array that will enable http authentication only for the
   # given strategies, for example, `config.http_authenticatable = [:database]` will
   # enable it only for database authentication.
-  # For API-only applications to support authentication "out-of-the-box", you will likely want to
-  # enable this with :database unless you are using a custom strategy.
+  # For API-only applications to support authentication "out-of-the-box", you will
+  # likely want to enable this with :database unless you are using a custom strategy.
   # The supported strategies are:
   # :database      = Support basic authentication with authentication key + password
   # config.http_authenticatable = false
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '20140fc177518bdbda6718ff4f796a56bcceb0a63c22ba118b05f9f28d2f483532fd2dadb9284356bcda76020ac43912a6f905d599884a9561743bfacbbd1501'
+  # config.pepper = 'sample'
 
   # Send a notification to the original email when the user's email is changed.
   config.send_email_changed_notification = true
@@ -297,7 +297,8 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   # ==> Turbolinks configuration
-  # If your app is using Turbolinks, Turbolinks::Controller needs to be included to make redirection work correctly:
+  # If your app is using Turbolinks, Turbolinks::Controller needs to be included to
+  # make redirection work correctly:
   #
   # ActiveSupport.on_load(:devise_failure_app) do
   #   include Turbolinks::Controller
@@ -306,6 +307,7 @@ Devise.setup do |config|
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is
-  # changed. Defaults to true, so a user is signed in automatically after changing a password.
+  # changed. Defaults to true, so a user is signed in automatically after changing
+  # a password.
   # config.sign_in_after_change_password = true
 end
