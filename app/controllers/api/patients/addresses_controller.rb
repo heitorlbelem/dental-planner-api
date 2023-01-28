@@ -2,9 +2,7 @@
 
 class Api::Patients::AddressesController < ApplicationController
   before_action :set_patient
-  before_action :set_address, except: :create
-
-  def show; end
+  before_action :set_address, only: :show
 
   def create
     @address, success = @patient.replace_address(address_params)
