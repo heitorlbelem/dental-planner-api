@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_28_164222) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_28_170336) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -27,6 +27,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_28_164222) do
     t.datetime "updated_at", null: false
     t.uuid "patient_id", null: false
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
+  end
+
+  create_table "jwt_denylist", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
   create_table "patients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
