@@ -17,7 +17,7 @@ gem 'rubocop-rspec'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
-  gem 'awesome_print'
+  gem 'awesome_rails_console'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails', '~> 6.1'
@@ -29,4 +29,11 @@ group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
   gem 'shoulda-matchers', '~> 4.5'
   gem 'simplecov', '~> 0.21.2', require: false
+end
+
+group :development, :test do
+  gem "hirb"
+  gem "hirb-unicode-steakknife", require: "hirb-unicode"
+  gem "pry-byebug"
+  gem "pry-stack_explorer"
 end
