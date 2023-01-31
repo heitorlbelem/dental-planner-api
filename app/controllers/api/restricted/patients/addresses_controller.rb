@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::Patients::AddressesController < ApplicationController
+class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   before_action :set_patient
   before_action :set_address, only: :show
 

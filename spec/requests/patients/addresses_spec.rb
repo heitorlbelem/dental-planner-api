@@ -6,7 +6,7 @@ RSpec.describe 'Patients::Addresses' do
   let(:headers) { { accept: 'application/json' } }
   let(:patient) { create(:patient) }
 
-  before { patient }
+  before { [login_user, patient] }
 
   describe 'POST /api/patients/:patient_id/address' do
     let(:do_request) do

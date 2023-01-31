@@ -8,10 +8,14 @@ Rails.application.routes.draw do
         controllers: {
           sessions: 'api/users/sessions'
         }
-      resources :patients do
-        scope module: :patients do
-          resource :address, only: %i[create show]
+      scope module: :restricted do
+        resources :patients do
+          scope module: :patients do
+            resource :address, only: %i[create show]
+          end
         end
+
+        resources :users
       end
     end
   end

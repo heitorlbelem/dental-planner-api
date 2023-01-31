@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Api::UsersController < ApplicationController
-  before_action :authenticate_api_user!
+class Api::Restricted::UsersController < Api::RestrictedController
   before_action :set_user, only: %i[show update destroy]
 
   def index

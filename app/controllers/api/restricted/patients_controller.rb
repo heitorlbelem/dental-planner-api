@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Api::PatientsController < ApplicationController
-  before_action :authenticate_api_user!
+class Api::Restricted::PatientsController < Api::RestrictedController
   before_action :set_patient, only: %i[show update destroy]
 
   def index
