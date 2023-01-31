@@ -5,10 +5,10 @@ FactoryBot.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     username { Faker::Internet.username }
-    email { Faker::Internet.email(name: name) }
-    cpf { Faker::IDNumber.brazilian_citizen_number }
+    email { Faker::Internet.email(name: first_name) }
+    password { Faker::Internet.password }
 
-    trait :confirmed_user do
+    trait :confirmed do
       confirmed_at { Time.zone.now }
     end
   end

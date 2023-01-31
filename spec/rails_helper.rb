@@ -81,4 +81,7 @@ RSpec.configure do |config|
   end
 
   config.include Request::JsonHelpers, type: :request
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include DeviseHelper
 end

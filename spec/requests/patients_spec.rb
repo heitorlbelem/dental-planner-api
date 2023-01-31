@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Patients' do
   let(:headers) { { accept: 'application/json' } }
 
+  before { login_user }
+
   describe 'GET /api/patients' do
     let(:do_request) { get api_patients_path }
 
