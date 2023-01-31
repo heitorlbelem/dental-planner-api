@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   defaults format: :json do
     namespace :api do
       # TO-DO: Analyze this helper and see what to do
-      devise_for :users, only: :sessions,
+      devise_for :users,
         controllers: {
           sessions: 'api/users/sessions'
         }
