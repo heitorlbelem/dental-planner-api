@@ -38,5 +38,19 @@ RSpec.describe User do
 
       it { expect(user.username).to eq(expected_username) }
     end
+
+    context 'when tries to generate an existing username' do
+      let(:user) { create(:user, username: 'test_4ad737fa') }
+      let(:user_two) { create(:user, first_name: 'test') }
+
+      before do
+        user
+        allow(SecureRandom).to receive(:hex).and_return(
+          '4ad737fa', '4ad737fa', '4ad737fb'
+        )
+      end
+
+      it { expect(user_two.username).to eq('test_4ad737fb') }
+    end
   end
 end
