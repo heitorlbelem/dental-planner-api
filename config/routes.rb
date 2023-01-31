@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       # TO-DO: Analyze this helper and see what to do
       devise_for :users, skip: :registrations,
         controllers: {
-          sessions: 'api/users/sessions'
+          sessions: 'api/sessions'
         }
       scope module: :restricted do
         resources :patients do
