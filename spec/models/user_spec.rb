@@ -3,5 +3,40 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    subject { build(:user, :with_username) }
+
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:password) }
+
+    it { is_expected.to validate_uniqueness_of(:username) }
+  end
+
+  describe '#full_name' do
+    let(:user) { build(:user) }
+
+    let(:expected_name) { "#{user.first_name} #{user.last_name}" }
+
+    it { expect(user.full_name).to eq(expected_name) }
+  end
+
+  describe '#generate_username' do
+    context 'when username is informed' do
+      let(:username) { 'Faker Username' }
+      let(:user) { create(:user, username: username) }
+
+      it { expect(user.username).to eq(username) }
+    end
+
+    context 'when username is not informed' do
+      let(:user) { create(:user, username: nil, first_name: 'test') }
+      let(:expected_username) { 'test_4ad737fa' }
+
+      before { allow(SecureRandom).to receive(:hex).and_return('4ad737fa') }
+
+      it { expect(user.username).to eq(expected_username) }
+    end
+  end
 end
