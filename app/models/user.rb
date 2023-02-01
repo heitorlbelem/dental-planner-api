@@ -4,8 +4,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :timeoutable, :trackable and :omniauthable
   validates :first_name, :last_name, :email, :password, presence: true
-  validates :username, uniqueness: true
-  validates :username, format: { with: /\A[a-zA-Z0-9_.]*\z/, multiline: true }
+  validates :username, uniqueness: true,
+    format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
 
   before_validation :generate_username, on: :create
 

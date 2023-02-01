@@ -12,7 +12,7 @@ FactoryBot.define do
     end
 
     trait :with_username do
-      username { Faker::Internet.username }
+      username { Faker::Internet.username(separators: ['-']) }
     end
   end
 end

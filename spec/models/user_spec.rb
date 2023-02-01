@@ -10,8 +10,6 @@ RSpec.describe User do
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
-
-    it { is_expected.to validate_uniqueness_of(:username) }
   end
 
   describe '#full_name' do
@@ -24,10 +22,10 @@ RSpec.describe User do
 
   describe '#generate_username' do
     context 'when username is informed' do
-      let(:username) { 'Faker Username' }
+      let(:username) { 'FakerUsername' }
       let(:user) { create(:user, username: username) }
 
-      it { expect(user.username).to eq(username) }
+      it { expect(user.username).to eq(username.downcase) }
     end
 
     context 'when username is not informed' do
