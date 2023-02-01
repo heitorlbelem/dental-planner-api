@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_212714) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_01_220905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "abilities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "claim_id", null: false
+    t.uuid "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["claim_id"], name: "index_abilities_on_claim_id"
+    t.index ["role_id"], name: "index_abilities_on_role_id"
+  end
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "zip_code", null: false
@@ -96,6 +105,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_212714) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "abilities", "claims"
+  add_foreign_key "abilities", "roles"
   add_foreign_key "addresses", "patients"
   add_foreign_key "privileges", "claims"
   add_foreign_key "privileges", "users"
