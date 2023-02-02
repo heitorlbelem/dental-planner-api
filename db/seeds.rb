@@ -72,5 +72,3 @@ User.create(
   last_name: 'App',
   role: Role.find_by(name: 'member')
 )
-
-add_privilege_to_user('teste_specific', User.second)

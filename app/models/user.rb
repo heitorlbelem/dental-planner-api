@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :timeoutable, :trackable and :omniauthable
   validates :first_name, :last_name, :email, :password, presence: true
   validates :username, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
@@ -14,20 +12,16 @@ class User < ApplicationRecord
     jwt_revocation_strategy: JwtDenylist
 
   belongs_to :role
+
+  has_many :abilities, through: :role
+  has_many :role_claims, through: :abilities, class_name: 'Claim', source: :claim
+
   has_many :privileges, dependent: :destroy
+  has_many :privileges_claims, through: :privileges, class_name: 'Claim', source: :claim
 
-  def claims
-    User.where(id: id).joins(claims_sql).select('claims.name, claims.id').distinct
-  end
-
-  def claims_sql
-    <<-SQL.squish
-      INNER JOIN roles ON roles.id = users.role_id
-      LEFT JOIN abilities ON abilities.role_id = roles.id
-      LEFT JOIN privileges ON privileges.user_id = users.id
-      INNER JOIN claims ON claims.id = abilities.claim_id#{' '}
-        OR claims.id = privileges.claim_id
-    SQL
+  def check_permission(claim_name)
+    role_claims.exists?(name: claim_name) ||
+      privileges_claims.exists?(name: claim_name)
   end
 
   attr_writer :login
