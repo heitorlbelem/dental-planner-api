@@ -51,4 +51,50 @@ RSpec.describe User do
       it { expect(user_two.username).to eq('test_4ad737fb') }
     end
   end
+
+  describe '#find_for_database_authentication' do
+    let(:user) do
+      create(:user, username: 'test', email: 'test@test.com', first_name: 'test')
+    end
+
+    before { user }
+
+    def do_action(conditions)
+      described_class.find_for_database_authentication(conditions)
+    end
+
+    context 'when find by login' do
+      it 'correct username' do
+        expect(do_action({ login: 'test' })).to eq(user)
+      end
+
+      it 'correct email' do
+        expect(do_action({ login: 'test@test.com' })).to eq(user)
+      end
+
+      it 'incorrect data' do
+        expect(do_action({ login: 'test_test' })).to be_nil
+      end
+    end
+
+    context 'when find by username' do
+      it 'correct username' do
+        expect(do_action({ username: 'test' })).to eq(user)
+      end
+
+      it 'incorrect username' do
+        expect(do_action({ username: 'test@test.com' })).to be_nil
+      end
+    end
+
+    context 'when find by email' do
+      it 'correct email' do
+        expect(do_action({ email: 'test@test.com' })).to eq(user)
+      end
+
+      it 'incorrect email' do
+        expect(do_action({ email: 'test' })).to be_nil
+      end
+    end
+  end
 end
