@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 class Api::RestrictedController < ApplicationController
+  include Pundit::Authorization
+
   before_action :authenticate_api_user!
 
   rescue_from Pundit::NotAuthorizedError, with: :resource_access_forbidden
-
-  def current_user
-    current_api_user
-  end
 
   private
 

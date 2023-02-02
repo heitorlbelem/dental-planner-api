@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DeviseHelper
-  def login_user(user)
+  def login(user)
     sign_in user
   end
 end

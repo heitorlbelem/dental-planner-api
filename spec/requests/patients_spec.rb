@@ -6,7 +6,7 @@ RSpec.describe 'Patients' do
   let(:headers) { { accept: 'application/json' } }
   let(:user) { create(:user) }
 
-  before { login_user user }
+  before { login user }
 
   describe 'GET /api/patients' do
     let(:do_request) { get api_patients_path }

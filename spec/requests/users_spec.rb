@@ -6,7 +6,7 @@ RSpec.describe 'Users' do
   let(:headers) { { accept: 'application/json' } }
   let(:current_user) { create(:user, :admin) }
 
-  before { login_user(current_user) }
+  before { login(current_user) }
 
   describe 'GET /api/users' do
     let(:do_request) { get api_users_path }
@@ -86,6 +86,17 @@ RSpec.describe 'Users' do
 
       it 'does not create a new user' do
         expect { do_request }.not_to change(User, :count)
+      end
+    end
+
+    context 'when current_user does not have permission to create a new user' do
+      let(:current_user) { create(:user) }
+      let(:payload) { nil }
+
+      it 'returns http status code forbidden' do
+        do_request
+
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -215,13 +226,24 @@ RSpec.describe 'Users' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when current_user does not have permission to update user' do
+      let(:current_user) { create(:user) }
+      let(:payload) { nil }
+      
+      it 'returns http status code forbidden' do
+        do_request
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 
   describe 'DELETE /api/users/:id' do
-    before { create_list(:user, 4) }
-
+    let(:user) { create(:user) }
     let(:do_request) { delete api_user_path(id) }
-    let(:user) { User.last }
+
+    before { user }
 
     context 'with valid id' do
       let(:id) { user.id }
@@ -246,10 +268,22 @@ RSpec.describe 'Users' do
     end
 
     context 'with invalid id' do
-      let(:id) { 0 }
+      let(:id) { 'invalid id' }
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when current_user does not have permission to destroy user' do
+      let(:current_user) { create(:user) }
+      let(:payload) { nil }
+      let(:id) { user.id }
+
+      it 'returns http status code forbidden' do
+        do_request
+
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
