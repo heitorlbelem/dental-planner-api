@@ -6,9 +6,10 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email(name: first_name) }
     password { Faker::Internet.password }
+    confirmed_at { Time.zone.now }
 
-    trait :confirmed do
-      confirmed_at { Time.zone.now }
+    trait :unconfirmed do
+      confirmed_at { nil }
     end
 
     trait :with_username do
