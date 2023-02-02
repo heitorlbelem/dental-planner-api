@@ -13,6 +13,23 @@ class User < ApplicationRecord
     :recoverable, :rememberable, :validatable, :lockable, :confirmable,
     jwt_revocation_strategy: JwtDenylist
 
+  belongs_to :role
+  has_many :privileges, dependent: :destroy
+
+  def claims
+    User.where(id: id).joins(claims_sql).select('claims.name, claims.id').distinct
+  end
+
+  def claims_sql
+    <<-SQL.squish
+      INNER JOIN roles ON roles.id = users.role_id
+      LEFT JOIN abilities ON abilities.role_id = roles.id
+      LEFT JOIN privileges ON privileges.user_id = users.id
+      INNER JOIN claims ON claims.id = abilities.claim_id#{' '}
+        OR claims.id = privileges.claim_id
+    SQL
+  end
+
   attr_writer :login
 
   def login

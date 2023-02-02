@@ -5,4 +5,5 @@ class Role < ApplicationRecord
 
   has_many :abilities, dependent: :destroy
   has_many :claims, through: :abilities, dependent: :destroy
+  has_many :users, dependent: :destroy
 end
