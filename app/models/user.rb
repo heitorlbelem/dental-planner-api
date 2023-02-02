@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  enum role: {
+    admin: 'admin',
+    member: 'member'
+  }, _default: 'member'
+  validates :role, presence: true
+
   validates :first_name, :last_name, :email, :password, presence: true
   validates :username, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
