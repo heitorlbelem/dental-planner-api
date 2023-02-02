@@ -104,3 +104,6 @@ RSpec/MessageSpies:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
+inherit_gem:
+  pundit: config/rubocop-rspec.yml
