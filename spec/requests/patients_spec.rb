@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Patients' do
   let(:headers) { { accept: 'application/json' } }
-  let(:user) { create(:user, :confirmed) }
+  let(:user) { create(:user) }
 
   before { login_user user }
 
