@@ -11,19 +11,6 @@ class User < ApplicationRecord
     :recoverable, :rememberable, :validatable, :lockable, :confirmable,
     jwt_revocation_strategy: JwtDenylist
 
-  belongs_to :role
-
-  has_many :abilities, through: :role
-  has_many :role_claims, through: :abilities, class_name: 'Claim', source: :claim
-
-  has_many :privileges, dependent: :destroy
-  has_many :privileges_claims, through: :privileges, class_name: 'Claim', source: :claim
-
-  def check_permission(claim_name)
-    role_claims.exists?(name: claim_name) ||
-      privileges_claims.exists?(name: claim_name)
-  end
-
   attr_writer :login
 
   def login

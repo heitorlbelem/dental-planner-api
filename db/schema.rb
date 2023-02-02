@@ -10,19 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_220905) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_28_170336) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "abilities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "claim_id", null: false
-    t.uuid "role_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["claim_id"], name: "index_abilities_on_claim_id"
-    t.index ["role_id"], name: "index_abilities_on_role_id"
-  end
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "zip_code", null: false
@@ -36,13 +27,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_220905) do
     t.datetime "updated_at", null: false
     t.uuid "patient_id", null: false
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
-  end
-
-  create_table "claims", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_claims_on_name", unique: true
   end
 
   create_table "jwt_denylist", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -60,22 +44,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_220905) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
-  end
-
-  create_table "privileges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.uuid "claim_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["claim_id"], name: "index_privileges_on_claim_id"
-    t.index ["user_id"], name: "index_privileges_on_user_id"
-  end
-
-  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -96,19 +64,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_220905) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "role_id", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "abilities", "claims"
-  add_foreign_key "abilities", "roles"
   add_foreign_key "addresses", "patients"
-  add_foreign_key "privileges", "claims"
-  add_foreign_key "privileges", "users"
-  add_foreign_key "users", "roles"
 end
