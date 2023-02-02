@@ -5,8 +5,9 @@ require 'rails_helper'
 RSpec.describe 'Patients::Addresses' do
   let(:headers) { { accept: 'application/json' } }
   let(:patient) { create(:patient) }
+  let(:user) { create(:user, :confirmed) }
 
-  before { [login_user, patient] }
+  before { [login_user(user), patient] }
 
   describe 'POST /api/patients/:patient_id/address' do
     let(:do_request) do

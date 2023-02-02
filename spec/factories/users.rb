@@ -14,5 +14,9 @@ FactoryBot.define do
     trait :with_username do
       username { Faker::Internet.username(separators: ['-']) }
     end
+
+    trait :admin do
+      role { 'admin' }
+    end
   end
 end

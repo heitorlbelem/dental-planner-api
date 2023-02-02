@@ -9,23 +9,23 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    true
   end
 
   def show?
-    false
+    true
   end
 
   def create?
-    false
+    true
   end
 
   def update?
-    false
+    true
   end
 
   def destroy?
-    false
+    true
   end
 
   class Scope

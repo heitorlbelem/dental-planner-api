@@ -2,6 +2,8 @@
 
 class Api::Restricted::UsersController < Api::RestrictedController
   before_action :set_user, only: %i[show update destroy]
+  before_action -> { authorize User }, only: %i[create]
+  before_action -> { authorize @user }, only: %i[update destroy]
 
   def index
     @users = User.all

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DeviseHelper
-  def login_user
-    sign_in FactoryBot.create(:user, :confirmed)
+  def login_user(user)
+    sign_in user
   end
 end
