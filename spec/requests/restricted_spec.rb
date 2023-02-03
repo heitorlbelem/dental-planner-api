@@ -6,7 +6,7 @@ RSpec.describe 'Restricted' do
   let(:headers) { { accept: 'application/json' } }
   let(:user) { create(:user) }
 
-  before { login_user user }
+  before { login user }
 
   describe '#NotAuthorizedError' do
     let(:do_request) do
