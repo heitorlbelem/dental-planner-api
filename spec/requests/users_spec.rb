@@ -230,7 +230,7 @@ RSpec.describe 'Users' do
     context 'when current_user does not have permission to update user' do
       let(:current_user) { create(:user) }
       let(:payload) { nil }
-      
+
       it 'returns http status code forbidden' do
         do_request
 
