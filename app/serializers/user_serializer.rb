@@ -1,9 +1,10 @@
-class UserSerializer < ActiveModel::Serializer
-  attributes :id, :username, :email, :role
+# frozen_string_literal: true
 
-  attribute :full_name
+class UserSerializer < ActiveModel::Serializer
+  attributes :username, :full_name,
+    :email, :created_at, :updated_at
 
   def full_name
-    "#{first_name.capitalize!} #{last_name.capitalize!}"
+    "#{object.first_name.capitalize} #{object.last_name.capitalize}"
   end
 end

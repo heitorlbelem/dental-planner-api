@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
 
-  before_validation :generate_username, on: :create
+  before_create :generate_username
 
   devise :database_authenticatable, :jwt_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable, :lockable, :confirmable,

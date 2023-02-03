@@ -7,6 +7,12 @@ class Api::Restricted::UsersController < Api::RestrictedController
 
   def index
     @users = User.all
+
+    render json: @users, each_serializer: UserSerializer
+  end
+
+  def show
+    render json: @user
   end
 
   def create
@@ -37,8 +43,8 @@ class Api::Restricted::UsersController < Api::RestrictedController
   end
 
   def user_params
-    params.require(:user).permit(%i[
-      first_name last_name username email password
-    ])
+    ActiveModelSerializers::Deserialization.jsonapi_parse(
+      params, only: %i[first_name last_name email password username]
+    )
   end
 end
