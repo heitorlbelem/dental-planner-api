@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class Api::SessionsController < Devise::SessionsController
+  before_action :configure_permitted_parameters
+
   respond_to :json
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit :sign_in, keys: %i[login password]
+  end
 
   private
 
@@ -10,7 +18,7 @@ class Api::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    current_user ? log_out_success : log_out_failure
+    current_api_user ? log_out_success : log_out_failure
   end
 
   def log_out_success

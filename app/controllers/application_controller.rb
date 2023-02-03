@@ -1,19 +1,15 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  def current_user
-    current_api_user
-  end
+  rescue_from Pundit::NotAuthorizedError, with: :resource_access_forbidden
 
   def render_errors(object, status: :unprocessable_entity)
     render 'api/errors', locals: { errors: object.full_messages }, status: status
   end
 
-  protected
+  private
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit :sign_in, keys: %i[login password]
+  def resource_access_forbidden
+    render json: { errors: 'Unauthorized' }, status: :forbidden
   end
 end
