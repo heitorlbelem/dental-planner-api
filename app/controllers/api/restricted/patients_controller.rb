@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::PatientsController < ApplicationController
+class Api::Restricted::PatientsController < Api::RestrictedController
   before_action :set_patient, only: %i[show update destroy]
 
   def index

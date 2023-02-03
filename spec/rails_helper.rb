@@ -8,6 +8,7 @@ SimpleCov.start do
   add_group 'Models', 'app/models'
   add_group 'Serializers', 'app/serializers'
   add_group 'Specs', 'spec'
+  add_group 'Policies', 'app/policies'
 end
 
 require 'spec_helper'
@@ -81,4 +82,6 @@ RSpec.configure do |config|
   end
 
   config.include Request::JsonHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include DeviseHelper
 end

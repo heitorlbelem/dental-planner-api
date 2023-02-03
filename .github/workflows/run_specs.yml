@@ -3,6 +3,7 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/dental_planner
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
+  DEVISE_JWT_SECRET_KEY: ${{ vars.DEVISE_JWT_SECRET_KEY }}
 
 name: Rails Specs
 on:

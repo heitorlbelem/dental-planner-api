@@ -3,13 +3,14 @@ services:
   app:
     container_name: dental-planner-api
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - "3000:3000"
     volumes:
       - .:/usr/app
     depends_on:
       - postgres
+    stdin_open: true
+    tty: true
 
   postgres:
     container_name: dental-planner-db
