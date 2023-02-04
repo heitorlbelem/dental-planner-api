@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Users' do
   let(:headers) do
-    { 
+    {
       'Content-Type' => 'application/vnd.api+json',
       'Accept' => 'application/vnd.api+json'
     }
