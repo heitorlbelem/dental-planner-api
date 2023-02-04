@@ -5,7 +5,7 @@ module ErrorSerializer
     return if record.errors.nil?
 
     json = {}
-    json[:errors] = record.errors.to_hash.map do |k, v|
+    json[:errors] = record.errors.to_hash(true).map do |k, v|
       v.map do |msg|
         {
           id: SecureRandom.uuid,
