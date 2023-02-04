@@ -125,6 +125,7 @@ RSpec.describe 'Users' do
         full_name: "#{user.first_name} #{user.last_name}",
         email: user.email,
         username: user.username,
+        role: user.role,
         created_at: user.created_at.iso8601(3),
         updated_at: user.updated_at.iso8601(3)
       }
