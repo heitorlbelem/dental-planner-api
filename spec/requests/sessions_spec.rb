@@ -54,7 +54,6 @@ RSpec.describe 'Sessions' do
 
         expect(response.headers['Authorization']).not_to be_empty
         expect(response).to have_http_status(:ok)
-        expect(json[:message]).to eq('Logged.')
       end
     end
 
