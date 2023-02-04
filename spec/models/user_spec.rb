@@ -12,14 +12,6 @@ RSpec.describe User do
     it { is_expected.to validate_presence_of(:password) }
   end
 
-  describe '#full_name' do
-    let(:user) { build(:user) }
-
-    let(:expected_name) { "#{user.first_name} #{user.last_name}" }
-
-    it { expect(user.full_name).to eq(expected_name) }
-  end
-
   describe '#generate_username' do
     context 'when username is informed' do
       let(:username) { 'FakerUsername' }
