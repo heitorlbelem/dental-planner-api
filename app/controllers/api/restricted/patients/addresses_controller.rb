@@ -11,6 +11,10 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
     render_errors @address.errors, status: :unprocessable_entity
   end
 
+  def show
+    render json: @address
+  end
+
   private
 
   def set_patient
@@ -22,8 +26,8 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   end
 
   def address_params
-    params.require(:address).permit(%i[
-      zip_code street number complement neighborhood state city
-    ])
+    ActiveModelSerializers::Deserialization.jsonapi_parse(
+      params, only: %i[zip_code street number complement neighborhood state city]
+    )
   end
 end
