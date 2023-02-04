@@ -99,7 +99,8 @@ RSpec.describe 'Patients::Addresses' do
       it 'returns an error object with the model error messages' do
         do_request
 
-        expect(json[:errors].first[:message]).to eq("Zip code can't be blank")
+        expect(json[:errors].first[:source][:pointer]).to include('zip_code')
+        expect(json[:errors].first[:detail]).to include("can't be blank")
       end
 
       it 'does not create a new address' do

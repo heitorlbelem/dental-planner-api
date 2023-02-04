@@ -4,16 +4,14 @@ class Api::Restricted::PatientsController < Api::RestrictedController
   before_action :set_patient, only: %i[show update destroy]
 
   def index
-    @patients = Patient.all
-
-    render json: @patients, each_serializer: PatientSerializer
+    render json: Patient.all, each_serializer: PatientSerializer
   end
 
   def create
     @patient = Patient.new(patient_params)
     return head :created if @patient.save
 
-    render_errors @patient.errors, status: :unprocessable_entity
+    render_errors @patient, status: :unprocessable_entity
   end
 
   def show
@@ -24,14 +22,14 @@ class Api::Restricted::PatientsController < Api::RestrictedController
     if @patient.update(patient_params)
       render json: @patient, status: :ok
     else
-      render_errors @patient.errors, status: :unprocessable_entity
+      render_errors @patient, status: :unprocessable_entity
     end
   end
 
   def destroy
     return head :no_content if @patient.destroy
 
-    render_errors @patient.errors, status: :unprocessable_entity
+    render_errors @patient, status: :unprocessable_entity
   end
 
   private

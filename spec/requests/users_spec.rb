@@ -90,10 +90,11 @@ RSpec.describe 'Users' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns an json object containing the model errors' do
+      it 'returns an json object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:message]).to eq("Email can't be blank")
+        expect(json[:errors].first[:source][:pointer]).to include('email')
+        expect(json[:errors].first[:detail]).to include("can't be blank")
       end
 
       it 'does not create a new user' do
@@ -121,7 +122,7 @@ RSpec.describe 'Users' do
     let(:id) { user.id }
     let(:expected_user) do
       {
-        full_name: "#{user.first_name.capitalize} #{user.last_name.capitalize}",
+        full_name: "#{user.first_name} #{user.last_name}",
         email: user.email,
         username: user.username,
         created_at: user.created_at.iso8601(3),
@@ -223,7 +224,8 @@ RSpec.describe 'Users' do
       it 'returns an object containing the model errors' do
         do_request
 
-        expect(json[:errors].first[:message]).to eq("First name can't be blank")
+        expect(json[:errors].first[:source][:pointer]).to include('first_name')
+        expect(json[:errors].first[:detail]).to include("can't be blank")
       end
 
       it "does not update the user's first name" do
