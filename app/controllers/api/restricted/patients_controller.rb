@@ -7,15 +7,15 @@ class Api::Restricted::PatientsController < Api::RestrictedController
     render json: Patient.all, each_serializer: PatientSerializer
   end
 
+  def show
+    render json: @patient
+  end
+
   def create
     @patient = Patient.new(patient_params)
     return head :created if @patient.save
 
     render_errors @patient, status: :unprocessable_entity
-  end
-
-  def show
-    render json: @patient
   end
 
   def update

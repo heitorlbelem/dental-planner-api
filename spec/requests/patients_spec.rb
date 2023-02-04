@@ -229,7 +229,7 @@ RSpec.describe 'Patients' do
             type: 'patients',
             attributes: {
               name: name
-           }
+            }
           }
         }
       end

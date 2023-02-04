@@ -4,15 +4,15 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   before_action :set_patient
   before_action :set_address, only: :show
 
+  def show
+    render json: @address
+  end
+
   def create
     address, success = @patient.replace_address(address_params)
     return head :created if success
 
     render_errors address, status: :unprocessable_entity
-  end
-
-  def show
-    render json: @address
   end
 
   private

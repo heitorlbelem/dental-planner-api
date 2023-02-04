@@ -7,7 +7,7 @@ module ErrorSerializer
     json = {}
     json[:errors] = record.errors.to_hash.map do |k, v|
       v.map do |msg|
-        { 
+        {
           id: SecureRandom.uuid,
           detail: msg,
           status: Rack::Utils::SYMBOL_TO_STATUS_CODE[status],
