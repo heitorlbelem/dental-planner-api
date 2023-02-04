@@ -39,8 +39,6 @@ class Api::Restricted::PatientsController < Api::RestrictedController
   end
 
   def patient_params
-    ActiveModelSerializers::Deserialization.jsonapi_parse(
-      params, only: %i[name email phone birthdate cpf]
-    )
+    permit_params(only: %i[name email phone birthdate cpf])
   end
 end

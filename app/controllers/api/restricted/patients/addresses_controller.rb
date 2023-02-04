@@ -26,8 +26,6 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   end
 
   def address_params
-    ActiveModelSerializers::Deserialization.jsonapi_parse(
-      params, only: %i[zip_code street number complement neighborhood state city]
-    )
+    permit_params(only: %i[zip_code street number complement neighborhood state city])
   end
 end
