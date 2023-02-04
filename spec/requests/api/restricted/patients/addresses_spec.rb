@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Patients::Addresses' do
+RSpec.describe 'Api::Restricted::Patients::Addresses' do
   let(:headers) do
     {
       'Content-Type' => 'application/vnd.api+json',

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Users' do
+RSpec.describe 'Api::Restricted::Users' do
   let(:headers) do
     {
       'Content-Type' => 'application/vnd.api+json',
