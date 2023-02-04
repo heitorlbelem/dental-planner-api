@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Patients' do
-  let(:headers) { { accept: 'application/json' } }
+  let(:headers) do
+    {
+      'Content-Type' => 'application/vnd.api+json',
+      'Accept' => 'application/vnd.api+json'
+    }
+  end
   let(:user) { create(:user) }
 
   before { login user }
