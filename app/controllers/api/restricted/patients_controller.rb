@@ -5,6 +5,8 @@ class Api::Restricted::PatientsController < Api::RestrictedController
 
   def index
     @patients = Patient.all
+
+    render json: @patients, each_serializer: PatientSerializer
   end
 
   def create
@@ -14,9 +16,13 @@ class Api::Restricted::PatientsController < Api::RestrictedController
     render_errors @patient.errors, status: :unprocessable_entity
   end
 
+  def show
+    render json: @patient
+  end
+
   def update
     if @patient.update(patient_params)
-      render :show, status: :ok
+      render json: @patient, status: :ok
     else
       render_errors @patient.errors, status: :unprocessable_entity
     end
@@ -35,8 +41,8 @@ class Api::Restricted::PatientsController < Api::RestrictedController
   end
 
   def patient_params
-    params.require(:patient).permit(%i[
-      name email phone birthdate cpf
-    ])
+    ActiveModelSerializers::Deserialization.jsonapi_parse(
+      params, only: %i[name email phone birthdate cpf]
+    )
   end
 end

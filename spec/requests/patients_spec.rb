@@ -22,7 +22,7 @@ RSpec.describe 'Patients' do
     it 'returns an array containing all the patients' do
       do_request
 
-      expect(json[:patients].count).to eq(Patient.count)
+      expect(json[:data].count).to eq(Patient.count)
     end
   end
 
@@ -30,19 +30,23 @@ RSpec.describe 'Patients' do
     let(:do_request) do
       post api_patients_path,
         params: payload,
-        headers: headers
+        headers: headers,
+        as: :json
     end
 
     context 'with correct params' do
       let(:expected_patient) { build(:patient) }
       let(:payload) do
         {
-          patient: {
-            name: expected_patient.name,
-            cpf: expected_patient.cpf,
-            email: expected_patient.email,
-            phone: expected_patient.phone,
-            birthdate: expected_patient.birthdate
+          data: {
+            type: 'patients',
+            attributes: {
+              name: expected_patient.name,
+              cpf: expected_patient.cpf,
+              email: expected_patient.email,
+              phone: expected_patient.phone,
+              birthdate: expected_patient.birthdate
+            }
           }
         }
       end
@@ -62,12 +66,15 @@ RSpec.describe 'Patients' do
       let(:expected_patient) { build(:patient, cpf: '00000000000', email: '') }
       let(:payload) do
         {
-          patient: {
-            name: expected_patient.name,
-            cpf: expected_patient.cpf,
-            email: expected_patient.email,
-            phone: expected_patient.phone,
-            birthdate: expected_patient.birthdate
+          data: {
+            type: 'patients',
+            attributes: {
+              name: expected_patient.name,
+              cpf: expected_patient.cpf,
+              email: expected_patient.email,
+              phone: expected_patient.phone,
+              birthdate: expected_patient.birthdate
+            }
           }
         }
       end
@@ -116,10 +123,10 @@ RSpec.describe 'Patients' do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'returns a the searched patient with expected attributes' do
+      it 'returns the searched patient with expected attributes' do
         do_request
 
-        expect(json[:patient]).to eq(expected_patient)
+        expect(json[:data][:attributes]).to eq(expected_patient)
       end
     end
 
@@ -136,7 +143,8 @@ RSpec.describe 'Patients' do
     let(:do_request) do
       put api_patient_path(id),
         params: payload,
-        headers: headers
+        headers: headers,
+        as: :json
     end
     let(:patient) { create(:patient) }
     let(:id) { patient.id }
@@ -147,8 +155,12 @@ RSpec.describe 'Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          patient: {
-            name: name
+          data: {
+            type: 'patients',
+            id: id,
+            attributes: {
+              name: name
+            }
           }
         }
       end
@@ -162,7 +174,7 @@ RSpec.describe 'Patients' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:patient][:name]).to eq(name)
+        expect(json[:data][:attributes][:name]).to eq(name)
       end
 
       it 'updates the selected patient' do
@@ -174,8 +186,11 @@ RSpec.describe 'Patients' do
       let(:name) { '' }
       let(:payload) do
         {
-          patient: {
-            name: name
+          data: {
+            type: 'patients',
+            attributes: {
+              name: name
+            }
           }
         }
       end
@@ -202,8 +217,11 @@ RSpec.describe 'Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          patient: {
-            name: name
+          data: {
+            type: 'patients',
+            attributes: {
+              name: name
+           }
           }
         }
       end

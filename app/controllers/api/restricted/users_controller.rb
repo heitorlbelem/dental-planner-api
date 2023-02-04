@@ -44,7 +44,7 @@ class Api::Restricted::UsersController < Api::RestrictedController
 
   def user_params
     ActiveModelSerializers::Deserialization.jsonapi_parse(
-      params
+      params, only: %i[first_name last_name password email username]
     )
   end
 end
