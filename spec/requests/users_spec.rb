@@ -221,7 +221,7 @@ RSpec.describe 'Users' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns an object containing the model errors' do
+      it 'returns an object containing the model errors', :aggregate_failures do
         do_request
 
         expect(json[:errors].first[:source][:pointer]).to include('first_name')

@@ -96,7 +96,7 @@ RSpec.describe 'Patients::Addresses' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns an error object with the model error messages' do
+      it 'returns an error object with the model error messages', :aggregate_failures do
         do_request
 
         expect(json[:errors].first[:source][:pointer]).to include('zip_code')
