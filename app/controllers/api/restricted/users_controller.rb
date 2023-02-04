@@ -24,7 +24,7 @@ class Api::Restricted::UsersController < Api::RestrictedController
 
   def update
     if @user.update(user_params)
-      render :show, status: :ok
+      render json: @user
     else
       render_errors @user.errors, status: :unprocessable_entity
     end
@@ -44,7 +44,7 @@ class Api::Restricted::UsersController < Api::RestrictedController
 
   def user_params
     ActiveModelSerializers::Deserialization.jsonapi_parse(
-      params, only: %i[first_name last_name email password username]
+      params
     )
   end
 end

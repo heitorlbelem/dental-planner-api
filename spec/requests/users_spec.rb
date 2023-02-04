@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Users' do
-  let(:headers) { { accept: 'application/json' } }
+  let(:headers) do
+    { 
+      'Content-Type' => 'application/vnd.api+json',
+      'Accept' => 'application/vnd.api+json'
+    }
+  end
   let(:current_user) { create(:user, :admin) }
 
   before { login(current_user) }
@@ -22,7 +27,7 @@ RSpec.describe 'Users' do
     it 'returns an array containing all the users' do
       do_request
 
-      expect(json[:users].count).to eq(User.count)
+      expect(json[:data].count).to eq(User.count)
     end
   end
 
@@ -30,19 +35,23 @@ RSpec.describe 'Users' do
     let(:do_request) do
       post api_users_path,
         params: payload,
-        headers: headers
+        headers: headers,
+        as: :json
     end
 
     context 'with correct params' do
       let(:expected_user) { build(:user, :with_username) }
       let(:payload) do
         {
-          user: {
-            first_name: expected_user.first_name,
-            last_name: expected_user.last_name,
-            email: expected_user.email,
-            username: expected_user.username,
-            password: expected_user.password
+          data: {
+            type: 'users',
+            attributes: {
+              first_name: expected_user.first_name,
+              last_name: expected_user.last_name,
+              email: expected_user.email,
+              username: expected_user.username,
+              password: expected_user.password
+            }
           }
         }
       end
@@ -62,12 +71,15 @@ RSpec.describe 'Users' do
       let(:expected_user) { build(:user, email: '') }
       let(:payload) do
         {
-          user: {
-            first_name: expected_user.first_name,
-            last_name: expected_user.last_name,
-            email: expected_user.email,
-            username: expected_user.username,
-            password: expected_user.password
+          data: {
+            type: 'users',
+            attributes: {
+              first_name: expected_user.first_name,
+              last_name: expected_user.last_name,
+              email: expected_user.email,
+              username: expected_user.username,
+              password: expected_user.password
+            }
           }
         }
       end
@@ -109,7 +121,7 @@ RSpec.describe 'Users' do
     let(:id) { user.id }
     let(:expected_user) do
       {
-        full_name: user.full_name,
+        full_name: "#{user.first_name.capitalize} #{user.last_name.capitalize}",
         email: user.email,
         username: user.username,
         created_at: user.created_at.iso8601(3),
@@ -124,10 +136,10 @@ RSpec.describe 'Users' do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'returns a the searched user with expected attributes' do
+      it 'returns the searched user with expected attributes' do
         do_request
 
-        expect(json[:user]).to eq(expected_user)
+        expect(json[:data][:attributes]).to eq(expected_user)
       end
     end
 
@@ -144,7 +156,8 @@ RSpec.describe 'Users' do
     let(:do_request) do
       put api_user_path(id),
         params: payload,
-        headers: headers
+        headers: headers,
+        as: :json
     end
     let(:user) { create(:user) }
     let(:id) { user.id }
@@ -157,10 +170,14 @@ RSpec.describe 'Users' do
       let(:expected_full_name) { "#{first_name} #{last_name}" }
       let(:payload) do
         {
-          user: {
-            first_name: first_name,
-            last_name: last_name,
-            password: user.password
+          data: {
+            type: 'users',
+            id: id,
+            attributes: {
+              first_name: first_name,
+              last_name: last_name,
+              password: user.password
+            }
           }
         }
       end
@@ -174,7 +191,7 @@ RSpec.describe 'Users' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:user][:full_name]).to eq(expected_full_name)
+        expect(json[:data][:attributes][:full_name]).to eq(expected_full_name)
       end
 
       it 'updates the selected user' do
@@ -186,9 +203,13 @@ RSpec.describe 'Users' do
       let(:first_name) { '' }
       let(:payload) do
         {
-          user: {
-            first_name: first_name,
-            password: user.password
+          data: {
+            type: 'users',
+            id: id,
+            attributes: {
+              first_name: first_name,
+              password: user.password
+            }
           }
         }
       end
