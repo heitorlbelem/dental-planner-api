@@ -4,11 +4,15 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   before_action :set_patient
   before_action :set_address, only: :show
 
+  def show
+    render json: @address
+  end
+
   def create
-    @address, success = @patient.replace_address(address_params)
+    address, success = @patient.replace_address(address_params)
     return head :created if success
 
-    render_errors @address.errors, status: :unprocessable_entity
+    render_errors address, status: :unprocessable_entity
   end
 
   private
@@ -22,8 +26,6 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   end
 
   def address_params
-    params.require(:address).permit(%i[
-      zip_code street number complement neighborhood state city
-    ])
+    permit_params(only: %i[zip_code street number complement neighborhood state city])
   end
 end

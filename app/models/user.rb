@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
 
-  before_validation :generate_username, on: :create
+  before_create :generate_username
 
   devise :database_authenticatable, :jwt_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable, :lockable, :confirmable,
@@ -30,10 +30,6 @@ class User < ApplicationRecord
     while User.exists?(username: username)
       self.username = "#{first_name.parameterize}_#{SecureRandom.hex(4)}"
     end
-  end
-
-  def full_name
-    "#{first_name} #{last_name}"
   end
 
   def self.find_for_database_authentication(warden_conditions)

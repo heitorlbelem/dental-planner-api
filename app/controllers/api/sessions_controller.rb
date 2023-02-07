@@ -14,7 +14,7 @@ class Api::SessionsController < Devise::SessionsController
   private
 
   def respond_with(_resource, _opts = {})
-    render json: { message: 'Logged.' }, status: :ok
+    render json: current_api_user
   end
 
   def respond_to_on_destroy
