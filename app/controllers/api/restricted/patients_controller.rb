@@ -20,7 +20,7 @@ class Api::Restricted::PatientsController < Api::RestrictedController
 
   def update
     if @patient.update(patient_params)
-      render json: @patient, status: :ok
+      render json: @patient
     else
       render_errors @patient, status: :unprocessable_entity
     end
