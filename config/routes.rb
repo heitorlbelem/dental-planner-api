@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         end
 
         resources :users
+        resources :doctors, except: :destroy
       end
     end
   end
