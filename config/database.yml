@@ -7,12 +7,12 @@ default: &default
 
 development:
   <<: *default
-  url: <%= ENV['DATABASE_URL']  %>_development
+  url: <%= ENV['DATABASE_URL'] || ENV['LOCAL_DATABASE_URL']  %>_development
 
 test:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>_test
+  url: <%= ENV['DATABASE_URL'] || ENV['LOCAL_DATABASE_URL'] %>_test
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] || ENV['LOCAL_DATABASE_URL'] %>
