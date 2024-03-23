@@ -1,18 +1,18 @@
 version: "3"
 services:
-  app:
-    build: .
-    container_name: dental-planner-api
-    tty: true
-    stdin_open: true
-    ports:
-      - 3000:3000
-    depends_on:
-      - db
-    volumes:
-      - .:/usr/app
-    networks:
-      - dental_planner_network
+  # app:
+  #   build: .
+  #   container_name: dental-planner-api
+  #   tty: true
+  #   stdin_open: true
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - db
+  #   volumes:
+  #     - .:/usr/app
+  #   networks:
+  #     - dental_planner_network
 
   db:
     image: postgres
