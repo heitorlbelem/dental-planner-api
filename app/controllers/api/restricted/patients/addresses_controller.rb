@@ -26,6 +26,6 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   end
 
   def address_params
-    permit_params(only: %i[zip_code street number complement neighborhood state city])
+    permit_params(only: %i[zip_code street number complement neighborhood state city test_rubocop teste_rubocop testando_rubocop])
   end
 end
