@@ -1,4 +1,4 @@
-FROM ruby:3.0.3-alpine
+FROM ruby:3.1.3-alpine
 
 RUN apk update && \
     apk add --no-cache build-base postgresql-dev tzdata libc6-compat
