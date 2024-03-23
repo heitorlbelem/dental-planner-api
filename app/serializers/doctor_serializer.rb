@@ -3,5 +3,5 @@
 class DoctorSerializer < ActiveModel::Serializer
   attributes :expertise
 
-  belongs_to :user, sanitize: true
+  belongs_to :user
 end
