@@ -303,37 +303,37 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  active_model_serializers
+  active_model_serializers (~> 0.10.0)
   awesome_rails_console
   bootsnap
   byebug
   cpf_cnpj
-  database_cleaner-active_record
+  database_cleaner-active_record (~> 2.0)
   devise
   devise-jwt
   dotenv-rails
-  factory_bot_rails
-  faker
+  factory_bot_rails (~> 6.1)
+  faker (~> 2.17)
   hirb
   hirb-unicode-steakknife
   jbuilder
-  pg
+  pg (~> 1.1)
   pry-byebug
   pry-stack_explorer
-  puma
-  pundit
+  puma (~> 5.0)
+  pundit (~> 2.3)
   rack-cors
-  rails
-  rspec-rails
+  rails (~> 7.0.4, >= 7.0.4.1)
+  rspec-rails (~> 5.0)
   rubocop
   rubocop-rails
   rubocop-rspec
-  shoulda-matchers
-  simplecov
+  shoulda-matchers (~> 4.5)
+  simplecov (~> 0.21.2)
   tzinfo-data
 
 RUBY VERSION
-   ruby 3.3.0p0
+   ruby 3.0.3p157
 
 BUNDLED WITH
    2.5.6
