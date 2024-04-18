@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_24_173551) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_18_013415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -66,6 +66,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_24_173551) do
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end
 
+  create_table "proceedings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "appointment_id", null: false
+    t.uuid "patient_id", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_proceedings_on_appointment_id"
+    t.index ["patient_id"], name: "index_proceedings_on_patient_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", null: false
@@ -96,4 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_24_173551) do
   add_foreign_key "appointments", "doctors"
   add_foreign_key "appointments", "patients"
   add_foreign_key "doctors", "users"
+  add_foreign_key "proceedings", "appointments"
+  add_foreign_key "proceedings", "patients"
 end
