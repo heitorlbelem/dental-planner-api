@@ -112,7 +112,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_015839) do
   add_foreign_key "addresses", "patients"
   add_foreign_key "appointments", "doctors"
   add_foreign_key "appointments", "patients"
-  add_foreign_key "doctors", "users"
   add_foreign_key "proceedings", "appointments"
   add_foreign_key "proceedings", "patients"
+  add_foreign_key "doctors", "users"
 end

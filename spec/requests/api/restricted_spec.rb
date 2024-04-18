@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Restricted' do
+RSpec.describe 'Api::Restricted' do
   let(:headers) { { accept: 'application/json' } }
   let(:user) { create(:user) }
 
