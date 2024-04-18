@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_02_031439) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_18_015839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -29,6 +29,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_031439) do
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
   end
 
+  create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "doctor_id", null: false
+    t.uuid "patient_id", null: false
+    t.datetime "started_at"
+    t.integer "duration", null: false
+    t.string "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+  end
+
+  create_table "doctors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "expertise", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_doctors_on_user_id"
+  end
+
   create_table "jwt_denylist", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
@@ -44,6 +64,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_031439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
+  end
+
+  create_table "proceedings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "appointment_id", null: false
+    t.uuid "patient_id", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_proceedings_on_appointment_id"
+    t.index ["patient_id"], name: "index_proceedings_on_patient_id"
+  end
+
+  create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "default_price", precision: 10, scale: 2, null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -73,4 +110,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_031439) do
   end
 
   add_foreign_key "addresses", "patients"
+  add_foreign_key "appointments", "doctors"
+  add_foreign_key "appointments", "patients"
+  add_foreign_key "doctors", "users"
+  add_foreign_key "proceedings", "appointments"
+  add_foreign_key "proceedings", "patients"
 end
