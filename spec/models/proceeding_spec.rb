@@ -7,6 +7,7 @@ RSpec.describe Proceeding do
     it { is_expected.to belong_to(:appointment).optional }
     it { is_expected.to belong_to(:patient) }
     it { is_expected.to belong_to(:treatment).optional }
+    it { is_expected.to belong_to(:product) }
   end
 
   describe 'validations' do
