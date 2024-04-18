@@ -3,6 +3,7 @@
 class Proceeding < ApplicationRecord
   belongs_to :appointment, optional: true
   belongs_to :patient
+  belongs_to :treatment, optional: true
 
   validates :price, presence: true
 end
