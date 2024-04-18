@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Proceeding do
   describe 'associations' do
-    it { is_expected.to belong_to(:appointment) }
+    it { is_expected.to belong_to(:appointment).optional }
     it { is_expected.to belong_to(:patient) }
   end
 
