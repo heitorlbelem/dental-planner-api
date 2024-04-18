@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
   defaults format: :json do
     namespace :api do
       # TO-DO: Analyze this helper and see what to do
