@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_18_013415) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_18_104036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -76,6 +76,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_013415) do
     t.index ["patient_id"], name: "index_proceedings_on_patient_id"
   end
 
+  create_table "treatments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "status", null: false
+    t.uuid "patient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_treatments_on_patient_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", null: false
@@ -108,4 +116,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_013415) do
   add_foreign_key "doctors", "users"
   add_foreign_key "proceedings", "appointments"
   add_foreign_key "proceedings", "patients"
+  add_foreign_key "treatments", "patients"
 end
