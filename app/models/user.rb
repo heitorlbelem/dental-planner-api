@@ -5,6 +5,9 @@ class User < ApplicationRecord
     admin: 'admin',
     member: 'member'
   }, _default: 'member'
+
+  has_one :doctor, dependent: :destroy
+
   validates :role, presence: true
 
   validates :first_name, :last_name, :email, :password, presence: true
