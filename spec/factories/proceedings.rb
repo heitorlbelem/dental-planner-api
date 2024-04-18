@@ -4,5 +4,6 @@ FactoryBot.define do
   factory :proceeding do
     appointment
     patient
+    treatment
   end
 end
