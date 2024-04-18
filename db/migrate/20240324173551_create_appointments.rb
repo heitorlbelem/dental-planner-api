@@ -4,7 +4,7 @@ class CreateAppointments < ActiveRecord::Migration[7.1]
       t.references :doctor, null: false, foreign_key: true, type: :uuid
       t.references :patient, null: false, foreign_key: true, type: :uuid
       t.datetime :started_at
-      t.integer :duration
+      t.integer :duration, null: false
       t.string :status, null: false
 
       t.timestamps

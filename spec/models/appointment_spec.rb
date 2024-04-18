@@ -22,5 +22,7 @@ RSpec.describe Appointment do
     it 'validates status default value' do
       expect(appointment).to be_pending
     end
+
+    it { is_expected.to validate_presence_of(:duration) }
   end
 end

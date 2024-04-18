@@ -10,4 +10,6 @@ class Appointment < ApplicationRecord
     done: 'done',
     canceled: 'canceled'
   }, default: 'pending'
+
+  validates :duration, presence: true
 end
