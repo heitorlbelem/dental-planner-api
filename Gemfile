@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 ruby '3.1.3'
 gem 'active_model_serializers'
+gem 'audited'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
 gem 'devise'

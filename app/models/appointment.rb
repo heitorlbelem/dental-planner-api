@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Appointment < ApplicationRecord
+  audited
+
   belongs_to :doctor
   belongs_to :patient
 
