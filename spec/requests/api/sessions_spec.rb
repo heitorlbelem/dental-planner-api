@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Sessions' do
+RSpec.describe 'Api::Sessions' do
   let(:headers) { { accept: 'application/json' } }
 
   describe 'DELETE /api/users/sign_out' do
