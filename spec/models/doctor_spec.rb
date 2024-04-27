@@ -8,6 +8,6 @@ RSpec.describe Doctor do
   end
 
   describe 'associations' do
-    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:user).optional }
   end
 end
