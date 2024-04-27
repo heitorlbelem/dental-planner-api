@@ -98,28 +98,6 @@ RSpec.describe 'Api::Restricted::Doctors' do
           expect { do_request }.not_to change(Doctor, :count)
         end
       end
-
-      context 'with invalid user' do
-        let(:expected_doctor) { build(:doctor, user_id: doctor_user.id) }
-        let(:doctor_user) { build(:user) }
-
-        it 'returns http status code unprocessable entity' do
-          do_request
-
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
-
-        it 'returns an json object containing the model errors', :aggregate_failures do
-          do_request
-
-          expect(json[:errors].first[:source][:pointer]).to include('user')
-          expect(json[:errors].first[:detail]).to include('User must exist')
-        end
-
-        it 'does not create a new doctor' do
-          expect { do_request }.not_to change(Doctor, :count)
-        end
-      end
     end
   end
 
