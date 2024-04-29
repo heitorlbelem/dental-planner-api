@@ -290,6 +290,9 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.1)
+    rswag-ui (2.13.0)
+      actionpack (>= 3.1, < 7.2)
+      railties (>= 3.1, < 7.2)
     rubocop (1.42.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -375,6 +378,7 @@ DEPENDENCIES
   rack-cors
   rails
   rspec-rails
+  rswag-ui
   rubocop
   rubocop-rails
   rubocop-rspec

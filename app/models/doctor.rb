@@ -2,8 +2,7 @@
 
 class Doctor < ApplicationRecord
   audited
-
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :expertise, presence: true
 end
