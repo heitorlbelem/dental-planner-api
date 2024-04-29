@@ -81,6 +81,9 @@ GEM
       mutex_m
       tzinfo (~> 2.0)
     ast (2.4.2)
+    audited (5.6.0)
+      activerecord (>= 5.2, < 7.2)
+      activesupport (>= 5.2, < 7.2)
     awesome_print (1.9.2)
     awesome_rails_console (0.4.5)
       awesome_print
@@ -353,6 +356,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  audited
   awesome_rails_console
   bootsnap
   byebug

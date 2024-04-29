@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  audited
+
   enum role: {
     admin: 'admin',
     member: 'member'
