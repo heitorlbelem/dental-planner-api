@@ -2,16 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Restricted::Users' do
-  let(:headers) do
-    {
-      'Content-Type' => 'application/vnd.api+json',
-      'Accept' => 'application/vnd.api+json'
-    }
-  end
+RSpec.describe 'Api::Users' do
   let(:current_user) { create(:user, :admin) }
-
-  before { login(current_user) }
 
   describe 'GET /api/users' do
     let(:do_request) { get api_users_path }
@@ -27,7 +19,7 @@ RSpec.describe 'Api::Restricted::Users' do
     it 'returns an array containing all the users' do
       do_request
 
-      expect(json[:data].count).to eq(User.count)
+      expect(json.count).to eq(User.count)
     end
   end
 
@@ -40,19 +32,13 @@ RSpec.describe 'Api::Restricted::Users' do
     end
 
     context 'with correct params' do
-      let(:expected_user) { build(:user, :with_username) }
+      let(:expected_user) { build(:user) }
       let(:payload) do
         {
-          data: {
-            type: 'users',
-            attributes: {
-              first_name: expected_user.first_name,
-              last_name: expected_user.last_name,
-              email: expected_user.email,
-              username: expected_user.username,
-              password: expected_user.password
-            }
-          }
+          first_name: expected_user.first_name,
+          last_name: expected_user.last_name,
+          email: expected_user.email,
+          username: expected_user.username
         }
       end
 
@@ -71,16 +57,10 @@ RSpec.describe 'Api::Restricted::Users' do
       let(:expected_user) { build(:user, email: '') }
       let(:payload) do
         {
-          data: {
-            type: 'users',
-            attributes: {
-              first_name: expected_user.first_name,
-              last_name: expected_user.last_name,
-              email: expected_user.email,
-              username: expected_user.username,
-              password: expected_user.password
-            }
-          }
+          first_name: expected_user.first_name,
+          last_name: expected_user.last_name,
+          email: expected_user.email,
+          username: expected_user.username
         }
       end
 
@@ -93,23 +73,12 @@ RSpec.describe 'Api::Restricted::Users' do
       it 'returns an json object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('email')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
+        expect(json.keys).to include(:email)
+        expect(json[:email]).to include("can't be blank")
       end
 
       it 'does not create a new user' do
         expect { do_request }.not_to change(User, :count)
-      end
-    end
-
-    context 'when current_user does not have permission to create a new user' do
-      let(:current_user) { create(:user) }
-      let(:payload) { nil }
-
-      it 'returns http status code forbidden' do
-        do_request
-
-        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -122,10 +91,11 @@ RSpec.describe 'Api::Restricted::Users' do
     let(:id) { user.id }
     let(:expected_user) do
       {
-        full_name: "#{user.first_name} #{user.last_name}",
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         username: user.username,
-        role: user.role,
         created_at: user.created_at.iso8601(3),
         updated_at: user.updated_at.iso8601(3)
       }
@@ -141,7 +111,7 @@ RSpec.describe 'Api::Restricted::Users' do
       it 'returns the searched user with expected attributes' do
         do_request
 
-        expect(json[:data][:attributes]).to eq(expected_user)
+        expect(json).to eq(expected_user)
       end
     end
 
@@ -172,15 +142,8 @@ RSpec.describe 'Api::Restricted::Users' do
       let(:expected_full_name) { "#{first_name} #{last_name}" }
       let(:payload) do
         {
-          data: {
-            type: 'users',
-            id: id,
-            attributes: {
-              first_name: first_name,
-              last_name: last_name,
-              password: user.password
-            }
-          }
+          first_name: first_name,
+          last_name: last_name
         }
       end
 
@@ -193,7 +156,8 @@ RSpec.describe 'Api::Restricted::Users' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:data][:attributes][:full_name]).to eq(expected_full_name)
+        expect(json[:first_name]).to eq(first_name)
+        expect(json[:last_name]).to eq(last_name)
       end
 
       it 'updates the selected user' do
@@ -205,14 +169,7 @@ RSpec.describe 'Api::Restricted::Users' do
       let(:first_name) { '' }
       let(:payload) do
         {
-          data: {
-            type: 'users',
-            id: id,
-            attributes: {
-              first_name: first_name,
-              password: user.password
-            }
-          }
+          first_name: first_name
         }
       end
 
@@ -225,8 +182,8 @@ RSpec.describe 'Api::Restricted::Users' do
       it 'returns an object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('first_name')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
+        expect(json.keys).to include(:first_name)
+        expect(json[:first_name]).to include("can't be blank")
       end
 
       it "does not update the user's first name" do
@@ -239,26 +196,12 @@ RSpec.describe 'Api::Restricted::Users' do
       let(:first_name) { 'Teste' }
       let(:payload) do
         {
-          user: {
-            first_name: first_name,
-            password: user.password
-          }
+          first_name: first_name
         }
       end
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    context 'when current_user does not have permission to update user' do
-      let(:current_user) { create(:user) }
-      let(:payload) { nil }
-
-      it 'returns http status code forbidden' do
-        do_request
-
-        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -287,7 +230,7 @@ RSpec.describe 'Api::Restricted::Users' do
         allow(user).to receive(:destroy).and_return(false)
         do_request
 
-        expect(json[:errors]).not_to be_nil
+        expect(json).not_to be_nil
       end
     end
 
@@ -296,18 +239,6 @@ RSpec.describe 'Api::Restricted::Users' do
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    context 'when current_user does not have permission to destroy user' do
-      let(:current_user) { create(:user) }
-      let(:payload) { nil }
-      let(:id) { user.id }
-
-      it 'returns http status code forbidden' do
-        do_request
-
-        expect(response).to have_http_status(:forbidden)
       end
     end
   end

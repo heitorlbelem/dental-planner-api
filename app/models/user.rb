@@ -3,24 +3,21 @@
 class User < ApplicationRecord
   audited
 
-  enum role: {
+  enum :role, {
     admin: 'admin',
     member: 'member'
-  }, _default: 'member'
+  }, default: 'member'
 
   has_one :doctor, dependent: :destroy
 
   validates :role, presence: true
 
-  validates :first_name, :last_name, :email, :password, presence: true
+  validates :first_name, :last_name, :email, presence: true
   validates :username, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9_.\- ]*\z/, multiline: false }
 
   before_create :generate_username
-
-  devise :database_authenticatable, :jwt_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable, :lockable, :confirmable,
-    jwt_revocation_strategy: JwtDenylist
+  before_create :generate_password
 
   attr_writer :login
 
@@ -35,6 +32,10 @@ class User < ApplicationRecord
     while User.exists?(username: username)
       self.username = "#{first_name.parameterize}_#{SecureRandom.hex(4)}"
     end
+  end
+
+  def generate_password
+    self.encrypted_password = SecureRandom.hex(20)
   end
 
   def self.find_for_database_authentication(warden_conditions)

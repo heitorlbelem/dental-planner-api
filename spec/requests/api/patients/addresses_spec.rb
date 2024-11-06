@@ -2,17 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Restricted::Patients::Addresses' do
-  let(:headers) do
-    {
-      'Content-Type' => 'application/vnd.api+json',
-      'Accept' => 'application/vnd.api+json'
-    }
-  end
+RSpec.describe 'Api::Patients::Addresses' do
   let(:patient) { create(:patient) }
-  let(:user) { create(:user) }
-
-  before { [login(user), patient] }
 
   describe 'POST /api/patients/:patient_id/address' do
     let(:do_request) do
@@ -27,18 +18,13 @@ RSpec.describe 'Api::Restricted::Patients::Addresses' do
       let(:zip_code) { 'zip_code' }
       let(:payload) do
         {
-          data: {
-            type: 'addresses',
-            attributes: {
-              zip_code: expected_address.zip_code,
-              street: expected_address.street,
-              number: expected_address.number,
-              complment: expected_address.complement,
-              neighborhood: expected_address.neighborhood,
-              state: expected_address.state,
-              city: expected_address.city
-            }
-          }
+          zip_code: expected_address.zip_code,
+          street: expected_address.street,
+          number: expected_address.number,
+          complment: expected_address.complement,
+          neighborhood: expected_address.neighborhood,
+          state: expected_address.state,
+          city: expected_address.city
         }
       end
 
@@ -75,18 +61,13 @@ RSpec.describe 'Api::Restricted::Patients::Addresses' do
       let(:invalid_address) { build(:address, zip_code: '') }
       let(:payload) do
         {
-          data: {
-            type: 'addresses',
-            attributes: {
-              zip_code: invalid_address.zip_code,
-              street: invalid_address.street,
-              number: invalid_address.number,
-              complment: invalid_address.complement,
-              neighborhood: invalid_address.neighborhood,
-              state: invalid_address.state,
-              city: invalid_address.city
-            }
-          }
+          zip_code: invalid_address.zip_code,
+          street: invalid_address.street,
+          number: invalid_address.number,
+          complment: invalid_address.complement,
+          neighborhood: invalid_address.neighborhood,
+          state: invalid_address.state,
+          city: invalid_address.city
         }
       end
 
@@ -99,8 +80,8 @@ RSpec.describe 'Api::Restricted::Patients::Addresses' do
       it 'returns an error object with the model error messages', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('zip_code')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
+        expect(json.keys).to include(:zip_code)
+        expect(json[:zip_code]).to include("can't be blank")
       end
 
       it 'does not create a new address' do
@@ -131,6 +112,8 @@ RSpec.describe 'Api::Restricted::Patients::Addresses' do
     let(:address) { create(:address, patient_id: patient.id) }
     let(:expected_address) do
       {
+        id: address.id,
+        patient_id: address.patient_id,
         zip_code: address.zip_code,
         street: address.street,
         number: address.number,
@@ -154,7 +137,7 @@ RSpec.describe 'Api::Restricted::Patients::Addresses' do
     it 'returns the patient address with expected attributes' do
       do_request
 
-      expect(json[:data][:attributes]).to eq(expected_address)
+      expect(json).to eq(expected_address)
     end
   end
 end

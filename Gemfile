@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '3.1.3'
-gem 'active_model_serializers'
+
+ruby '3.3.0'
+
 gem 'audited'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
-gem 'devise'
-gem 'devise-jwt'
 gem 'jbuilder'
 gem 'pg'
 gem 'puma'
-gem 'pundit'
 gem 'rack-cors'
 gem 'rails'
 gem 'rswag-ui'
 gem 'rubocop'
+gem 'rubocop-performance'
 gem 'rubocop-rails'
 gem 'rubocop-rspec'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

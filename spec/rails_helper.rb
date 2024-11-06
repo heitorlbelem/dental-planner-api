@@ -44,7 +44,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('/spec/fixtures')
+  config.fixture_paths = [Rails.root.join('/spec/fixtures')]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -82,6 +82,4 @@ RSpec.configure do |config|
   end
 
   config.include Request::JsonHelpers, type: :request
-  config.include Devise::Test::IntegrationHelpers, type: :request
-  config.include DeviseHelper
 end

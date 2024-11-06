@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::Restricted::Patients::AddressesController < Api::RestrictedController
+class Api::Patients::AddressesController < ApplicationController
   before_action :set_patient
   before_action :set_address, only: :show
 
@@ -12,7 +12,7 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
     address, success = @patient.replace_address(address_params)
     return head :created if success
 
-    render_errors address, status: :unprocessable_entity
+    render json: address.errors, status: :unprocessable_entity
   end
 
   private
@@ -26,6 +26,6 @@ class Api::Restricted::Patients::AddressesController < Api::RestrictedController
   end
 
   def address_params
-    permit_params(only: %i[zip_code street number complement neighborhood state city])
+    params.permit(%i[zip_code street number complement neighborhood state city])
   end
 end

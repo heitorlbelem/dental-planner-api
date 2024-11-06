@@ -2,17 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Restricted::Doctors' do
-  let(:headers) do
-    {
-      'Content-Type' => 'application/vnd.api+json',
-      'Accept' => 'application/vnd.api+json'
-    }
-  end
-  let(:user) { create(:user) }
-
-  before { login user }
-
+RSpec.describe 'Api::Doctors' do
   describe 'GET /api/doctors' do
     let(:do_request) { get api_doctors_path }
 
@@ -27,7 +17,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
     it 'returns an array containing all the doctors' do
       do_request
 
-      expect(json[:data].count).to eq(Doctor.count)
+      expect(json.count).to eq(Doctor.count)
     end
   end
 
@@ -41,15 +31,12 @@ RSpec.describe 'Api::Restricted::Doctors' do
 
     context 'with correct params' do
       let(:expected_doctor) { build(:doctor) }
+      let(:user) { create(:user) }
+
       let(:payload) do
         {
-          data: {
-            type: 'doctors',
-            attributes: {
-              expertise: expected_doctor.expertise,
-              user_id: user.id
-            }
-          }
+          expertise: expected_doctor.expertise,
+          user_id: user.id
         }
       end
 
@@ -67,13 +54,8 @@ RSpec.describe 'Api::Restricted::Doctors' do
     context 'with invalid params' do
       let(:payload) do
         {
-          data: {
-            type: 'doctors',
-            attributes: {
-              expertise: expected_doctor.expertise,
-              user_id: doctor_user.id
-            }
-          }
+          expertise: expected_doctor.expertise,
+          user_id: doctor_user.id
         }
       end
 
@@ -90,8 +72,8 @@ RSpec.describe 'Api::Restricted::Doctors' do
         it 'returns an json object containing the model errors', :aggregate_failures do
           do_request
 
-          expect(json[:errors].first[:source][:pointer]).to include('expertise')
-          expect(json[:errors].first[:detail]).to include("can't be blank")
+          expect(json.keys).to include(:expertise)
+          expect(json[:expertise]).to include("can't be blank")
         end
 
         it 'does not create a new doctor' do
@@ -109,7 +91,11 @@ RSpec.describe 'Api::Restricted::Doctors' do
     let(:id) { doctor.id }
     let(:expected_doctor) do
       {
-        expertise: doctor.expertise
+        id: doctor.id,
+        user_id: doctor.user_id,
+        expertise: doctor.expertise,
+        created_at: doctor.created_at.iso8601(3),
+        updated_at: doctor.updated_at.iso8601(3),
       }
     end
 
@@ -123,7 +109,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
       it 'returns the searched doctor with expected attributes' do
         do_request
 
-        expect(json[:data][:attributes]).to eq(expected_doctor)
+        expect(json).to eq(expected_doctor.merge(id:))
       end
     end
 
@@ -152,13 +138,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
       let(:expertise) { 'teste' }
       let(:payload) do
         {
-          data: {
-            type: 'doctors',
-            id: id,
-            attributes: {
-              expertise: expertise
-            }
-          }
+          expertise: expertise
         }
       end
 
@@ -171,7 +151,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:data][:attributes][:expertise]).to eq(expertise)
+        expect(json[:expertise]).to eq(expertise)
       end
 
       it 'updates the selected doctor' do
@@ -183,12 +163,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
       let(:expertise) { '' }
       let(:payload) do
         {
-          data: {
-            type: 'doctors',
-            attributes: {
-              expertise: ''
-            }
-          }
+          expertise: ''
         }
       end
 
@@ -201,8 +176,8 @@ RSpec.describe 'Api::Restricted::Doctors' do
       it 'returns an object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('expertise')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
+        expect(json.keys).to include(:expertise)
+        expect(json[:expertise]).to include("can't be blank")
       end
 
       it "does not update the doctor's expertise" do
@@ -215,12 +190,7 @@ RSpec.describe 'Api::Restricted::Doctors' do
       let(:expertise) { 'expertise' }
       let(:payload) do
         {
-          data: {
-            type: 'doctors',
-            attributes: {
-              expertise: expertise
-            }
-          }
+          expertise: expertise
         }
       end
 
