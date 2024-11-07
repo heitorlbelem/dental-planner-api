@@ -29,7 +29,7 @@ class User < ApplicationRecord
     return if username.present?
 
     self.username = "#{first_name.parameterize}_#{SecureRandom.hex(4)}"
-    while User.exists?(username: username)
+    while User.exists?(username:)
       self.username = "#{first_name.parameterize}_#{SecureRandom.hex(4)}"
     end
   end

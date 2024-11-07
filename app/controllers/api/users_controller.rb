@@ -4,11 +4,13 @@ class Api::UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
 
   def index
-    render json: User.all.to_json(only: %i[id first_name last_name created_at updated_at username email])
+    render json: User.all.to_json(only: %i[id first_name last_name created_at updated_at
+                                           username email])
   end
 
   def show
-    render json: @user.to_json(only: %i[id first_name last_name created_at updated_at username email])
+    render json: @user.to_json(only: %i[id first_name last_name created_at updated_at
+                                        username email])
   end
 
   def create
@@ -20,7 +22,8 @@ class Api::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      render json: @user.to_json(only: %i[id first_name last_name created_at updated_at username email])
+      render json: @user.to_json(only: %i[id first_name last_name created_at updated_at
+                                          username email])
     else
       render json: @user.errors, status: :unprocessable_entity
     end

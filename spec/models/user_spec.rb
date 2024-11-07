@@ -14,7 +14,7 @@ RSpec.describe User do
   describe '#generate_username' do
     context 'when username is informed' do
       let(:username) { 'FakerUsername' }
-      let(:user) { create(:user, username: username) }
+      let(:user) { create(:user, username:) }
 
       it { expect(user.username.downcase).to eq(username.downcase) }
     end

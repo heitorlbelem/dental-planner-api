@@ -25,7 +25,7 @@ RSpec.describe 'Api::Doctors' do
     let(:do_request) do
       post api_doctors_path,
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
 
@@ -95,7 +95,7 @@ RSpec.describe 'Api::Doctors' do
         user_id: doctor.user_id,
         expertise: doctor.expertise,
         created_at: doctor.created_at.iso8601(3),
-        updated_at: doctor.updated_at.iso8601(3),
+        updated_at: doctor.updated_at.iso8601(3)
       }
     end
 
@@ -126,7 +126,7 @@ RSpec.describe 'Api::Doctors' do
     let(:do_request) do
       put api_doctor_path(id),
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
     let(:doctor) { create(:doctor) }
@@ -138,7 +138,7 @@ RSpec.describe 'Api::Doctors' do
       let(:expertise) { 'teste' }
       let(:payload) do
         {
-          expertise: expertise
+          expertise:
         }
       end
 
@@ -190,7 +190,7 @@ RSpec.describe 'Api::Doctors' do
       let(:expertise) { 'expertise' }
       let(:payload) do
         {
-          expertise: expertise
+          expertise:
         }
       end
 

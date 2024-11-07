@@ -27,7 +27,7 @@ RSpec.describe 'Api::Users' do
     let(:do_request) do
       post api_users_path,
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
 
@@ -128,7 +128,7 @@ RSpec.describe 'Api::Users' do
     let(:do_request) do
       put api_user_path(id),
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
     let(:user) { create(:user) }
@@ -142,8 +142,8 @@ RSpec.describe 'Api::Users' do
       let(:expected_full_name) { "#{first_name} #{last_name}" }
       let(:payload) do
         {
-          first_name: first_name,
-          last_name: last_name
+          first_name:,
+          last_name:
         }
       end
 
@@ -153,7 +153,7 @@ RSpec.describe 'Api::Users' do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'returns the updated object' do
+      it 'returns the updated object', :aggregate_failures do
         do_request
 
         expect(json[:first_name]).to eq(first_name)
@@ -169,7 +169,7 @@ RSpec.describe 'Api::Users' do
       let(:first_name) { '' }
       let(:payload) do
         {
-          first_name: first_name
+          first_name:
         }
       end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Api::Users' do
       let(:first_name) { 'Teste' }
       let(:payload) do
         {
-          first_name: first_name
+          first_name:
         }
       end
 

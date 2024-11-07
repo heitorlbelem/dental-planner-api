@@ -3,17 +3,13 @@ require:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.0.3
+  TargetRubyVersion: 3.2.0
   NewCops: enable
   Exclude:
     - db/**/*
     - bin/*
-    - node_modules/**/*
     - .simplecov
     - tmp/**/*
-    - vendor/**/*
-    - cypress/**/*
-    - spec/support/webmock.rb
 
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
@@ -104,6 +100,3 @@ RSpec/MessageSpies:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
-
-inherit_gem:
-  pundit: config/rubocop-rspec.yml

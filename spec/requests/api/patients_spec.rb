@@ -25,7 +25,7 @@ RSpec.describe 'Api::Patients' do
     let(:do_request) do
       post api_patients_path,
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
 
@@ -131,7 +131,7 @@ RSpec.describe 'Api::Patients' do
     let(:do_request) do
       put api_patient_path(id),
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
     let(:patient) { create(:patient) }
@@ -143,7 +143,7 @@ RSpec.describe 'Api::Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          name: name
+          name:
         }
       end
 
@@ -168,7 +168,7 @@ RSpec.describe 'Api::Patients' do
       let(:name) { '' }
       let(:payload) do
         {
-          name: name
+          name:
         }
       end
 
@@ -195,7 +195,7 @@ RSpec.describe 'Api::Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          name: name
+          name:
         }
       end
 

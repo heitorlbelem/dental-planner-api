@@ -25,18 +25,16 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'hirb'
+  gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
   gem 'rspec-rails'
+  gem 'ruby-lsp'
 end
 
 group :test do
   gem 'database_cleaner-active_record'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
-end
-
-group :development, :test do
-  gem 'hirb'
-  gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
 end

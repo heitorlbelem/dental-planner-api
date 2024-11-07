@@ -9,12 +9,12 @@ RSpec.describe 'Api::Patients::Addresses' do
     let(:do_request) do
       post api_patient_address_path(patient.id),
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
 
     context 'with correct params' do
-      let(:expected_address) { build(:address, zip_code: zip_code) }
+      let(:expected_address) { build(:address, zip_code:) }
       let(:zip_code) { 'zip_code' }
       let(:payload) do
         {
@@ -41,7 +41,7 @@ RSpec.describe 'Api::Patients::Addresses' do
       end
 
       context 'when the patient already has an address' do
-        before { create(:address, patient: patient) }
+        before { create(:address, patient:) }
 
         it 'deletes the existing address before creating a new one' do
           expect { do_request }.not_to change(Address, :count)
@@ -95,7 +95,7 @@ RSpec.describe 'Api::Patients::Addresses' do
       end
 
       context 'when the patient already has an address' do
-        before { create(:address, patient: patient) }
+        before { create(:address, patient:) }
 
         it 'does not replace the existing address', :aggregate_failures do
           old_zip_code = patient.address.zip_code
