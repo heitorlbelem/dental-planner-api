@@ -3,6 +3,5 @@
 FactoryBot.define do
   factory :doctor do
     expertise { %w[generalista bucomaxilo].sample }
-    user
   end
 end

@@ -73,9 +73,6 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
     ast (2.4.2)
-    audited (5.7.0)
-      activerecord (>= 5.2, < 8.0)
-      activesupport (>= 5.2, < 8.0)
     awesome_print (1.9.2)
     awesome_rails_console (0.4.5)
       awesome_print
@@ -84,8 +81,6 @@ GEM
     base64 (0.2.0)
     benchmark (0.3.0)
     bigdecimal (3.1.8)
-    binding_of_caller (1.0.1)
-      debug_inspector (>= 1.2.0)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     builder (3.3.0)
@@ -100,7 +95,6 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.4.0)
-    debug_inspector (1.2.0)
     diff-lcs (1.5.1)
     docile (1.4.1)
     dotenv (3.1.4)
@@ -178,14 +172,8 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.10.1)
-      byebug (~> 11.0)
-      pry (>= 0.13, < 0.15)
     pry-rails (0.3.11)
       pry (>= 0.13.0)
-    pry-stack_explorer (0.6.1)
-      binding_of_caller (~> 1.0)
-      pry (~> 0.13)
     psych (5.1.2)
       stringio
     puma (6.4.3)
@@ -271,9 +259,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.34.0)
       parser (>= 3.3.1.0)
-    rubocop-performance (1.19.1)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
     rubocop-rails (2.25.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
@@ -318,7 +303,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  audited
   awesome_rails_console
   bootsnap
   byebug
@@ -331,15 +315,12 @@ DEPENDENCIES
   hirb-unicode-steakknife
   jbuilder
   pg
-  pry-byebug
-  pry-stack_explorer
   puma
   rack-cors
   rails
   rspec-rails
   rswag-ui
   rubocop
-  rubocop-performance
   rubocop-rails
   rubocop-rspec
   ruby-lsp

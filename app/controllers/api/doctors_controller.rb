@@ -20,7 +20,7 @@ class Api::DoctorsController < ApplicationController
 
   def update
     if @doctor.update(update_doctor_params)
-      render json: @doctor, include: [:user]
+      render json: @doctor
     else
       render json: @doctor.errors, status: :unprocessable_entity
     end

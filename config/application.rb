@@ -14,12 +14,12 @@ module DentalPlannerApi
     config.api_only = true
     config.generators do |generator|
       generator.test_framework :rspec, fixture: false
-      generator.controller_specs false
-      generator.helper_specs false
-      generator.model_specs true
-      generator.routing_specs false
-      generator.request_specs false
-      generator.view_specs false
+      generator.controller_specs = false
+      generator.helper_specs = false
+      generator.model_specs = true
+      generator.routing_specs = false
+      generator.request_specs = false
+      generator.view_specs = false
     end
   end
 end

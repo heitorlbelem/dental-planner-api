@@ -31,14 +31,7 @@ RSpec.describe 'Api::Doctors' do
 
     context 'with correct params' do
       let(:expected_doctor) { build(:doctor) }
-      let(:user) { create(:user) }
-
-      let(:payload) do
-        {
-          expertise: expected_doctor.expertise,
-          user_id: user.id
-        }
-      end
+      let(:payload) { { expertise: expected_doctor.expertise } }
 
       it 'returns http status code created' do
         do_request
@@ -52,16 +45,10 @@ RSpec.describe 'Api::Doctors' do
     end
 
     context 'with invalid params' do
-      let(:payload) do
-        {
-          expertise: expected_doctor.expertise,
-          user_id: doctor_user.id
-        }
-      end
+      let(:payload) { { expertise: expected_doctor.expertise } }
 
       context 'without expertise' do
         let(:expected_doctor) { build(:doctor, expertise: '') }
-        let(:doctor_user) { create(:user) }
 
         it 'returns http status code unprocessable entity' do
           do_request
@@ -92,7 +79,6 @@ RSpec.describe 'Api::Doctors' do
     let(:expected_doctor) do
       {
         id: doctor.id,
-        user_id: doctor.user_id,
         expertise: doctor.expertise,
         created_at: doctor.created_at.iso8601(3),
         updated_at: doctor.updated_at.iso8601(3)
