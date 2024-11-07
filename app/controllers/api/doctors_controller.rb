@@ -33,7 +33,7 @@ class Api::DoctorsController < ApplicationController
   end
 
   def create_doctor_params
-    params.permit(%i[expertise user_id])
+    params.permit(%i[expertise])
   end
 
   def update_doctor_params
