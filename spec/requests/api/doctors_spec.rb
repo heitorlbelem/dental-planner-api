@@ -31,7 +31,7 @@ RSpec.describe 'Api::Doctors' do
 
     context 'with correct params' do
       let(:expected_doctor) { build(:doctor) }
-      let(:payload) { { expertise: expected_doctor.expertise } }
+      let(:payload) { { name: 'John Doe', expertise: expected_doctor.expertise } }
 
       it 'returns http status code created' do
         do_request
@@ -79,6 +79,7 @@ RSpec.describe 'Api::Doctors' do
     let(:expected_doctor) do
       {
         id: doctor.id,
+        name: doctor.name,
         expertise: doctor.expertise,
         created_at: doctor.created_at.iso8601(3),
         updated_at: doctor.updated_at.iso8601(3)

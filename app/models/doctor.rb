@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class Doctor < ApplicationRecord
-  validates :expertise, presence: true
+  validates :name, :expertise, presence: true
 end

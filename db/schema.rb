@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "doctor_id", null: false
     t.uuid "patient_id", null: false
-    t.datetime "started_at"
+    t.datetime "start_time", null: false
     t.integer "duration", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   end
 
   create_table "doctors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
     t.string "expertise", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

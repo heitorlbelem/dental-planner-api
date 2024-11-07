@@ -9,20 +9,20 @@ RSpec.describe Appointment do
   end
 
   describe 'validations' do
+    let(:appointment) { described_class.new }
     let(:enum_values) do
       { pending: 'pending', running: 'running', done: 'done', canceled: 'canceled' }
     end
-    let(:appointment) { described_class.new }
 
-    it 'validates status enum values' do
+    it { is_expected.to validate_presence_of(:duration_in_minutes) }
+
+    it 'defines the correct statuses' do
       expect(appointment).to define_enum_for(:status)
         .with_values(**enum_values).backed_by_column_of_type(:string)
     end
 
-    it 'validates status default value' do
+    it 'defines the correct default status' do
       expect(appointment).to be_pending
     end
-
-    it { is_expected.to validate_presence_of(:duration) }
   end
 end

@@ -12,14 +12,14 @@ class Api::DoctorsController < ApplicationController
   end
 
   def create
-    @doctor = Doctor.new(create_doctor_params)
+    @doctor = Doctor.new(doctor_params)
     return head :created if @doctor.save
 
     render json: @doctor.errors, status: :unprocessable_entity
   end
 
   def update
-    if @doctor.update(update_doctor_params)
+    if @doctor.update(doctor_params)
       render json: @doctor
     else
       render json: @doctor.errors, status: :unprocessable_entity
@@ -32,11 +32,7 @@ class Api::DoctorsController < ApplicationController
     @doctor = Doctor.find(params[:id])
   end
 
-  def create_doctor_params
-    params.permit(%i[expertise])
-  end
-
-  def update_doctor_params
-    params.permit(%i[expertise])
+  def doctor_params
+    params.permit(%i[name expertise])
   end
 end
