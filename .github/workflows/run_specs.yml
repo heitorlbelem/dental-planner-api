@@ -6,6 +6,7 @@ env:
   DEVISE_JWT_SECRET_KEY: ${{ vars.DEVISE_JWT_SECRET_KEY }}
 
 name: Rails Specs
+
 on:
   pull_request:
     branches:
@@ -13,7 +14,7 @@ on:
     paths-ignore:
       - '.**'
       - '**.md'
-      - 'docs/**.md'
+      - 'docs/**'
       - '!CHANGELOG*'
   push:
     branches:
@@ -21,11 +22,12 @@ on:
     paths-ignore:
       - '.**'
       - '**.md'
-      - 'docs/**.md'
+      - 'docs/**'
+
 jobs:
   rspec-test:
     name: RSpec
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:latest
@@ -34,25 +36,37 @@ jobs:
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - uses: actions/checkout@v3
+
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
-      - name: Install postgres client
-        run: sudo apt-get install libpq-dev
+          bundler-cache: true
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y libpq-dev
+
       - name: Install dependencies
+        run: bundle install
+
+      - name: Set up database
+        env:
+          RAILS_ENV: test
         run: |
-          gem install bundler
-          bundler install
-      - name: Create database
-        run: |
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
+          bundle exec rails db:create db:migrate
+
       - name: Run tests
-        run: bundler exec rspec spec/*
+        run: bundle exec rspec
+
       - name: Upload coverage results
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: coverage-report
