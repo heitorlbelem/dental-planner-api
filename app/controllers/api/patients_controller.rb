@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Api::Restricted::PatientsController < Api::RestrictedController
+class Api::PatientsController < ApplicationController
   before_action :set_patient, only: %i[show update destroy]
 
   def index
-    render json: Patient.all, each_serializer: PatientSerializer
+    render json: Patient.all
   end
 
   def show
@@ -15,21 +15,21 @@ class Api::Restricted::PatientsController < Api::RestrictedController
     @patient = Patient.new(patient_params)
     return head :created if @patient.save
 
-    render_errors @patient, status: :unprocessable_entity
+    render json: @patient.errors, status: :unprocessable_entity
   end
 
   def update
     if @patient.update(patient_params)
       render json: @patient
     else
-      render_errors @patient, status: :unprocessable_entity
+      render json: @patient.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     return head :no_content if @patient.destroy
 
-    render_errors @patient, status: :unprocessable_entity
+    render json: @patient.errors, status: :unprocessable_entity
   end
 
   private
@@ -39,6 +39,6 @@ class Api::Restricted::PatientsController < Api::RestrictedController
   end
 
   def patient_params
-    permit_params(only: %i[name email phone birthdate cpf])
+    params.permit(%i[name email phone birthdate cpf])
   end
 end

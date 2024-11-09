@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :patient do
     name { Faker::Name.name }
     phone { Faker::PhoneNumber.cell_phone }
-    email { Faker::Internet.email(name: name) }
-    cpf { Faker::IDNumber.brazilian_citizen_number }
+    email { Faker::Internet.email(name:) }
+    cpf { Faker::IdNumber.brazilian_citizen_number }
   end
 end

@@ -2,17 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Restricted::Patients' do
-  let(:headers) do
-    {
-      'Content-Type' => 'application/vnd.api+json',
-      'Accept' => 'application/vnd.api+json'
-    }
-  end
-  let(:user) { create(:user) }
-
-  before { login user }
-
+RSpec.describe 'Api::Patients' do
   describe 'GET /api/patients' do
     let(:do_request) { get api_patients_path }
 
@@ -27,7 +17,7 @@ RSpec.describe 'Api::Restricted::Patients' do
     it 'returns an array containing all the patients' do
       do_request
 
-      expect(json[:data].count).to eq(Patient.count)
+      expect(json.count).to eq(Patient.count)
     end
   end
 
@@ -35,7 +25,7 @@ RSpec.describe 'Api::Restricted::Patients' do
     let(:do_request) do
       post api_patients_path,
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
 
@@ -43,16 +33,11 @@ RSpec.describe 'Api::Restricted::Patients' do
       let(:expected_patient) { build(:patient) }
       let(:payload) do
         {
-          data: {
-            type: 'patients',
-            attributes: {
-              name: expected_patient.name,
-              cpf: expected_patient.cpf,
-              email: expected_patient.email,
-              phone: expected_patient.phone,
-              birthdate: expected_patient.birthdate
-            }
-          }
+          name: expected_patient.name,
+          cpf: expected_patient.cpf,
+          email: expected_patient.email,
+          phone: expected_patient.phone,
+          birthdate: expected_patient.birthdate
         }
       end
 
@@ -71,16 +56,11 @@ RSpec.describe 'Api::Restricted::Patients' do
       let(:expected_patient) { build(:patient, cpf: '00000000000', email: '') }
       let(:payload) do
         {
-          data: {
-            type: 'patients',
-            attributes: {
-              name: expected_patient.name,
-              cpf: expected_patient.cpf,
-              email: expected_patient.email,
-              phone: expected_patient.phone,
-              birthdate: expected_patient.birthdate
-            }
-          }
+          name: expected_patient.name,
+          cpf: expected_patient.cpf,
+          email: expected_patient.email,
+          phone: expected_patient.phone,
+          birthdate: expected_patient.birthdate
         }
       end
 
@@ -93,10 +73,10 @@ RSpec.describe 'Api::Restricted::Patients' do
       it 'returns an json object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('email')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
-        expect(json[:errors].second[:source][:pointer]).to include('cpf')
-        expect(json[:errors].second[:detail]).to include("isn't valid")
+        expect(json.keys).to include(:email)
+        expect(json[:email]).to include("can't be blank")
+        expect(json.keys).to include(:cpf)
+        expect(json[:cpf]).to include("isn't valid")
       end
 
       it 'does not create a new patient' do
@@ -113,6 +93,7 @@ RSpec.describe 'Api::Restricted::Patients' do
     let(:id) { patient.id }
     let(:expected_patient) do
       {
+        id: patient.id,
         name: patient.name,
         birthdate: patient.birthdate,
         cpf: patient.cpf,
@@ -133,7 +114,7 @@ RSpec.describe 'Api::Restricted::Patients' do
       it 'returns the searched patient with expected attributes' do
         do_request
 
-        expect(json[:data][:attributes]).to eq(expected_patient)
+        expect(json).to eq(expected_patient)
       end
     end
 
@@ -150,7 +131,7 @@ RSpec.describe 'Api::Restricted::Patients' do
     let(:do_request) do
       put api_patient_path(id),
         params: payload,
-        headers: headers,
+        headers:,
         as: :json
     end
     let(:patient) { create(:patient) }
@@ -162,13 +143,7 @@ RSpec.describe 'Api::Restricted::Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          data: {
-            type: 'patients',
-            id: id,
-            attributes: {
-              name: name
-            }
-          }
+          name:
         }
       end
 
@@ -181,7 +156,7 @@ RSpec.describe 'Api::Restricted::Patients' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:data][:attributes][:name]).to eq(name)
+        expect(json[:name]).to eq(name)
       end
 
       it 'updates the selected patient' do
@@ -193,12 +168,7 @@ RSpec.describe 'Api::Restricted::Patients' do
       let(:name) { '' }
       let(:payload) do
         {
-          data: {
-            type: 'patients',
-            attributes: {
-              name: name
-            }
-          }
+          name:
         }
       end
 
@@ -211,8 +181,8 @@ RSpec.describe 'Api::Restricted::Patients' do
       it 'returns an object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json[:errors].first[:source][:pointer]).to include('name')
-        expect(json[:errors].first[:detail]).to include("can't be blank")
+        expect(json.keys).to include(:name)
+        expect(json[:name]).to include("can't be blank")
       end
 
       it "does not update the patient's name" do
@@ -225,12 +195,7 @@ RSpec.describe 'Api::Restricted::Patients' do
       let(:name) { 'Teste da Silva' }
       let(:payload) do
         {
-          data: {
-            type: 'patients',
-            attributes: {
-              name: name
-            }
-          }
+          name:
         }
       end
 
@@ -264,7 +229,7 @@ RSpec.describe 'Api::Restricted::Patients' do
         allow(patient).to receive(:destroy).and_return(false)
         do_request
 
-        expect(json[:errors]).not_to be_nil
+        expect(json).not_to be_nil
       end
     end
 

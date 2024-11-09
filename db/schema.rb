@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_18_215918) do
+ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_215918) do
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "doctor_id", null: false
     t.uuid "patient_id", null: false
-    t.datetime "started_at"
+    t.datetime "start_time", null: false
     t.integer "duration", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
@@ -41,40 +41,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_215918) do
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
   end
 
-  create_table "audits", force: :cascade do |t|
-    t.uuid "auditable_id"
-    t.string "auditable_type"
-    t.uuid "associated_id"
-    t.string "associated_type"
-    t.uuid "user_id"
-    t.string "user_type"
-    t.string "username"
-    t.string "action"
-    t.jsonb "audited_changes"
-    t.integer "version", default: 0
-    t.string "comment"
-    t.string "remote_address"
-    t.string "request_uuid"
-    t.datetime "created_at"
-    t.index ["associated_type", "associated_id"], name: "associated_index"
-    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
-    t.index ["created_at"], name: "index_audits_on_created_at"
-    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
-    t.index ["user_id", "user_type"], name: "user_index"
-  end
-
   create_table "doctors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
     t.string "expertise", null: false
-    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_doctors_on_user_id"
-  end
-
-  create_table "jwt_denylist", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "jti", null: false
-    t.datetime "exp", null: false
-    t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
   create_table "patients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -88,69 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_215918) do
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end
 
-  create_table "proceedings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "appointment_id"
-    t.uuid "patient_id", null: false
-    t.decimal "price", precision: 10, scale: 2, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "treatment_id"
-    t.uuid "product_id", null: false
-    t.index ["appointment_id"], name: "index_proceedings_on_appointment_id"
-    t.index ["patient_id"], name: "index_proceedings_on_patient_id"
-    t.index ["treatment_id"], name: "index_proceedings_on_treatment_id"
-    t.index ["product_id"], name: "index_proceedings_on_product_id"
-  end
-
-  create_table "treatments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "status", null: false
-    t.uuid "patient_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["patient_id"], name: "index_treatments_on_patient_id"
-  end
-
-
-  create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "default_price", precision: 10, scale: 2, null: false
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email", null: false
-    t.string "encrypted_password", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
-    t.string "username", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
-    t.integer "failed_attempts", default: 0, null: false
-    t.string "unlock_token"
-    t.datetime "locked_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "role", null: false
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
-  end
-
   add_foreign_key "addresses", "patients"
   add_foreign_key "appointments", "doctors"
   add_foreign_key "appointments", "patients"
-  add_foreign_key "doctors", "users"
-  add_foreign_key "proceedings", "appointments"
-  add_foreign_key "proceedings", "patients"
-  add_foreign_key "proceedings", "treatments"
-  add_foreign_key "treatments", "patients"
-  add_foreign_key "proceedings", "products"
 end

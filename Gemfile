@@ -1,23 +1,17 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '3.1.3'
-gem 'active_model_serializers'
-gem 'audited'
+
+ruby '3.3.0'
+
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
-gem 'devise'
-gem 'devise-jwt'
 gem 'jbuilder'
 gem 'pg'
 gem 'puma'
-gem 'pundit'
 gem 'rack-cors'
 gem 'rails'
 gem 'rswag-ui'
-gem 'rubocop'
-gem 'rubocop-rails'
-gem 'rubocop-rspec'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
@@ -26,18 +20,17 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rspec-rails'
+  gem 'hirb'
+  gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
+  gem 'ruby-lsp'
 end
 
 group :test do
   gem 'database_cleaner-active_record'
+  gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
-end
-
-group :development, :test do
-  gem 'hirb'
-  gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
 end

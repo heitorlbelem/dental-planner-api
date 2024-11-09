@@ -3,8 +3,6 @@
 require 'cpf_cnpj'
 
 class Patient < ApplicationRecord
-  audited
-
   has_one :address, dependent: :destroy
 
   validates :name, :phone, :email, presence: true
