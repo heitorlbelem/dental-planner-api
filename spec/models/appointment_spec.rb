@@ -33,50 +33,50 @@ RSpec.describe Appointment do
 
     context 'when in pending state' do
       it 'can transition to canceled' do
-        appointment.cancel!
+        appointment.cancel
         expect(appointment).to be_canceled
       end
 
       it 'can transition to confirmed' do
-        appointment.confirm!
+        appointment.confirm
         expect(appointment).to be_confirmed
       end
 
       it 'is can not transition to finished' do
-        expect { appointment.finish! }.to raise_error(AASM::InvalidTransition)
+        expect { appointment.finish }.to raise_error(AASM::InvalidTransition)
       end
     end
 
     context 'when in confirmed state' do
-      before { appointment.confirm! }
+      before { appointment.confirm }
 
       it 'can transition to canceled' do
-        appointment.cancel!
+        appointment.cancel
         expect(appointment).to be_canceled
       end
 
       it 'can transition to finished' do
-        appointment.finish!
+        appointment.finish
         expect(appointment).to be_finished
       end
     end
 
     context 'when in canceled state' do
-      before { appointment.cancel! }
+      before { appointment.cancel }
 
       it 'cannot transition to another state' do
-        expect { appointment.finish! }.to raise_error(AASM::InvalidTransition)
+        expect { appointment.finish }.to raise_error(AASM::InvalidTransition)
       end
     end
 
     context 'when in finished state' do
       before do
-        appointment.confirm!
-        appointment.finish!
+        appointment.confirm
+        appointment.finish
       end
 
       it 'cannot transition to another state' do
-        expect { appointment.cancel! }.to raise_error(AASM::InvalidTransition)
+        expect { appointment.cancel }.to raise_error(AASM::InvalidTransition)
       end
     end
   end
