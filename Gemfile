@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '3.3.0'
 
+gem 'aasm'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
 gem 'jbuilder'

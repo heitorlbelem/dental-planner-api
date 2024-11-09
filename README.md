@@ -1,11 +1,11 @@
 # Requisitos Funcionais
-    [ ] Deve ser possível cadastrar um paciente
-    [ ] Deve ser possível cadastrar o endereço para um paciente
-    [ ] Deve ser possível cadastrar um dentista
+    [x] Deve ser possível cadastrar um paciente
+    [x] Deve ser possível cadastrar o endereço para um paciente
+    [x] Deve ser possível cadastrar um dentista
     [ ] Deve ser possível criar um agendamento para o par paciente/dentista
     [ ] Deve ser possível cancelar um agendamento criado
     [ ] Deve ser possível confirmar um agendamento criado
-    [ ] Deve ser possível fia um agendamento criado
+    [ ] Deve ser possível finalizar um agendamento criado
 
 # Regras de Negócio
 ### Sobre o status do agendamento

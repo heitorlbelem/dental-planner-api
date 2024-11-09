@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
     t.uuid "doctor_id", null: false
     t.uuid "patient_id", null: false
     t.datetime "start_time", null: false
-    t.integer "duration", null: false
+    t.integer "duration_in_minutes", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
