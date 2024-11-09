@@ -12,6 +12,13 @@ Rails.application.routes.draw do
       end
 
       resources :doctors, except: :destroy
+      resources :appointments, only: %i[create] do
+        member do
+          patch :confirm
+          patch :finish
+          patch :cancel
+        end
+      end
     end
   end
 end

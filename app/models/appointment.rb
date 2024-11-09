@@ -15,7 +15,7 @@ class Appointment < ApplicationRecord
   private
 
   def start_time_in_the_past
-    return if start_time >= Time.current
+    return if start_time.blank? || start_time >= Time.current
 
     errors.add(:start_time, 'Invalid date to schedule the appointment')
   end
