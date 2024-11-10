@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '3.3.0'
 
+gem 'aasm'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
 gem 'jbuilder'
@@ -12,6 +13,7 @@ gem 'puma'
 gem 'rack-cors'
 gem 'rails'
 gem 'rswag-ui'
+gem 'stringio', '~> 3.1.2'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do

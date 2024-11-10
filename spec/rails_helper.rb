@@ -81,5 +81,6 @@ RSpec.configure do |config|
     end
   end
 
+  config.include ActiveSupport::Testing::TimeHelpers
   config.include Request::JsonHelpers, type: :request
 end

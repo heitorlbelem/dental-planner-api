@@ -84,11 +84,11 @@ RSpec.describe 'Api::Patients::Addresses' do
         expect(json[:zip_code]).to include("can't be blank")
       end
 
-      it 'does not create a new address' do
+      it "doesn't create a new address" do
         expect { do_request }.not_to change(Address, :count)
       end
 
-      it "does not create the patient's address" do
+      it "doesn't create the patient's address" do
         do_request
 
         expect(patient.reload.address).to be_nil
@@ -97,7 +97,7 @@ RSpec.describe 'Api::Patients::Addresses' do
       context 'when the patient already has an address' do
         before { create(:address, patient:) }
 
-        it 'does not replace the existing address', :aggregate_failures do
+        it "doesn't replace the existing address", :aggregate_failures do
           old_zip_code = patient.address.zip_code
           do_request
 

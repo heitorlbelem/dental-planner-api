@@ -70,7 +70,7 @@ RSpec.describe 'Api::Patients' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns an json object containing the model errors', :aggregate_failures do
+      it 'returns a json object containing the model errors', :aggregate_failures do
         do_request
 
         expect(json.keys).to include(:email)
@@ -79,7 +79,7 @@ RSpec.describe 'Api::Patients' do
         expect(json[:cpf]).to include("isn't valid")
       end
 
-      it 'does not create a new patient' do
+      it "doesn't create a new patient" do
         expect { do_request }.not_to change(Patient, :count)
       end
     end
@@ -185,7 +185,7 @@ RSpec.describe 'Api::Patients' do
         expect(json[:name]).to include("can't be blank")
       end
 
-      it "does not update the patient's name" do
+      it "doesn't update the patient's name" do
         expect { do_request }.not_to(change { patient.reload.name })
       end
     end
@@ -224,7 +224,7 @@ RSpec.describe 'Api::Patients' do
         expect { do_request }.to change(Patient, :count).by(-1)
       end
 
-      it 'returns error when does not destroy the resource' do
+      it "returns an error when doesn't destroy the resource" do
         allow(Patient).to receive(:find).and_return(patient)
         allow(patient).to receive(:destroy).and_return(false)
         do_request
