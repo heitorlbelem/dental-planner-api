@@ -8,14 +8,14 @@ on:
     paths-ignore:
       - '.**'
       - '**.md'
-      - 'docs/**'
+      - 'docs/**.md'
   push:
     branches:
       - 'main'
     paths-ignore:
       - '.**'
       - '**.md'
-      - 'docs/**'
+      - 'docs/**.md'
 
 jobs:
   brakeman_scanner:
@@ -26,12 +26,14 @@ jobs:
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_PATH: vendor/bundle
         with:
-          ruby-version: 3.2.0
+          ruby-version: 3.1.3
+          bundler: "Gemfile.lock"
           bundler-cache: true
 
-      - name: Install Brakeman
-        run: gem install brakeman -v 5.1.1
-
       - name: Run Brakeman
-        run: brakeman
+        run: |
+          gem install brakeman -v 5.1.1
+          brakeman
