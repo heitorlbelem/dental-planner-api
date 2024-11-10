@@ -1,5 +1,5 @@
 env:
-  RUBY_VERSION: 3.3.0
+  RUBY_VERSION: 3.2.0
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/dental_planner
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
