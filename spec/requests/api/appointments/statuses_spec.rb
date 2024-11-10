@@ -21,7 +21,7 @@ RSpec.describe 'Api::Appointments::Statuses' do
       end
     end
 
-    context 'when appointment can not be confirmed' do
+    context "when appointment can't be confirmed" do
       let(:appointment) { create(:appointment) }
       let(:id) { appointment.id }
 

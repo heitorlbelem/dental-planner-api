@@ -50,7 +50,7 @@ RSpec.describe 'Api::Appointments' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns an json object containing the model errors', :aggregate_failures do
+      it 'returns a json object containing the model errors', :aggregate_failures do
         do_request
 
         expect(json.keys).to include(:start_time, :duration_in_minutes)
@@ -58,7 +58,7 @@ RSpec.describe 'Api::Appointments' do
         expect(json[:duration_in_minutes]).to include("can't be blank")
       end
 
-      it 'does not create a new appointment' do
+      it "doesn't create a new appointment" do
         expect { do_request }.not_to change(Appointment, :count)
       end
     end

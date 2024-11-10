@@ -56,14 +56,14 @@ RSpec.describe 'Api::Doctors' do
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        it 'returns an json object containing the model errors', :aggregate_failures do
+        it 'returns a json object containing the model errors', :aggregate_failures do
           do_request
 
           expect(json.keys).to include(:expertise)
           expect(json[:expertise]).to include("can't be blank")
         end
 
-        it 'does not create a new doctor' do
+        it "doesn't create a new doctor" do
           expect { do_request }.not_to change(Doctor, :count)
         end
       end
@@ -167,7 +167,7 @@ RSpec.describe 'Api::Doctors' do
         expect(json[:expertise]).to include("can't be blank")
       end
 
-      it "does not update the doctor's expertise" do
+      it "doesn't update the doctor's expertise" do
         expect { do_request }.not_to(change { doctor.reload.expertise })
       end
     end
