@@ -120,9 +120,7 @@ RSpec.describe 'Api::Patients::Addresses' do
         neighborhood: address.neighborhood,
         state: address.state,
         city: address.city,
-        complement: address.complement,
-        created_at: address.created_at.iso8601(3),
-        updated_at: address.updated_at.iso8601(3)
+        complement: address.complement
       }
     end
 
@@ -130,14 +128,12 @@ RSpec.describe 'Api::Patients::Addresses' do
 
     it 'returns http status OK' do
       do_request
-
       expect(response).to have_http_status(:ok)
     end
 
     it 'returns the patient address with expected attributes' do
       do_request
-
-      expect(json).to eq(expected_address)
+      expect(json[:address]).to eq(expected_address)
     end
   end
 end
