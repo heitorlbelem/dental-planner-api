@@ -21,7 +21,8 @@ class Appointment < ApplicationRecord
   end
 
   def doctor_availability
-    overlapping_appointment = Appointment.exists?(doctor_id:, start_time:)
+    overlapping_appointment = Appointment.where.not(patient_id:)
+      .exists?(doctor_id:, start_time:)
     return unless overlapping_appointment
 
     errors.add(:start_time, 'is not available for this doctor')

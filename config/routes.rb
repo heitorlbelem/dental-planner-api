@@ -14,9 +14,11 @@ Rails.application.routes.draw do
       resources :doctors, except: :destroy
       resources :appointments, only: %i[create] do
         member do
-          patch :confirm
-          patch :finish
-          patch :cancel
+          scope module: 'appointments' do
+            patch :confirm, controller: 'statuses'
+            patch :cancel, controller: 'statuses'
+            patch :finish, controller: 'statuses'
+          end
         end
       end
     end
