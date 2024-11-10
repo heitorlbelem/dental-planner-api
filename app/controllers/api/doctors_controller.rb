@@ -4,11 +4,12 @@ class Api::DoctorsController < ApplicationController
   before_action :set_doctor, only: %i[show update destroy]
 
   def index
-    render json: Doctor.all
+    @doctors = Doctor.all
+    render :index
   end
 
   def show
-    render json: @doctor
+    render :show
   end
 
   def create
@@ -20,7 +21,7 @@ class Api::DoctorsController < ApplicationController
 
   def update
     if @doctor.update(doctor_params)
-      render json: @doctor
+      render :show
     else
       render json: @doctor.errors, status: :unprocessable_entity
     end

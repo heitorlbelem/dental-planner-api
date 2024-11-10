@@ -10,14 +10,12 @@ RSpec.describe 'Api::Doctors' do
 
     it 'returns http status Ok' do
       do_request
-
       expect(response).to have_http_status(:ok)
     end
 
     it 'returns an array containing all the doctors' do
       do_request
-
-      expect(json.count).to eq(Doctor.count)
+      expect(json[:doctors].count).to eq(Doctor.count)
     end
   end
 
@@ -80,23 +78,19 @@ RSpec.describe 'Api::Doctors' do
       {
         id: doctor.id,
         name: doctor.name,
-        expertise: doctor.expertise,
-        created_at: doctor.created_at.iso8601(3),
-        updated_at: doctor.updated_at.iso8601(3)
+        expertise: doctor.expertise
       }
     end
 
     context 'with valid id' do
       it 'returns http status OK' do
         do_request
-
         expect(response).to have_http_status(:ok)
       end
 
       it 'returns the searched doctor with expected attributes' do
         do_request
-
-        expect(json).to eq(expected_doctor.merge(id:))
+        expect(json[:doctor]).to eq(expected_doctor.merge(id:))
       end
     end
 
@@ -123,11 +117,7 @@ RSpec.describe 'Api::Doctors' do
 
     context 'with valid params' do
       let(:expertise) { 'teste' }
-      let(:payload) do
-        {
-          expertise:
-        }
-      end
+      let(:payload) { { expertise: } }
 
       it 'returns http status code OK' do
         do_request
@@ -138,7 +128,7 @@ RSpec.describe 'Api::Doctors' do
       it 'returns the updated object' do
         do_request
 
-        expect(json[:expertise]).to eq(expertise)
+        expect(json[:doctor][:expertise]).to eq(expertise)
       end
 
       it 'updates the selected doctor' do
@@ -148,11 +138,7 @@ RSpec.describe 'Api::Doctors' do
 
     context 'with invalid params' do
       let(:expertise) { '' }
-      let(:payload) do
-        {
-          expertise: ''
-        }
-      end
+      let(:payload) { { expertise: '' } }
 
       it 'returns http status code unprocessable entity' do
         do_request
@@ -175,11 +161,7 @@ RSpec.describe 'Api::Doctors' do
     context 'with invalid id' do
       let(:id) { 'invalid id' }
       let(:expertise) { 'expertise' }
-      let(:payload) do
-        {
-          expertise:
-        }
-      end
+      let(:payload) { { expertise: } }
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
