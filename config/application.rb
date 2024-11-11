@@ -21,5 +21,16 @@ module DentalPlannerApi
       generator.request_specs = false
       generator.view_specs = false
     end
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins ENV.fetch('CORS_ORIGIN', '*')
+
+        resource '*',
+          headers: :any,
+          methods: %i[get post put patch delete options head],
+          credentials: true
+      end
+    end
   end
 end
