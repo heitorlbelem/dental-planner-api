@@ -5,7 +5,7 @@ class Api::Patients::AddressesController < ApplicationController
   before_action :set_address, only: :show
 
   def show
-    render json: @address
+    render :show
   end
 
   def create

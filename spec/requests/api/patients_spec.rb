@@ -10,14 +10,12 @@ RSpec.describe 'Api::Patients' do
 
     it 'returns http status Ok' do
       do_request
-
       expect(response).to have_http_status(:ok)
     end
 
-    it 'returns an array containing all the patients' do
+    it 'returns an array of patients' do
       do_request
-
-      expect(json.count).to eq(Patient.count)
+      expect(json[:patients].count).to eq(Patient.count)
     end
   end
 
@@ -43,7 +41,6 @@ RSpec.describe 'Api::Patients' do
 
       it 'returns http status code created' do
         do_request
-
         expect(response).to have_http_status(:created)
       end
 
@@ -66,13 +63,11 @@ RSpec.describe 'Api::Patients' do
 
       it 'returns http status code created' do
         do_request
-
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns a json object containing the model errors', :aggregate_failures do
         do_request
-
         expect(json.keys).to include(:email)
         expect(json[:email]).to include("can't be blank")
         expect(json.keys).to include(:cpf)
@@ -98,23 +93,19 @@ RSpec.describe 'Api::Patients' do
         birthdate: patient.birthdate,
         cpf: patient.cpf,
         phone: patient.phone,
-        email: patient.email,
-        created_at: patient.created_at.iso8601(3),
-        updated_at: patient.updated_at.iso8601(3)
+        email: patient.email
       }
     end
 
     context 'with valid id' do
       it 'returns http status OK' do
         do_request
-
         expect(response).to have_http_status(:ok)
       end
 
       it 'returns the searched patient with expected attributes' do
         do_request
-
-        expect(json).to eq(expected_patient)
+        expect(json[:patient]).to eq(expected_patient)
       end
     end
 
@@ -141,22 +132,16 @@ RSpec.describe 'Api::Patients' do
 
     context 'with valid params' do
       let(:name) { 'Teste da Silva' }
-      let(:payload) do
-        {
-          name:
-        }
-      end
+      let(:payload) { { name: } }
 
       it 'returns http status code OK' do
         do_request
-
         expect(response).to have_http_status(:ok)
       end
 
       it 'returns the updated object' do
         do_request
-
-        expect(json[:name]).to eq(name)
+        expect(json[:patient][:name]).to eq(name)
       end
 
       it 'updates the selected patient' do
@@ -166,21 +151,15 @@ RSpec.describe 'Api::Patients' do
 
     context 'with invalid params' do
       let(:name) { '' }
-      let(:payload) do
-        {
-          name:
-        }
-      end
+      let(:payload) { { name: } }
 
       it 'returns http status code unprocessable entity' do
         do_request
-
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns an object containing the model errors', :aggregate_failures do
         do_request
-
         expect(json.keys).to include(:name)
         expect(json[:name]).to include("can't be blank")
       end
@@ -193,11 +172,7 @@ RSpec.describe 'Api::Patients' do
     context 'with invalid id' do
       let(:id) { 0 }
       let(:name) { 'Teste da Silva' }
-      let(:payload) do
-        {
-          name:
-        }
-      end
+      let(:payload) { { name: } }
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -216,7 +191,6 @@ RSpec.describe 'Api::Patients' do
 
       it 'returns http status no content' do
         do_request
-
         expect(response).to have_http_status(:no_content)
       end
 
@@ -228,7 +202,6 @@ RSpec.describe 'Api::Patients' do
         allow(Patient).to receive(:find).and_return(patient)
         allow(patient).to receive(:destroy).and_return(false)
         do_request
-
         expect(json).not_to be_nil
       end
     end
