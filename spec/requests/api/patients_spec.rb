@@ -28,14 +28,12 @@ RSpec.describe 'Api::Patients' do
     end
 
     context 'with correct params' do
-      let(:expected_patient) { build(:patient) }
       let(:payload) do
         {
-          name: expected_patient.name,
-          cpf: expected_patient.cpf,
-          email: expected_patient.email,
-          phone: expected_patient.phone,
-          birthdate: expected_patient.birthdate
+          name: 'John Doe',
+          phone: '+55 11 981818282',
+          date_of_birth: Faker::Date.birthday,
+          gender: 'male'
         }
       end
 
@@ -50,26 +48,22 @@ RSpec.describe 'Api::Patients' do
     end
 
     context 'with invalid params' do
-      let(:expected_patient) { build(:patient, cpf: '00000000000', email: '') }
       let(:payload) do
         {
-          name: expected_patient.name,
-          cpf: expected_patient.cpf,
-          email: expected_patient.email,
-          phone: expected_patient.phone,
-          birthdate: expected_patient.birthdate
+          name: 'John Doe',
+          phone: '+55 11 981818282',
+          birthdate: Faker::Date.birthday,
+          cpf: '000.000.000-00'
         }
       end
 
-      it 'returns http status code created' do
+      it 'returns http status code unprocessable entity' do
         do_request
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns a json object containing the model errors', :aggregate_failures do
         do_request
-        expect(json.keys).to include(:email)
-        expect(json[:email]).to include("can't be blank")
         expect(json.keys).to include(:cpf)
         expect(json[:cpf]).to include("isn't valid")
       end
@@ -90,10 +84,12 @@ RSpec.describe 'Api::Patients' do
       {
         id: patient.id,
         name: patient.name,
-        birthdate: patient.birthdate,
+        date_of_birth: patient.date_of_birth,
         cpf: patient.cpf,
         phone: patient.phone,
-        email: patient.email
+        email: patient.email,
+        gender: patient.gender,
+        created_at: patient.created_at.iso8601(3)
       }
     end
 
@@ -103,16 +99,17 @@ RSpec.describe 'Api::Patients' do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'returns the searched patient with expected attributes' do
+      it 'returns the correct patient with expected attributes' do
         do_request
         expect(json[:patient]).to eq(expected_patient)
       end
     end
 
+    # TODO: handle active record exception
     context 'with invalid id' do
-      let(:id) { 0 }
+      let(:id) { 'invalid_uuid' }
 
-      it 'returns http status not found' do
+      it 'raises active record not found error' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -207,7 +204,7 @@ RSpec.describe 'Api::Patients' do
     end
 
     context 'with invalid id' do
-      let(:id) { 0 }
+      let(:id) { 'invalid_uuid' }
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
