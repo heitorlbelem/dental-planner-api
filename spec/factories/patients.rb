@@ -8,5 +8,7 @@ FactoryBot.define do
     phone { Faker::PhoneNumber.cell_phone }
     email { Faker::Internet.email(name:) }
     cpf { Faker::IdNumber.brazilian_citizen_number }
+    gender { %w[male female other].sample }
+    date_of_birth { Faker::Date.birthday }
   end
 end
