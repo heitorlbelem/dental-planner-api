@@ -40,6 +40,6 @@ class Api::PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(%i[name email phone birthdate cpf])
+    params.require(:patient).permit(%i[name email phone date_of_birth cpf gender])
   end
 end
