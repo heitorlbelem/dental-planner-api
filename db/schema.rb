@@ -51,9 +51,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   create_table "patients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "phone", null: false
-    t.string "cpf", null: false
+    t.string "cpf"
     t.string "email"
-    t.string "birthdate"
+    t.string "date_of_birth"
+    t.string "gender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
