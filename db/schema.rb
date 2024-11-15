@@ -14,6 +14,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "zip_code", null: false

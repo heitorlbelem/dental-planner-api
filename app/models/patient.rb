@@ -5,6 +5,13 @@ require 'cpf_cnpj'
 class Patient < ApplicationRecord
   has_one :address, dependent: :destroy
 
+  scope :filter_by_name, lambda { |name|
+    tokens = name.split.map { |token| "%#{sanitize_sql_like(token)}%" }
+    where(tokens.map do |_token|
+            'unaccent(name) ILIKE unaccent(?)'
+          end.join(' AND '), *tokens)
+  }
+
   validates :name, :phone, presence: true
   validates :cpf, uniqueness: true
   validates_each :cpf, if: -> { cpf.present? } do |record, attr, value|
