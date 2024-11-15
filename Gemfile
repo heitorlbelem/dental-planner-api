@@ -8,6 +8,7 @@ gem 'aasm'
 gem 'bootsnap', require: false
 gem 'cpf_cnpj'
 gem 'jbuilder'
+gem 'kaminari'
 gem 'pg'
 gem 'puma'
 gem 'rack-cors'

@@ -1,4 +1,4 @@
-10.times do
+40.times do
   random_cpf = CPF.generate
   Patient.create(
     name: Faker::Name.name,

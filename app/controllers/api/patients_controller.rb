@@ -4,7 +4,9 @@ class Api::PatientsController < ApplicationController
   before_action :set_patient, only: %i[show update destroy]
 
   def index
-    @patients = Patient.all
+    page = params[:page_index] || 1
+    per_page = params[:per_page] || 20
+    @patients = Patient.page(page).per(per_page)
     render :index
   end
 

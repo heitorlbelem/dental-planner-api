@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Patient do
-  subject { build(:patient) }
+  let(:patient) { build(:patient) }
 
   describe 'associations' do
     it { is_expected.to have_one(:address).dependent(:destroy) }
@@ -15,7 +15,7 @@ RSpec.describe Patient do
 
     context 'when cpf is invalid' do
       it 'adds an invalid error on cpf' do
-        patient.cpf = invalid_cpf
+        patient.cpf = '00000000000'
         patient.validate
         expect(patient.errors[:cpf]).to include("isn't valid")
       end
@@ -30,7 +30,8 @@ RSpec.describe Patient do
 
     context 'when cpf has already been taken' do
       it 'adds an uniqueness error on cpf' do
-        create(:patient, cpf: valid_cpf)
+        create(:patient, cpf: '012.345.678-90')
+        patient = build(:patient, cpf: '012.345.678-90')
         patient.validate
         expect(patient.errors[:cpf]).to include('has already been taken')
       end
