@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Appointments' do
+RSpec.describe 'Api::Events::Appointments' do
   describe 'POST /api/appointments' do
     let(:do_request) do
       post api_appointments_path,
@@ -19,7 +19,8 @@ RSpec.describe 'Api::Appointments' do
           doctor_id: doctor.id,
           patient_id: patient.id,
           start_time: 30.days.from_now,
-          duration_in_minutes: 30
+          duration: 30,
+          description: 'Lorem Ipsum'
         }
       end
 
@@ -30,7 +31,7 @@ RSpec.describe 'Api::Appointments' do
       end
 
       it 'creates a new appointment' do
-        expect { do_request }.to change(Appointment, :count).by(1)
+        expect { do_request }.to change(Event::Appointment, :count).by(1)
       end
     end
 
@@ -53,13 +54,12 @@ RSpec.describe 'Api::Appointments' do
       it 'returns a json object containing the model errors', :aggregate_failures do
         do_request
 
-        expect(json.keys).to include(:start_time, :duration_in_minutes)
+        expect(json.keys).to include(:start_time, :end_time)
         expect(json[:start_time]).to include("can't be blank")
-        expect(json[:duration_in_minutes]).to include("can't be blank")
       end
 
       it "doesn't create a new appointment" do
-        expect { do_request }.not_to change(Appointment, :count)
+        expect { do_request }.not_to change(Event::Appointment, :count)
       end
     end
   end
