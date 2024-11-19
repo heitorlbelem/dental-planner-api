@@ -43,7 +43,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
     t.string "type", null: false
-    t.string "status"
+    t.string "status", null: false
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["doctor_id"], name: "index_events_on_doctor_id"
