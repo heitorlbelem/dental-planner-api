@@ -30,23 +30,24 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
   end
 
-  create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "doctor_id", null: false
-    t.uuid "patient_id", null: false
-    t.datetime "start_time", null: false
-    t.integer "duration_in_minutes", null: false
-    t.string "status", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
-    t.index ["patient_id"], name: "index_appointments_on_patient_id"
-  end
-
   create_table "doctors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "expertise", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "doctor_id", null: false
+    t.uuid "patient_id"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
+    t.string "type", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "index_events_on_doctor_id"
+    t.index ["patient_id"], name: "index_events_on_patient_id"
   end
 
   create_table "patients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -62,6 +63,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   end
 
   add_foreign_key "addresses", "patients"
-  add_foreign_key "appointments", "doctors"
-  add_foreign_key "appointments", "patients"
+  add_foreign_key "events", "doctors"
+  add_foreign_key "events", "patients"
 end

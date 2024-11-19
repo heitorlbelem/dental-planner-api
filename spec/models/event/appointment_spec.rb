@@ -2,29 +2,45 @@
 
 require 'rails_helper'
 
-RSpec.describe Appointment do
+RSpec.describe Event::Appointment, type: :model do
   subject { build(:appointment) }
 
   describe 'associations' do
-    it { is_expected.to belong_to(:doctor) }
     it { is_expected.to belong_to(:patient) }
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:duration_in_minutes) }
-    it { is_expected.to be_pending }
+    context 'when validating doctor availability' do
+      it 'is not valid when schedule for a blocked period' do
+        doctor = create(:doctor)
+        block_start = 1.hour.from_now
+        block_end = 2.hours.from_now
+        create(:block, doctor:, start_time: block_start, end_time: block_end)
+        patient = create(:patient)
+        start_time = block_start + 30.minutes
+        appointment = build(:appointment, start_time:, duration: 30, doctor:, patient:)
+        expect(appointment).not_to be_valid
+      end
 
-    it "isn't valid when start_time is in the past" do
-      appointment = build(:appointment, start_time: 1.day.ago)
-      expect { appointment.save! }.to raise_error(ActiveRecord::RecordInvalid)
-    end
+      it 'is not valid when schedule with an overlapping appointment' do
+        doctor = create(:doctor)
+        start_time = 1.hour.from_now
+        create(:appointment, doctor:, start_time:, duration: 60)
+        start_time += 30.minutes
+        patient = create(:patient)
+        appointment = build(:appointment, doctor:, patient:, start_time:)
+        expect(appointment).not_to be_valid
+      end
 
-    it "isn't valid when there is an overlapping appointment for the requested doctor" do
-      doctor = create(:doctor)
-      start_time = 1.day.from_now
-      create(:appointment, doctor:, start_time:)
-      appointment = build(:appointment, doctor:, start_time:)
-      expect { appointment.save! }.to raise_error(ActiveRecord::RecordInvalid)
+      it 'is valid for an available period' do
+        doctor = create(:doctor)
+        start_time = 1.hour.from_now
+        create(:appointment, doctor:, start_time:, duration: 30)
+        start_time += 30.minutes
+        patient = create(:patient)
+        appointment = build(:appointment, doctor:, patient:, start_time:)
+        expect(appointment).to be_valid
+      end
     end
   end
 
