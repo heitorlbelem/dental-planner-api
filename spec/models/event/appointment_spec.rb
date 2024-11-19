@@ -11,7 +11,7 @@ RSpec.describe Event::Appointment, type: :model do
 
   describe 'validations' do
     context 'when validating doctor availability' do
-      it 'is not valid when schedule for a blocked period' do
+      it 'is not valid when schedule for a blocked period', :aggregate_failures do
         doctor = create(:doctor)
         block_start = 1.hour.from_now
         block_end = 2.hours.from_now
@@ -20,9 +20,10 @@ RSpec.describe Event::Appointment, type: :model do
         start_time = block_start + 30.minutes
         appointment = build(:appointment, start_time:, duration: 30, doctor:, patient:)
         expect(appointment).not_to be_valid
+        expect(appointment.errors[:base]).to include('this time period is not available for this doctor')
       end
 
-      it 'is not valid when schedule with an overlapping appointment' do
+      it 'is not valid when schedule with an overlapping appointment', :aggregate_failures do
         doctor = create(:doctor)
         start_time = 1.hour.from_now
         create(:appointment, doctor:, start_time:, duration: 60)
@@ -30,6 +31,7 @@ RSpec.describe Event::Appointment, type: :model do
         patient = create(:patient)
         appointment = build(:appointment, doctor:, patient:, start_time:)
         expect(appointment).not_to be_valid
+        expect(appointment.errors[:base]).to include('this time period is not available for this doctor')
       end
 
       it 'is valid for an available period' do

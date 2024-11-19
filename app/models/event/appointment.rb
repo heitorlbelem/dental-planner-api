@@ -12,13 +12,14 @@ class Event::Appointment < Event
   def doctor_availability
     return unless overlapping_event?
 
-    errors.add(:base, 'This time period is not available for this doctor')
+    errors.add(:base, 'this time period is not available for this doctor')
   end
 
   def overlapping_event?
     Event
       .where(doctor_id:)
       .where.not(id:)
+      .where.not(status: %i[canceled completed])
       .where(
         '(start_time, end_time) OVERLAPS (?, ?)',
         start_time, end_time
