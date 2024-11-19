@@ -22,6 +22,7 @@ Rails.application.routes.draw do
             end
           end
         end
+        resources :blocks, only: %i[create]
       end
     end
   end
