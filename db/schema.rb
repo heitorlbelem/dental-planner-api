@@ -14,6 +14,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "zip_code", null: false
@@ -29,18 +30,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
   end
 
-  create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "doctor_id", null: false
-    t.uuid "patient_id", null: false
-    t.datetime "start_time", null: false
-    t.integer "duration_in_minutes", null: false
-    t.string "status", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
-    t.index ["patient_id"], name: "index_appointments_on_patient_id"
-  end
-
   create_table "doctors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "expertise", null: false
@@ -48,18 +37,33 @@ ActiveRecord::Schema[7.2].define(version: 2024_03_24_173551) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "doctor_id", null: false
+    t.uuid "patient_id"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
+    t.string "type", null: false
+    t.string "status", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "index_events_on_doctor_id"
+    t.index ["patient_id"], name: "index_events_on_patient_id"
+  end
+
   create_table "patients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "phone", null: false
-    t.string "cpf", null: false
+    t.string "cpf"
     t.string "email"
-    t.string "birthdate"
+    t.string "date_of_birth"
+    t.string "gender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end
 
   add_foreign_key "addresses", "patients"
-  add_foreign_key "appointments", "doctors"
-  add_foreign_key "appointments", "patients"
+  add_foreign_key "events", "doctors"
+  add_foreign_key "events", "patients"
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::Appointments::StatusesController < ApplicationController
+class Api::Events::Appointments::StatusesController < ApplicationController
   before_action :set_appointment
 
   rescue_from AASM::InvalidTransition, with: :invalid_status_transition
@@ -20,7 +20,7 @@ class Api::Appointments::StatusesController < ApplicationController
   private
 
   def set_appointment
-    @appointment = Appointment.find(params[:id])
+    @appointment = Event::Appointment.find(params[:id])
   end
 
   def invalid_status_transition

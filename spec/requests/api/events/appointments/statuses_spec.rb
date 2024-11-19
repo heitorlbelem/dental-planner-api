@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::Appointments::Statuses' do
+RSpec.describe 'Api::Events::Appointments::Statuses' do
   describe 'PATCH /api/appointments/:id/confirm' do
     let(:do_request) do
       patch confirm_api_appointment_path(id),

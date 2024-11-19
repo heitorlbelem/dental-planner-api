@@ -5,12 +5,20 @@ require 'cpf_cnpj'
 class Patient < ApplicationRecord
   has_one :address, dependent: :destroy
 
-  validates :name, :phone, :email, presence: true
-  validates :cpf, presence: true, uniqueness: { case_insensitive: true }
+  scope :filter_by_name, lambda { |name|
+    tokens = name.split.map { |token| "%#{sanitize_sql_like(token)}%" }
+    where(tokens.map do |_token|
+            'unaccent(name) ILIKE unaccent(?)'
+          end.join(' AND '), *tokens)
+  }
 
-  validates_each :cpf do |record, attr, value|
+  validates :name, :phone, presence: true
+  validates :cpf, uniqueness: true
+  validates_each :cpf, if: -> { cpf.present? } do |record, attr, value|
     record.errors.add(attr, "isn't valid") unless CPF.valid?(value)
   end
+
+  before_validation :normalize_cpf
 
   def replace_address(attributes = nil)
     transaction do
@@ -20,5 +28,11 @@ class Patient < ApplicationRecord
     end
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed
     [address, false]
+  end
+
+  private
+
+  def normalize_cpf
+    self.cpf = CPF.format(cpf) if cpf.present?
   end
 end

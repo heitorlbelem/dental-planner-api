@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Api::AppointmentsController < ApplicationController
+class Api::Events::AppointmentsController < ApplicationController
   def create
-    @appointment = Appointment.new(create_appointment_params)
+    @appointment = Event::Appointment.new(create_appointment_params)
     return head :created if @appointment.save
 
     render json: @appointment.errors, status: :unprocessable_entity
@@ -12,8 +12,6 @@ class Api::AppointmentsController < ApplicationController
 
   def create_appointment_params
     params.require(:appointment)
-      .permit(%i[
-        doctor_id patient_id start_time duration_in_minutes
-      ])
+      .permit(%i[doctor_id patient_id start_time duration description])
   end
 end
