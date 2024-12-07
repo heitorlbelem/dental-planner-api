@@ -14,3 +14,11 @@ paths:
     $ref: './resources/doctors/all.yml'
   /doctors/{id}:
     $ref: './resources/doctors/by-id.yml'
+  /appointments:
+    $ref: './resources/appointments/all.yml'
+  /appointments/{id}/confirm:
+    $ref: './resources/appointments/by-id.yml'
+  /appointments/{id}/cancel:
+    $ref: './resources/appointments/by-id.yml'
+  /appointments/{id}/finish:
+    $ref: './resources/appointments/by-id.yml'
