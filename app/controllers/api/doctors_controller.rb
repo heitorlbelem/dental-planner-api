@@ -29,6 +29,12 @@ class Api::DoctorsController < ApplicationController
     end
   end
 
+  def destroy
+    return head :no_content if @doctor.destroy
+
+    render json: @doctor.errors, status: :unprocessable_entity
+  end
+
   private
 
   def set_doctor

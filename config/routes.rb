@@ -11,7 +11,8 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :doctors, except: :destroy
+      resources :doctors
+
       scope module: 'events' do
         resources :appointments, only: %i[create] do
           member do
