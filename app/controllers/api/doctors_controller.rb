@@ -4,7 +4,9 @@ class Api::DoctorsController < ApplicationController
   before_action :set_doctor, only: %i[show update destroy]
 
   def index
-    @doctors = Doctor.all
+    @doctors = filtered_doctors
+    @total_count = @doctors.count
+    @doctors = @doctors.page(page).per(per_page)
     render :index
   end
 
@@ -35,5 +37,19 @@ class Api::DoctorsController < ApplicationController
 
   def doctor_params
     params.permit(%i[name expertise])
+  end
+
+  def page
+    params[:page_index] || 1
+  end
+
+  def per_page
+    params[:per_page] || 10
+  end
+
+  def filtered_doctors
+    doctors = Doctor.all
+    doctors = doctors.filter_by_name(params[:name].to_s) if params[:name].present?
+    doctors.order(name: :asc)
   end
 end
