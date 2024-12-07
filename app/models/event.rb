@@ -12,6 +12,7 @@ class Event < ApplicationRecord
 
   private
 
+  # TODO: Regra de negócio fica por enquanto
   def start_time_in_the_past
     return if start_time.blank? || start_time >= Time.current
 

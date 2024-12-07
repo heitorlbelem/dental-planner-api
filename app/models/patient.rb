@@ -20,6 +20,7 @@ class Patient < ApplicationRecord
 
   before_validation :normalize_cpf
 
+  # TODO: Regra de negócio fica aqui por enquanto
   def replace_address(attributes = nil)
     transaction do
       address&.destroy!

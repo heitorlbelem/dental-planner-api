@@ -9,12 +9,14 @@ class Event::Appointment < Event
 
   private
 
+  # TODO: Regra de negócio fica aqui por enquanto
   def doctor_availability
     return unless overlapping_event?
 
     errors.add(:base, 'this time period is not available for this doctor')
   end
 
+  # TODO: Regra de negócio fica aqui por enquanto
   def overlapping_event?
     Event
       .where(doctor_id:)
