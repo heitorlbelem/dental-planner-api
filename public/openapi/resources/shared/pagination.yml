@@ -26,4 +26,3 @@ Response:
     page_items_count:
       type: integer
       description: Número de pacientes na página atual.
-  
