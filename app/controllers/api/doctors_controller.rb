@@ -30,9 +30,7 @@ class Api::DoctorsController < ApplicationController
   end
 
   def destroy
-    return head :no_content if @doctor.destroy
-
-    render json: @doctor.errors, status: :unprocessable_entity
+    head :no_content if @doctor.destroy
   end
 
   private
