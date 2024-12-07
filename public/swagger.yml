@@ -1,292 +1,326 @@
 openapi: 3.0.0
 info:
-  title: Documentação da API JSON:API
-  description: Documentação da API JSON:API para o seu projeto Rails
+  title: Documentação Dental Planner API
   version: 1.0.0
+  description: API para servir app de gestão de clínicas odontológicas
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3000/api
 paths:
   /patients:
     get:
       tags:
         - Pacientes
-      summary: Lista todos os pacientes
+      summary: Recuperar lista de pacientes
+      description: Obter uma lista paginada de pacientes com seus detalhes
+      parameters:
+        - name: page_index
+          in: query
+          required: false
+          description: Número da página que deseja buscar
+          schema:
+            type: number
+            example: 1
+        - name: per_page
+          in: query
+          required: false
+          description: Quantidade máxima de itens por página
+          schema:
+            type: number
+            example: 10
       responses:
         '200':
-          description: Lista de pacientes recuperada com sucesso
+          description: Lista de pacientes e metadados de paginação
           content:
             application/json:
-              example:
-                data:
-                  - id: 1
-                    type: patients
-                    attributes:
-                      name: João da Silva
-                      phone: "(11) 99999-9999"
-                      cpf: "123.456.789-00"
-                      email: "joao@example.com"
-                      birthdate: "1990-01-01"
-
+              schema:
+                type: object
+                properties:
+                  patients:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Identificador único do paciente
+                        name:
+                          type: string
+                          description: Nome completo do paciente
+                        date_of_birth:
+                          type: string
+                          format: date
+                          description: Data de nascimento do paciente
+                        cpf:
+                          type: string
+                          description: CPF (Cadastro de Pessoa Física).
+                        phone:
+                          type: string
+                          description: Número de telefone do paciente.
+                        email:
+                          type: string
+                          format: email
+                          description: Endereço de email do paciente.
+                        gender:
+                          type: string
+                          enum: [male, female, other]
+                          description: Gênero do paciente.
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Data e hora de criação do registro do paciente.
+                  pagination:
+                    type: object
+                    properties:
+                      page_index:
+                        type: integer
+                        description: Índice da página atual.
+                      total_count:
+                        type: integer
+                        description: Número total de pacientes.
+                      page_items_count:
+                        type: integer
+                        description: Número de pacientes na página atual.
     post:
       tags:
         - Pacientes
-      summary: Cria um novo paciente
+      summary: Cadastrar um novo paciente
+      description: Adicionar um novo registro de paciente ao sistema.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatientRequest'
+              type: object
+              properties:
+                patient:
+                  type: object
+                  required:
+                    - name
+                    - phone
+                    - date_of_birth
+                    - gender
+                  properties:
+                    name:
+                      type: string
+                      description: Nome completo do paciente.
+                      example: John Doe
+                    phone:
+                      type: string
+                      description: Número de telefone do paciente.
+                      example: "+55 (11) 98181-8282"
+                    date_of_birth:
+                      type: string
+                      format: date-time
+                      description: Data de nascimento do paciente.
+                      example: "2000-01-01T00:00:00Z"
+                    gender:
+                      type: string
+                      enum: [male, female, other]
+                      description: Gênero do paciente.
+                      example: male
+                    cpf:
+                      type: string
+                      description: CPF (Cadastro de Pessoa Física). Pode estar vazio.
+                      example: ""
+                    email:
+                      type: string
+                      format: email
+                      description: Email do paciente. Pode estar vazio.
+                      example: ""
       responses:
         '201':
           description: Paciente criado com sucesso
-          content:
-            application/json:
-              example:
-                data:
-                  id: 2
-                  type: patients
-                  attributes:
-                    name: Maria Oliveira
-                    phone: "(11) 88888-8888"
-                    cpf: "987.654.321-00"
-                    email: "maria@example.com"
-                    birthdate: "1985-05-10"
+          content: {}
         '400':
-          description: Requisição inválida
-
+          description: Requisição inválida devido a dados incorretos ou faltando.
+          content: {}
   /patients/{id}:
     get:
       tags:
         - Pacientes
-      summary: Retorna um paciente específico
+      summary: Obter detalhes de um paciente
+      description: Retorna os detalhes de um paciente pelo seu identificador único.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: Identificador único do paciente (UUID).
           schema:
             type: string
-          description: ID do paciente
+            format: uuid
+            example: f93926d6-0c52-4d4b-9daa-8fe447fadd0b
       responses:
         '200':
-          description: Paciente encontrado
+          description: Detalhes do paciente encontrados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patient:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Identificador único do paciente.
+                        example: f93926d6-0c52-4d4b-9daa-8fe447fadd0b
+                      name:
+                        type: string
+                        description: Nome completo do paciente.
+                        example: Aline Peixoto
+                      date_of_birth:
+                        type: string
+                        format: date
+                        description: Data de nascimento do paciente.
+                        example: "1992-10-05"
+                      cpf:
+                        type: string
+                        description: CPF do paciente.
+                        example: "411.298.060-49"
+                      phone:
+                        type: string
+                        description: Número de telefone do paciente.
+                        example: "(69) 96603-8236"
+                      email:
+                        type: string
+                        format: email
+                        description: Email do paciente.
+                        example: "chas@von.example"
+                      gender:
+                        type: string
+                        enum: [male, female, other]
+                        description: Gênero do paciente.
+                        example: male
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Data e hora de criação do registro.
+                        example: "2024-12-07T03:23:24.212Z"
         '404':
           description: Paciente não encontrado
     put:
       tags:
         - Pacientes
-      summary: Atualiza um paciente existente
+      summary: Atualizar informações de um paciente
+      description: Atualiza os detalhes de um paciente pelo seu identificador único.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: Identificador único do paciente (UUID).
           schema:
             type: string
-          description: ID do paciente
+            format: uuid
+            example: f93926d6-0c52-4d4b-9daa-8fe447fadd0b
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatientRequest'
+              type: object
+              properties:
+                patient:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Nome completo do paciente.
+                      example: John Doe
+                    phone:
+                      type: string
+                      description: Número de telefone do paciente.
+                      example: "+55 (11) 98181-8282"
+                    date_of_birth:
+                      type: string
+                      format: date-time
+                      description: Data de nascimento do paciente.
+                      example: "2025-09-08T03:53:23.535Z"
+                    gender:
+                      type: string
+                      enum: [male, female, other]
+                      description: Gênero do paciente.
+                      example: male
+                    cpf:
+                      type: string
+                      description: CPF (Cadastro de Pessoa Física). Opcional.
+                      example: "03506518330"
+                    email:
+                      type: string
+                      format: email
+                      description: Email do paciente. Opcional.
+                      example: ""
       responses:
         '200':
-          description: Paciente atualizado com sucesso
+          description: Paciente atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patient:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Identificador único do paciente.
+                        example: f93926d6-0c52-4d4b-9daa-8fe447fadd0b
+                      name:
+                        type: string
+                        description: Nome completo do paciente.
+                        example: John Doe
+                      date_of_birth:
+                        type: string
+                        format: date-time
+                        description: Data de nascimento do paciente.
+                        example: "2025-09-08T03:53:23.535Z"
+                      cpf:
+                        type: string
+                        description: CPF do paciente (formatado).
+                        example: "012.345.678-90"
+                      phone:
+                        type: string
+                        description: Número de telefone do paciente.
+                        example: "+55 (11) 98181-8282"
+                      email:
+                        type: string
+                        format: email
+                        description: Email do paciente.
+                        example: ""
+                      gender:
+                        type: string
+                        enum: [male, female, other]
+                        description: Gênero do paciente.
+                        example: male
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Data e hora de criação do registro.
+                        example: "2024-12-07T03:23:24.212Z"
+        '400':
+          description: Requisição inválida devido a dados incorretos ou faltando.
         '404':
-          description: Paciente não encontrado
+          description: Paciente não encontrado.
     delete:
       tags:
         - Pacientes
-      summary: Remove um paciente existente
+      summary: Excluir um paciente
+      description: Remove um paciente do sistema pelo seu identificador único.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: Identificador único do paciente (UUID).
           schema:
             type: string
-          description: ID do paciente
+            format: uuid
+            example: f93926d6-0c52-4d4b-9daa-8fe447fadd0b
       responses:
-        '204':
-          description: Paciente removido com sucesso
-        '404':
-          description: Paciente não encontrado
-  /appointments:
-    get:
-      tags:
-        - Agendamentos
-      summary: Lista todos os agendamentos
-      responses:
-        '200':
-          description: Lista de agendamentos recuperada com sucesso
-          content:
-            application/json:
-              example:
-                data:
-                  - id: 1
-                    type: appointments
-                    attributes:
-                      started_at: "2024-04-20T10:00:00Z"
-                      duration: 30
-                      status: "scheduled"
-                      doctor_id: "f8a41d4c-0d6b-4c68-a3a8-7c7f799d6d7e"
-                      patient_id: "2ac41b9f-ec95-4481-bc6e-d9b19e08e631"
-                  - id: 2
-                    type: appointments
-                    attributes:
-                      started_at: "2024-04-21T14:00:00Z"
-                      duration: 60
-                      status: "completed"
-                      doctor_id: "f8a41d4c-0d6b-4c68-a3a8-7c7f799d6d7e"
-                      patient_id: "ef245bcc-1a79-4a15-912b-3cb751646187"
-    post:
-      tags:
-        - Agendamentos
-      summary: Cria um novo agendamento
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AppointmentRequest'
-      responses:
-        '201':
-          description: Agendamento criado com sucesso
-          content:
-            application/json:
-              example:
-                data:
-                  id: 3
-                  type: appointments
-                  attributes:
-                    started_at: "2024-04-22T09:30:00Z"
-                    duration: 45
-                    status: "scheduled"
-                    doctor_id: "f8a41d4c-0d6b-4c68-a3a8-7c7f799d6d7e"
-                    patient_id: "9b1d4e1f-d4f3-4d3b-87ef-69d36c135b26"
-
-  /appointments/{id}:
-    get:
-      tags:
-        - Agendamentos
-      summary: Retorna um agendamento específico
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID do agendamento
-      responses:
-        '200':
-          description: Agendamento encontrado
-          content:
-            application/json:
-              example:
-                data:
-                  id: 1
-                  type: appointments
-                  attributes:
-                    started_at: "2024-04-20T10:00:00Z"
-                    duration: 30
-                    status: "scheduled"
-                    doctor_id: "f8a41d4c-0d6b-4c68-a3a8-7c7f799d6d7e"
-                    patient_id: "2ac41b9f-ec95-4481-bc6e-d9b19e08e631"
-    put:
-      tags:
-        - Agendamentos
-      summary: Atualiza um agendamento existente
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID do agendamento
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AppointmentRequest'
-      responses:
-        '200':
-          description: Agendamento atualizado com sucesso
-          content:
-            application/json:
-              example:
-                data:
-                  id: 1
-                  type: appointments
-                  attributes:
-                    started_at: "2024-04-20T11:00:00Z"
-                    duration: 45
-                    status: "completed"
-                    doctor_id: "f8a41d4c-0d6b-4c68-a3a8-7c7f799d6d7e"
-                    patient_id: "2ac41b9f-ec95-4481-bc6e-d9b19e08e631"
-    delete:
-      tags:
-        - Agendamentos
-      summary: Remove um agendamento existente
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID do agendamento
-      responses:
-        '204':
-          description: Agendamento removido com sucesso
-        '404':
-          description: Agendamento não encontrado
-
-components:
-  schemas:
-    AppointmentRequest:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            type:
-              type: string
-              enum: [appointments]
-            attributes:
-              type: object
-              properties:
-                started_at:
-                  type: string
-                  format: date-time
-                duration:
-                  type: integer
-                status:
-                  type: string
-                doctor_id:
-                  type: string
-                patient_id:
-                  type: string
-    PatientRequest:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            type:
-              type: string
-              enum: [patients]
-            attributes:
-              type: object
-              properties:
-                name:
-                  type: string
-                phone:
-                  type: string
-                cpf:
-                  type: string
-                email:
-                  type: string
-                birthdate:
-                  type: string
-                  format: date
-
-# Repita a estrutura acima para as outras tabelas (doctors, addresses, appointments, proceedings)
+        "204":
+          description: Paciente excluído com sucesso. Nenhum conteúdo retornado.
+        "404":
+          description: Paciente não encontrado.
+        "400":
+          description: Requisição inválida devido a parâmetros incorretos.
