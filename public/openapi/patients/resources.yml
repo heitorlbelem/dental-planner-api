@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Pacientes
+  summary: Recuperar lista de pacientes
+  description: Obter uma lista paginada de pacientes com seus detalhes
+  parameters:
+    - $ref: '../shared/pagination.yml/#PageIndex'
+    - $ref: '../shared/pagination.yml/#PerPage'
+  responses:
+    '200':
+      description: Lista de pacientes e metadados de paginação
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              patients:
+                type: array
+                items:
+                  $ref: "./schemas.yml/#Response"
+              pagination:
+                $ref: "../shared/pagination.yml/#Response"
+
+post:
+  tags:
+    - Pacientes
+  summary: Cadastrar um novo paciente
+  description: Adicionar um novo registro de paciente ao sistema.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas.yml/#NewPatientRequest"
+  responses:
+    '201':
+      description: Paciente criado com sucesso
+      content: {}
+    '400':
+      description: Requisição inválida devido a dados incorretos ou faltando.
+      content: {}

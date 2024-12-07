@@ -1,0 +1,74 @@
+Response:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Identificador único do paciente.
+    name:
+      type: string
+      description: Nome completo do paciente.
+    date_of_birth:
+      type: string
+      format: date
+      description: Data de nascimento do paciente.
+    cpf:
+      type: string
+      description: CPF (Cadastro de Pessoa Física).
+    phone:
+      type: string
+      description: Número de telefone do paciente.
+    email:
+      type: string
+      format: email
+      description: Email do paciente.
+    gender:
+      type: string
+      enum: [male, female, other]
+      description: Gênero do paciente.
+    created_at:
+      type: string
+      format: date-time
+      description: Data e hora de criação do registro.
+
+RequestBody:
+  type: object
+  properties:
+    name:
+      type: string
+      description: Nome completo do paciente.
+    date_of_birth:
+      type: string
+      format: date
+      description: Data de nascimento do paciente.
+    cpf:
+      type: string
+      description: CPF (Cadastro de Pessoa Física).
+    phone:
+      type: string
+      description: Número de telefone do paciente.
+    email:
+      type: string
+      format: email
+      description: Email do paciente.
+    gender:
+      type: string
+      enum: [male, female, other]
+      description: Gênero do paciente.
+
+NewPatientRequest:
+  type: object
+  properties:
+    patient:
+      required:
+        - name
+        - phone
+        - date_of_birth
+        - gender
+      $ref: "#RequestBody"
+
+UpdatePatientRequest:
+  type: object
+  properties:
+    patient:
+      $ref: "#RequestBody"
