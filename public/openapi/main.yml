@@ -7,6 +7,6 @@ servers:
   - url: http://localhost:3000/api
 paths:
   /patients:
-    $ref: './patients/resources.yml'
+    $ref: './resources/patients/all.yml'
   /patients/{id}:
-    $ref: './patients/resource.yml'
+    $ref: './resources/patients/by-id.yml'
