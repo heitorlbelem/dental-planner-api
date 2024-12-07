@@ -3,6 +3,8 @@
 class Event < ApplicationRecord
   belongs_to :doctor
 
+  scope :filter_by_doctor_id, ->(doctor_id) { where(doctor_id:) }
+
   validates :start_time, :end_time, presence: true
   validate :start_time_in_the_past, on: %i[create update]
 
