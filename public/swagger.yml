@@ -26,7 +26,7 @@ paths:
                   patients:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Patient"
+                      $ref: "#/components/schemas/Patients/Response"
                   pagination:
                     $ref: "#/components/schemas/Pagination"
     post:
@@ -39,7 +39,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/NewPatientRequest"
+              $ref: "#/components/schemas/Patients/NewPatientRequest"
       responses:
         '201':
           description: Paciente criado com sucesso
@@ -64,7 +64,7 @@ paths:
                 type: object
                 properties:
                   patient:
-                    $ref: "#/components/schemas/Patient"
+                    $ref: "#/components/schemas/Patients/Response"
         '404':
           description: Paciente não encontrado.
     put:
@@ -79,7 +79,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdatePatientRequest"
+              $ref: "#/components/schemas/Patients/UpdatePatientRequest"
       responses:
         '200':
           description: Paciente atualizado com sucesso.
@@ -89,7 +89,7 @@ paths:
                 type: object
                 properties:
                   patient:
-                    $ref: "#/components/schemas/Patient"
+                    $ref: "#/components/schemas/Patients/Response"
         '400':
           description: Requisição inválida devido a dados incorretos ou faltando.
         '404':
@@ -138,38 +138,6 @@ components:
           type: number
           example: 10
   schemas:
-    Patient:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Identificador único do paciente.
-        name:
-          type: string
-          description: Nome completo do paciente.
-        date_of_birth:
-          type: string
-          format: date
-          description: Data de nascimento do paciente.
-        cpf:
-          type: string
-          description: CPF (Cadastro de Pessoa Física).
-        phone:
-          type: string
-          description: Número de telefone do paciente.
-        email:
-          type: string
-          format: email
-          description: Email do paciente.
-        gender:
-          type: string
-          enum: [male, female, other]
-          description: Gênero do paciente.
-        created_at:
-          type: string
-          format: date-time
-          description: Data e hora de criação do registro.
     Pagination:
       type: object
       properties:
@@ -182,62 +150,75 @@ components:
         page_items_count:
           type: integer
           description: Número de pacientes na página atual.
-    NewPatientRequest:
-      type: object
-      properties:
-        patient:
-          type: object
-          required:
-            - name
-            - phone
-            - date_of_birth
-            - gender
-          properties:
-            name:
-              type: string
-              description: Nome completo do paciente.
-            phone:
-              type: string
-              description: Número de telefone do paciente.
-            date_of_birth:
-              type: string
-              format: date-time
-              description: Data de nascimento do paciente.
-            gender:
-              type: string
-              enum: [male, female, other]
-              description: Gênero do paciente.
-            cpf:
-              type: string
-              description: CPF (Cadastro de Pessoa Física). Pode estar vazio.
-            email:
-              type: string
-              format: email
-              description: Email do paciente. Pode estar vazio.
-    UpdatePatientRequest:
-      type: object
-      properties:
-        patient:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Nome completo do paciente.
-            phone:
-              type: string
-              description: Número de telefone do paciente.
-            date_of_birth:
-              type: string
-              format: date-time
-              description: Data de nascimento do paciente.
-            gender:
-              type: string
-              enum: [male, female, other]
-              description: Gênero do paciente.
-            cpf:
-              type: string
-              description: CPF (Cadastro de Pessoa Física).
-            email:
-              type: string
-              format: email
-              description: Email do paciente.
+    Patients:
+      Response:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Identificador único do paciente.
+          name:
+            type: string
+            description: Nome completo do paciente.
+          date_of_birth:
+            type: string
+            format: date
+            description: Data de nascimento do paciente.
+          cpf:
+            type: string
+            description: CPF (Cadastro de Pessoa Física).
+          phone:
+            type: string
+            description: Número de telefone do paciente.
+          email:
+            type: string
+            format: email
+            description: Email do paciente.
+          gender:
+            type: string
+            enum: [male, female, other]
+            description: Gênero do paciente.
+          created_at:
+            type: string
+            format: date-time
+            description: Data e hora de criação do registro.
+      RequestBody:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Nome completo do paciente.
+          date_of_birth:
+            type: string
+            format: date
+            description: Data de nascimento do paciente.
+          cpf:
+            type: string
+            description: CPF (Cadastro de Pessoa Física).
+          phone:
+            type: string
+            description: Número de telefone do paciente.
+          email:
+            type: string
+            format: email
+            description: Email do paciente.
+          gender:
+            type: string
+            enum: [male, female, other]
+            description: Gênero do paciente.
+      NewPatientRequest:
+        type: object
+        properties:
+          patient:
+            required:
+              - name
+              - phone
+              - date_of_birth
+              - gender
+            $ref: "#/components/schemas/Patients/RequestBody"
+      UpdatePatientRequest:
+        type: object
+        properties:
+          patient:
+            $ref: "#/components/schemas/Patients/RequestBody"
