@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
       resources :doctors
 
+      resources :events, only: %i[index]
       scope module: 'events' do
         resources :appointments, only: %i[create] do
           member do
