@@ -1,0 +1,8 @@
+AppointmentId:
+  name: id
+  in: path
+  required: true
+  description: Identificador único da consulta (UUID).
+  schema:
+    type: string
+    format: uuid

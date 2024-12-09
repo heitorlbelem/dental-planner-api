@@ -30,9 +30,7 @@ class Api::PatientsController < ApplicationController
   end
 
   def destroy
-    return head :no_content if @patient.destroy
-
-    render json: @patient.errors, status: :unprocessable_entity
+    head :no_content if @patient.destroy
   end
 
   private
@@ -54,8 +52,7 @@ class Api::PatientsController < ApplicationController
   end
 
   def filtered_patients
-    patients = Patient.all
-    patients = patients.filter_by_name(params[:name].to_s) if params[:name].present?
+    patients = Patient.filter_by_name(params[:name].to_s)
     patients.order(name: :asc)
   end
 end

@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: Documentação Dental Planner API
+  version: 1.0.0
+  description: API para servir app de gestão de clínicas odontológicas
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /patients:
+    $ref: './resources/patients/all.yml'
+  /patients/{id}:
+    $ref: './resources/patients/by-id.yml'
+  /doctors: 
+    $ref: './resources/doctors/all.yml'
+  /doctors/{id}:
+    $ref: './resources/doctors/by-id.yml'
+  /appointments:
+    $ref: './resources/appointments/all.yml'
+  /appointments/{id}/confirm:
+    $ref: './resources/appointments/by-id.yml'
+  /appointments/{id}/cancel:
+    $ref: './resources/appointments/by-id.yml'
+  /appointments/{id}/finish:
+    $ref: './resources/appointments/by-id.yml'

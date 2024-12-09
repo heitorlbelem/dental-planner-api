@@ -3,6 +3,8 @@
 class Event < ApplicationRecord
   belongs_to :doctor
 
+  scope :filter_by_doctor_id, ->(doctor_id) { where(doctor_id:) if doctor_id.present? }
+
   validates :start_time, :end_time, presence: true
   validate :start_time_in_the_past, on: %i[create update]
 
@@ -12,6 +14,7 @@ class Event < ApplicationRecord
 
   private
 
+  # TODO: Regra de negócio fica por enquanto
   def start_time_in_the_past
     return if start_time.blank? || start_time >= Time.current
 

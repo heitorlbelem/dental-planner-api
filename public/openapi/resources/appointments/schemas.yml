@@ -1,0 +1,30 @@
+RequestBody:
+  type: object
+  properties:
+    patient_id:
+      type: string
+      format: uuid
+      description: Identificador único do paciente (UUID)
+    doctor_id:
+      type: string
+      format: uuid
+      description: Identificador único do dentista (UUID)
+    start_time:
+      type: string
+      format: date-time
+      description: Data e Horário marcados para a consulta
+    duration:
+      type: number
+      description: Tempo em minutos da duração da consulta
+    description:
+      type: string
+      description: Informações adicionais da consulta
+
+NewAppointmentRequest:
+  type: object
+  properties:
+    appointment:
+      required:
+        - name
+        - expertise
+      $ref: "#RequestBody"

@@ -1,0 +1,8 @@
+DoctorId:
+  name: id
+  in: path
+  required: true
+  description: Identificador único do dentista (UUID).
+  schema:
+    type: string
+    format: uuid

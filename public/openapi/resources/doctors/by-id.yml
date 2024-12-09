@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Dentistas
+  summary: Obter detalhes de um dentista
+  description: Retorna os detalhes de um dentista pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#DoctorId"
+  responses:
+    '200':
+      description: Detalhes do dentista encontrados.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              doctor:
+                $ref: "./schemas.yml/#Response"
+    '404':
+      description: Dentista não encontrado.
+
+put:
+  tags:
+    - Dentistas
+  summary: Atualizar informações de um dentista
+  description: Atualiza os detalhes de um dentista pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#DoctorId"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas.yml/#UpdateDoctorRequest"
+  responses:
+    '200':
+      description: Dentista atualizado com sucesso.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              doctor:
+                $ref: "./schemas.yml/#Response"
+    '400':
+      description: Requisição inválida devido a dados incorretos ou faltando.
+    '404':
+      description: Dentista não encontrado.
+
+delete:
+  tags:
+    - Dentistas
+  summary: Excluir um dentista
+  description: Remove um dentista do sistema pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#DoctorId"
+  responses:
+    '204':
+      description: Dentista excluído com sucesso. Nenhum conteúdo retornado.
+    '404':
+      description: Dentista não encontrado.
+    '400':
+      description: Requisição inválida devido a parâmetros incorretos.

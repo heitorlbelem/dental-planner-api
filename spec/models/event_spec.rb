@@ -76,4 +76,23 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+  describe 'filter_by_doctor_id' do
+    let(:doctor_john) { create(:doctor) }
+    let(:doctor_jane) { create(:doctor) }
+
+    before do
+      create(:appointment, start_time: 1.hour.from_now, duration: 20,
+        doctor_id: doctor_john.id)
+      create(:block, start_time: 2.hours.from_now, end_time: 3.hours.from_now,
+          doctor_id: doctor_john.id)
+      create(:appointment, start_time: 1.hour.from_now, duration: 20,
+        doctor_id: doctor_jane.id)
+    end
+
+    it 'returns the events filtered by doctor_id' do
+      events = described_class.filter_by_doctor_id(doctor_john.id)
+      expect(events.count).to equal(2)
+    end
+  end
 end

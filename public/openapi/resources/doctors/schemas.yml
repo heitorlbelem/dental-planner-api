@@ -1,0 +1,38 @@
+Response:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Identificador único do dentista
+    name:
+      type: string
+      description: Nome do dentista
+    expertise:
+      type: string
+      description: Especialidade do dentista
+
+RequestBody:
+  type: object
+  properties:
+    name:
+      type: string
+      description: Nome do dentista
+    expertise:
+      type: string
+      description: Especialidade do dentista
+
+NewDoctorRequest:
+  type: object
+  properties:
+    doctor:
+      required:
+        - name
+        - expertise
+      $ref: "#RequestBody"
+
+UpdateDoctorRequest:
+  type: object
+  properties:
+    doctor:
+      $ref: "#RequestBody"

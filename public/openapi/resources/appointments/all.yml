@@ -1,0 +1,11 @@
+post:
+  tags:
+    - Consultas
+  summary: Agendar uma consulta
+  description: Criar uma consulta de paciente com dentista
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas.yml/#NewAppointmentRequest"

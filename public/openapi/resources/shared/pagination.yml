@@ -1,0 +1,28 @@
+PageIndex:
+  name: page_index
+  in: query
+  required: false
+  description: Número da página que deseja buscar.
+  schema:
+    type: number
+    example: 1
+PerPage:
+  name: per_page
+  in: query
+  required: false
+  description: Quantidade máxima de itens por página.
+  schema:
+    type: number
+    example: 10
+Response:
+  type: object
+  properties:
+    page_index:
+      type: integer
+      description: Índice da página atual.
+    total_count:
+      type: integer
+      description: Número total de pacientes.
+    page_items_count:
+      type: integer
+      description: Número de pacientes na página atual.

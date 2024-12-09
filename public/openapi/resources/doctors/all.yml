@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Dentistas
+  summary: Recuperar lista de dentistas
+  description: Obter uma lista paginada de dentistas com seus detalhes
+  parameters:
+    - $ref: '../shared/pagination.yml/#PageIndex'
+    - $ref: '../shared/pagination.yml/#PerPage'
+  responses:
+    '200':
+      description: Lista de dentistas e metadados de paginação
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              doctors:
+                type: array
+                items:
+                  $ref: "./schemas.yml/#Response"
+              pagination:
+                $ref: "../shared/pagination.yml/#Response"
+
+post:
+  tags:
+    - Dentistas
+  summary: Cadastrar um novo dentista
+  description: Adicionar um novo registro de dentista ao sistema.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas.yml/#NewDoctorRequest"

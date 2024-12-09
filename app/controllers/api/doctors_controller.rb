@@ -29,6 +29,10 @@ class Api::DoctorsController < ApplicationController
     end
   end
 
+  def destroy
+    head :no_content if @doctor.destroy
+  end
+
   private
 
   def set_doctor
@@ -48,8 +52,7 @@ class Api::DoctorsController < ApplicationController
   end
 
   def filtered_doctors
-    doctors = Doctor.all
-    doctors = doctors.filter_by_name(params[:name].to_s) if params[:name].present?
+    doctors = Doctor.filter_by_name(params[:name].to_s)
     doctors.order(name: :asc)
   end
 end
