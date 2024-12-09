@@ -5,6 +5,11 @@ class Api::EventsController < ApplicationController
     @events = filtered_events
   end
 
+  def destroy
+    @event = Event.find(params[:id])
+    head :no_content if @event.destroy
+  end
+
   private
 
   def doctor_id
@@ -12,8 +17,6 @@ class Api::EventsController < ApplicationController
   end
 
   def filtered_events
-    events = Event.all
-    events = events.filter_by_doctor_id(doctor_id) if doctor_id.present?
-    events
+    Event.filter_by_doctor_id(doctor_id)
   end
 end
