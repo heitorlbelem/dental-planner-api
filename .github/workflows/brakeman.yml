@@ -34,5 +34,5 @@ jobs:
 
       - name: Run Brakeman
         run: |
-          gem install brakeman -v 5.1.1
+          gem install brakeman
           brakeman
