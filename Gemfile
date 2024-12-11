@@ -26,6 +26,7 @@ group :development, :test do
   gem 'hirb'
   gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
   gem 'rubocop'
+  gem 'rubocop-fnando'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
   gem 'ruby-lsp'
