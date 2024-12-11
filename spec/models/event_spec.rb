@@ -77,7 +77,7 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe 'filter_by_doctor_id' do
+  describe '.filter_by_doctor_id' do
     let(:doctor_john) { create(:doctor) }
     let(:doctor_jane) { create(:doctor) }
 
