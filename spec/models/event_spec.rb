@@ -85,7 +85,7 @@ RSpec.describe Event, type: :model do
       create(:appointment, start_time: 1.hour.from_now, duration: 20,
         doctor_id: doctor_john.id)
       create(:block, start_time: 2.hours.from_now, end_time: 3.hours.from_now,
-          doctor_id: doctor_john.id)
+        doctor_id: doctor_john.id)
       create(:appointment, start_time: 1.hour.from_now, duration: 20,
         doctor_id: doctor_jane.id)
     end
@@ -93,6 +93,21 @@ RSpec.describe Event, type: :model do
     it 'returns the events filtered by doctor_id' do
       events = described_class.filter_by_doctor_id(doctor_john.id)
       expect(events.count).to equal(2)
+    end
+  end
+
+  describe '.filter_by_date_range' do
+    before do
+      create(:appointment, start_time: 1.day.from_now, duration: 20)
+      create(:appointment, start_time: 3.days.from_now, duration: 20)
+      create(:appointment, start_time: 4.days.from_now, duration: 20)
+    end
+
+    it 'returns the events filtered by date range' do
+      start_date = Time.current.to_s
+      end_date = 2.days.from_now.to_s
+      events = described_class.filter_by_date_range(start_date, end_date)
+      expect(events.count).to equal(1)
     end
   end
 end

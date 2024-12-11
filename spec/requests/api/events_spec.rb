@@ -4,10 +4,14 @@ require 'rails_helper'
 
 RSpec.describe 'Api::Events' do
   describe 'GET /api/events' do
-    let(:do_request) { get api_events_path, params: { doctor_id: } }
+    let(:do_request) do
+      get api_events_path, params: { doctor_id:, start_date:, end_date: }
+    end
     let(:doctor_john) { create(:doctor) }
     let(:doctor_jane) { create(:doctor) }
     let(:doctor_id) { nil }
+    let(:start_date) { nil }
+    let(:end_date) { nil }
 
     before do
       create(:appointment, start_time: 1.hour.from_now, doctor_id: doctor_john.id)
@@ -32,6 +36,21 @@ RSpec.describe 'Api::Events' do
       it 'returns an array of filtered events' do
         do_request
         expect(json[:events].count).to eq(3)
+      end
+    end
+
+    context 'when filtering by date range' do
+      before do
+        create(:appointment, start_time: 2.days.from_now, duration: 20)
+        create(:appointment, start_time: 3.days.from_now, duration: 20)
+      end
+
+      let(:start_date) { 2.days.from_now.beginning_of_day }
+      let(:end_date) { 4.days.from_now.beginning_of_day }
+
+      it 'returns an array of filtered events' do
+        do_request
+        expect(json[:events].count).to eq(2)
       end
     end
   end
