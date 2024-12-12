@@ -1,0 +1,13 @@
+patch:
+  tags:
+    - Consultas
+  summary: Alterar status de uma consulta
+  parameters:
+    - $ref: "./parameters.yml/#AppointmentId"
+  responses:
+    '204':
+      description: Status atualizado com sucesso
+    '422':
+      description: Erro ao processar mudança de status
+    '404':
+      description: Consulta não encontrada.

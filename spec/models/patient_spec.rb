@@ -37,4 +37,16 @@ RSpec.describe Patient do
       end
     end
   end
+
+  describe '.filter_by_name' do
+    before do
+      create_list(:patient, 10, name: 'Patient Test')
+      create(:patient, name: 'John Doe Test')
+    end
+
+    it 'returns the patients filtered by name' do
+      patients = described_class.filter_by_name('John Doe')
+      expect(patients.count).to equal(1)
+    end
+  end
 end

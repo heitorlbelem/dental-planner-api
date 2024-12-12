@@ -4,9 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'Api::Doctors' do
   describe 'GET /api/doctors' do
-    let(:do_request) { get api_doctors_path }
+    let(:do_request) { get api_doctors_path, params: { page:, per_page: } }
+    let(:doctors_list_count) { 4 }
+    let(:page) { 1 }
+    let(:per_page) { 10 }
 
-    before { create_list(:doctor, 4) }
+    before { create_list(:doctor, doctors_list_count) }
 
     it 'returns http status Ok' do
       do_request
@@ -16,6 +19,22 @@ RSpec.describe 'Api::Doctors' do
     it 'returns an array containing all the doctors' do
       do_request
       expect(json[:doctors].count).to eq(Doctor.count)
+    end
+
+    it 'returns the pagination info', :aggregate_failures do
+      do_request
+      expect(json[:pagination][:page_index]).to eq(1)
+      expect(json[:pagination][:total_count]).to eq(doctors_list_count)
+    end
+
+    context 'when validating the pagination functionality' do
+      let(:doctors_list_count) { 30 }
+      let(:per_page) { 5 }
+
+      it 'returns the correct number of doctors per page' do
+        do_request
+        expect(json[:doctors].count).to eq(per_page)
+      end
     end
   end
 
@@ -165,6 +184,25 @@ RSpec.describe 'Api::Doctors' do
 
       it 'returns http status not found' do
         expect { do_request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'DELETE /api/doctors/:id' do
+    let(:doctor) { create(:doctor) }
+    let(:id) { doctor.id }
+    let(:do_request) { delete api_doctor_path(id) }
+
+    before { doctor }
+
+    context 'with valid id' do
+      it 'returns http status code no content' do
+        do_request
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'deletes the doctor from the database' do
+        expect { do_request }.to change(Doctor, :count).by(-1)
       end
     end
   end

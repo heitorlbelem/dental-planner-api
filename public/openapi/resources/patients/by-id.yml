@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Pacientes
+  summary: Obter detalhes de um paciente
+  description: Retorna os detalhes de um paciente pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#PatientId"
+  responses:
+    '200':
+      description: Detalhes do paciente encontrados.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              patient:
+                $ref: "./schemas.yml/#Response"
+    '404':
+      description: Paciente não encontrado.
+
+put:
+  tags:
+    - Pacientes
+  summary: Atualizar informações de um paciente
+  description: Atualiza os detalhes de um paciente pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#PatientId"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "./schemas.yml/#UpdatePatientRequest"
+  responses:
+    '200':
+      description: Paciente atualizado com sucesso.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              patient:
+                $ref: "./schemas.yml/#Response"
+    '400':
+      description: Requisição inválida devido a dados incorretos ou faltando.
+    '404':
+      description: Paciente não encontrado.
+
+delete:
+  tags:
+    - Pacientes
+  summary: Excluir um paciente
+  description: Remove um paciente do sistema pelo seu identificador único.
+  parameters:
+    - $ref: "./parameters.yml/#PatientId"
+  responses:
+    '204':
+      description: Paciente excluído com sucesso. Nenhum conteúdo retornado.
+    '404':
+      description: Paciente não encontrado.
+    '400':
+      description: Requisição inválida devido a parâmetros incorretos.

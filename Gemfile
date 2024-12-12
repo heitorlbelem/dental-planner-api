@@ -18,7 +18,7 @@ gem 'stringio', '~> 3.1.2'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
-  gem 'awesome_rails_console'
+  gem 'awesome_print'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
@@ -26,6 +26,7 @@ group :development, :test do
   gem 'hirb'
   gem 'hirb-unicode-steakknife', require: 'hirb-unicode'
   gem 'rubocop'
+  gem 'rubocop-fnando'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
   gem 'ruby-lsp'
