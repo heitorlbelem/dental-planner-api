@@ -1,0 +1,21 @@
+get:
+  tags:
+    - Eventos
+  summary: Listar todos os eventos
+  description: Lista os eventos da agenda, com filtro por dentista ou datas
+  parameters:
+    - $ref: "./parameters.yml/#DoctorId"
+    - $ref: "./parameters.yml/#StartDate"
+    - $ref: "./parameters.yml/#EndDate"
+  responses:
+    '200':
+      description: Lista de eventos
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  $ref: "./schemas.yml/#Response"

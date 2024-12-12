@@ -1,0 +1,32 @@
+EventId:
+  name: id
+  in: path
+  description: Identificador único do evento (UUID).
+  required: true
+  schema:
+    type: string
+    format: uuid
+
+DoctorId:
+  name: doctor_id
+  in: query
+  description: Identificador único do dentista (UUID).
+  schema:
+    type: string
+    format: uuid
+
+StartDate:
+  name: start_date
+  in: query
+  description: Data de inicio do intervalo
+  schema:
+    type: string
+    format: date
+
+EndDate:
+  name: end_date
+  in: query
+  description: Data de fim do intervalo
+  schema:
+    type: string
+    format: date

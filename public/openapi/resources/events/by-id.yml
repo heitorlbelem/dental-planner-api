@@ -1,0 +1,11 @@
+delete:
+  tags:
+    - Eventos
+  summary: Deletar um evento da agenda
+  parameters:
+    - $ref: "./parameters.yml/#EventId"
+  responses:
+    '204':
+      description: Evento deletado com sucesso
+    '404':
+      description: Evento não encontrado.

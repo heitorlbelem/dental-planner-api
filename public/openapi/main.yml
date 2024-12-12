@@ -10,10 +10,12 @@ paths:
     $ref: './resources/patients/all.yml'
   /patients/{id}:
     $ref: './resources/patients/by-id.yml'
+
   /doctors: 
     $ref: './resources/doctors/all.yml'
   /doctors/{id}:
     $ref: './resources/doctors/by-id.yml'
+
   /appointments:
     $ref: './resources/appointments/all.yml'
   /appointments/{id}/confirm:
@@ -22,3 +24,8 @@ paths:
     $ref: './resources/appointments/by-id.yml'
   /appointments/{id}/finish:
     $ref: './resources/appointments/by-id.yml'
+
+  /events:
+    $ref: './resources/events/all.yml'
+  /events/{id}:
+    $ref: './resources/events/by-id.yml'

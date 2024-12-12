@@ -1,0 +1,33 @@
+Response:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Identificador único do evento.
+    doctor_id:
+      type: string
+      format: uuid
+      description: Identificador único do dentista (UUID)
+    patient_id:
+      type: string
+      format: uuid
+      description: Identificador único do paciente (UUID)
+    description:
+      type: string
+      description: Observações anotadas no evento
+    type:
+      type: string
+      enum: ['Event::Appointment', 'Event::Block']
+    start_time:
+      type: string
+      format: date-time
+      description: Data e hora do início do evento.
+    end_time:
+      type: string
+      format: date-time
+      description: Data e hora do fim do evento
+    status:
+      type: string
+      enum: ['pending', 'confirmed', 'canceled', 'finished', 'blocked']
+      description: Status do evento
