@@ -35,9 +35,7 @@ jobs:
         with:
           ruby-version: 3.3.0
           bundler: "Gemfile.lock"
-      
       - name: Install dependencies
         run: bundle install
-
       - name: Run Rubocop
         run: bundle exec rubocop
