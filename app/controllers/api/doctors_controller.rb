@@ -40,7 +40,7 @@ class Api::DoctorsController < ApplicationController
   end
 
   def doctor_params
-    params.permit(%i[name expertise])
+    params.require(:doctor).permit(%i[name expertise])
   end
 
   def page
